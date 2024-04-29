@@ -5,9 +5,9 @@ let
 in
 {
   imports = [
-    ../../../options/common/pin-registry.nix
-    ../../../options/common/preserve-system.nix
-    ../../../options/desktop/fonts.nix
+    ../../options/common/pin-registry.nix
+    ../../options/common/preserve-system.nix
+    ../../options/desktop/fonts.nix
   ];
 
 
