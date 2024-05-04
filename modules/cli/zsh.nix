@@ -46,9 +46,7 @@ in {
             programs.zsh = {
                 enable = true;
                 shellAliases = {
-                    c = "clear";
-                    cc = "cd ~ && clear";
-                    mv = "mv -iv";
+                    mv = "mv -i";
                     # rm = "trash -v";
                     ls = "eza";
                     l = "eza -a --icons";
@@ -75,7 +73,7 @@ in {
                 enableCompletion = true;
                 autocd = false;
                 dotDir = ".config/zsh";
-                plugins = [
+                /*plugins = [
                   {
                       name = "fast-syntax-highlighting";
                       file = "fast-syntax-highlighting.plugin.zsh";
@@ -86,7 +84,7 @@ in {
                         sha256 = "sha256-RVX9ZSzjBW3LpFs2W86lKI6vtcvDWP6EPxzeTcRZua4="; 
                       };
                   }
-                ];
+                ];*/
 	              oh-my-zsh = mkIf cfg.ohmyzsh.enable {
 	                enable = true;
                         theme = cfg.ohmyzsh.theme;

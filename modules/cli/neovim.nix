@@ -28,8 +28,6 @@ in
             source = lazyvim-config;
             recursive = true;
         };
-	};
-
-
+      };
     };
 }

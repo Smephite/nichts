@@ -197,6 +197,7 @@
             profiling = false;
         };
         neovim-old.enable = true;
+        # nixvim.enable = true;
     };
     services = {
         pipewire.enable = true;

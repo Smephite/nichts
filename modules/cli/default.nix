@@ -5,5 +5,6 @@ _: {
         ./zsh.nix
       	./neovim.nix
         ./fish.nix
+        ./nixvim.nix
     ];
 }
