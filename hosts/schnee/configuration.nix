@@ -1,7 +1,6 @@
 { inputs, outputs, pkgs, profile-config, ... }:
 
 {
-  networking.hostName = "schnee"; # Define your hostname.
   networking.hostId = "aefab460";
   networking.interfaces.enp7s0.useDHCP = true;
   systemd.services.zfs-mount.enable = true;
@@ -38,13 +37,12 @@
   services.xserver.enable = true;
   services.xserver.displayManager = {
     sddm.enable = true;
-    sessionPackages = [ pkgs.i3 ];
+    sessionPackages = [  ];
     
   };
 
   # virtualisation.virtualbox.host.enable = true;
   # programs.hyprland.xwayland.enable = true;
-  services.xserver.enable = true;
   # Enable Desktop Environment
   # services.xserver.displayManager.gdm.enable = true;
   # services.xserver.desktopManager.gnome.enable = true;
@@ -62,7 +60,7 @@
     modules = {
     other = {
       system = rec {
-          hostname = "flocke";
+          hostname = "schnee";
           username = "dragyx";
           gitPath = "/home/${username}/repos/nichts";
           monitors = [
@@ -118,5 +116,8 @@
     };
     # WM.hyprland.enable = true;
     # WM.hyprland.gnome-keyring = true;
+    
+
   };
+  system.stateVersion = "21.11"; # Did you read the comment?
 }

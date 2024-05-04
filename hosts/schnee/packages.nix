@@ -1,7 +1,7 @@
 { inputs, outputs, pkgs, profile-config, ... }:
 
 let 
-nur-no-pkgs = import inputs.nur-no-pkgs { pkgs = inputs.nixpkgs.legacyPackages.${profile-config.system}; nurpkgs = inputs.nixpkgs.legacyPackages.${profile-config.system}; };
+# nur-no-pkgs = import inputs.nur-no-pkgs { pkgs = inputs.nixpkgs.legacyPackages.${profile-config.system}; nurpkgs = inputs.nixpkgs.legacyPackages.${profile-config.system}; };
 python-packages = ps: with ps; [
   pandas
   numpy
@@ -26,11 +26,12 @@ python-packages = ps: with ps; [
 in
 {
   imports = [
-    nur-no-pkgs.repos.LuisChDev.modules.nordvpn 
-    ../../modules/programs/java.nix
+    # nur-no-pkgs.repos.LuisChDev.modules.nordvpn 
+    # ../../modules/programs/java.nix
   ];
 
-  services.nordvpn.enable = true;
+  #  services.nordvpn.enable = true;
+
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3" # NEEDED for etcher
