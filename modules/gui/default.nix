@@ -17,5 +17,6 @@ _: {
 	      ./firefox.nix
         ./steam.nix
         ./minecraft.nix
+        ./stylix.nix
     ];
 }
