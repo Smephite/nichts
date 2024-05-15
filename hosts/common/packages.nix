@@ -32,8 +32,8 @@ in
     #   as counting the number of packages takes over 800 (!!!) ms,
     #   which makes it very unpleasant to use as default thing
     #   to display when starting a terminal
+    # fastfetch    
     zathura
-    fastfetch    
     wlr-randr
     alacritty
     wget
@@ -58,6 +58,8 @@ in
     gnome.eog
     sherlock
     xfce.thunar
+    ranger
+    nitch
 
     plocate
     alsa-utils
