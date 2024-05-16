@@ -40,7 +40,7 @@ in {
             pathsToLink = [ "/share/zsh" ];
         };
         home-manager.users.${username} = {
-            home.packages = with pkgs; [ nix-output-monitor ];
+            home.packages = with pkgs; [ nix-output-monitor nitch ];
             programs.zoxide.enable = true;
             programs.zoxide.enableZshIntegration = true;
             programs.zsh = {
@@ -61,7 +61,7 @@ in {
 
                 } // cfg.extraAliases;
                 initExtraFirst = mkIf cfg.profiling "zmodload zsh/zprof";
-                initExtra = mkIf cfg.profiling "zprof";
+                initExtra = lib.strings.concatStrings ([  "\nnitch" ] ++ (if cfg.profiling then ["zprof"] else [""]));
                 history = {
                     path = "${config.home-manager.users.${username}.xdg.dataHome}/zsh/zsh_history";
                     size = 99999;
