@@ -22,6 +22,7 @@ in {
                     gtk.enable = true;
                     hyprland.enable = true;
                     waybar.enable = true;
+                    foot.enable = true;
                 };
             };
         };
