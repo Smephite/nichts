@@ -12,7 +12,7 @@ _: {
         ./rofi.nix
         ./WM
         ./kitty.nix
-        ./vivado2.nix
+        ./vivado.nix
         ./alacritty.nix
 	      ./firefox.nix
         ./steam.nix
