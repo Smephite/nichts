@@ -2,10 +2,11 @@
 
 with lib;
 let
+    vivado_pkg = pkgs.nur.repos.Nick1296.vivado-2019-2;
     vivado-desktop-symbol = pkgs.makeDesktopItem {
-      name = "vivado-2022_2";
-      desktopName = "Vivado";
-      exec = "${pkgs.nur.repos.lschuermann.vivado-2022_2}/bin/vivado";
+      name = "vivado-2019-2";
+      desktopName = "Vivado2019.2";
+      exec = "${vivado_pkg}/bin/vivado2019.2";
     };
     cfg = config.modules.programs.vivado;
     username = config.modules.other.system.username;
@@ -17,7 +18,7 @@ in
     environment.systemPackages = with pkgs; [     
       # this propietary software is huge, but I need it for
       # university
-      pkgs.nur.repos.lschuermann.vivado-2022_2
+      vivado_pkg
       vivado-desktop-symbol
     ];
 
