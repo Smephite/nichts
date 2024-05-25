@@ -17,6 +17,7 @@ add_catppuccin_wallpapers = self: super: {
   };
 
 };
+
 in
 {
   nixpkgs.overlays = [

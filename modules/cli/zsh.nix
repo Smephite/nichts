@@ -56,7 +56,7 @@ in {
                     cd = "z";
                     nv = "nvim";
                     #TODO fix hardcoding of git repo path and profile name
-                    update = "sudo -p 'password: ' echo 'Your daughter is just a fork of your wife.' && sudo nixos-rebuild switch --flake \"${gitPath}#${hostname}\" --log-format internal-json |& nom --json";
+                    rebuild = "nh os switch";
                     flake = "cd '${gitPath}'";
 
                 } // cfg.extraAliases;

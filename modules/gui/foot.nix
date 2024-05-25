@@ -21,6 +21,7 @@ in {
             programs.foot = {
                 enable = true;
                 server.enable = cfg.server;
+                # settings.main.shell = 
             };
         };
     };

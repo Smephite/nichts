@@ -11,6 +11,7 @@ in
       systemd.enable = true;
       settings = {
           main = {
+            height = 10;
             layer = "top";
             position = "top";
             modules-left = [

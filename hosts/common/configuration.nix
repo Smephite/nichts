@@ -10,6 +10,11 @@ in
     ../../options/desktop/fonts.nix
   ];
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  # use zsh as default shell
+  users.users.${username}.shell = pkgs.zsh;
+  users.defaultUserShell = pkgs.zsh;
 
   services.locate = {
     enable = true;
@@ -23,24 +28,16 @@ in
     extraOptions = "experimental-features = nix-command flakes";
   };
 
-  home-manager.users.${username} = {
-    programs.firefox = {
-      enable = true;
-      profiles = {
-        main = {
-          id = 0;
-          isDefault = true;
-          search.default = "DuckDuckGo";
-          extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-            ublock-origin
-            bitwarden
-            darkreader
-            maya-dark
-          ];
-          search.force = true;
-        };
-      };
-    };  
+  modules = {
+
+    programs = {
+      foot.enable = true;
+      foot.server = true;
+      ranger.enable = true;
+      nh.enable = true;
+
+    };
   };
+
 
 }

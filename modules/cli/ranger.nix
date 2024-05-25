@@ -8,7 +8,7 @@
     cfg = config.modules.programs.ranger;
     username = config.modules.other.system.username;
 in {
-    options.modules.programs.ranger = mkEnableOption "ranger";
+    options.modules.programs.ranger.enable = mkEnableOption "ranger";
 
     config = mkIf cfg.enable {
         home-manager.users.${username} = {

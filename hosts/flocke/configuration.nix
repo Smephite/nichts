@@ -7,6 +7,9 @@
   ];
 
 
+  # framework specific for BIOS updates
+  services.fwupd.enable = true;
+
   nixpkgs.config.allowUnfree = true;
   time.timeZone = "Europe/Zurich";
   security.sudo.package = pkgs.sudo.override { withInsults = true; };
@@ -95,6 +98,7 @@
   security.polkit.enable = true;
   home-manager.users."dragyx".home.packages = with pkgs; [ vesktop ];
 
+
   # Mainly for coding weekend
   services.hardware.bolt.enable = true;
 
@@ -156,6 +160,8 @@
       };
     };
     programs = {
+        minecraft.enable = true;
+        minecraft.wayland = true;
         vesktop.enable = false;
         btop.enable = true;
         mpv.enable = true;

@@ -63,6 +63,7 @@ in
 
     plocate
     alsa-utils
+    foot
 
     # partition management
     parted

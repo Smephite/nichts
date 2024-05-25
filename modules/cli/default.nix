@@ -7,5 +7,6 @@ _: {
         ./fish.nix
         ./nixvim.nix
         ./ranger.nix
+        ./nh.nix
     ];
 }

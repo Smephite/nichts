@@ -5,6 +5,53 @@ let
   username = config.modules.other.system.username;
   cfg = config.modules.WM.hyprland;
 
+  variant="mocha";
+
+  hyprland-catppuccin = pkgs.stdenv.mkDerivation {
+    name = "hyprland-catppuccin";
+    version = "b57375545f5da1f7790341905d1049b1873a8bb3v";
+    runtimeInputs = with pkgs; [ ];
+    src = pkgs.fetchFromGitHub {
+      owner = "catppuccin";
+      repo = "hyprland";
+      rev = "b57375545f5da1f7790341905d1049b1873a8bb3";
+      hash = "sha256-XTqpmucOeHUgSpXQ0XzbggBFW+ZloRD/3mFhI+Tq4O8=";
+    };  
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $out
+      
+      cp -r "$src"/themes "$out"
+      
+
+      runHook postInstall
+    '';
+  };
+
+  hyprlock-catppuccin = pkgs.stdenv.mkDerivation {
+    name = "hyprlock-catppuccin";
+    version = "0.0";
+    runtimeInputs = [ hyprland-catppuccin ];
+    src = pkgs.fetchFromGitHub {
+      owner = "catppuccin";
+      repo = "hyprlock";
+      rev = "d5a6767000409334be8413f19bfd1cf5b6bb5cc6";
+      hash = "sha256-pjMFPaonq3h3e9fvifCneZ8oxxb1sufFQd7hsFe6/i4=";
+    };  
+    installPhase = ''
+      runHook preInstall
+      dir="$out/.config/hypr"
+
+      mkdir -p "$dir"
+      
+      cp $src/hyprlock.conf $out/hyprlock.conf
+      sed -i -e 's/mocha.conf/${variant}.conf/g' "$out/hyprlock.conf"
+      cp "${hyprland-catppuccin}/themes/${variant}.conf" "$dir/${variant}.conf"       
+
+      runHook postInstall
+    '';
+  };
+
 
   ani-script = pkgs.writeShellApplication {
     name = "ani-cli-advanced";
@@ -41,6 +88,10 @@ in
 
     # hyprland settings
     home-manager.users.${username} = {
+
+      xdg.configFile."hypr/hyprlock.conf".source = "${hyprlock-catppuccin}/.config/hypr/hyprlock.conf";
+      xdg.configFile."hypr/${variant}.conf".source = "${hyprlock-catppuccin}/.config/hypr/${variant}.conf";
+
       programs.waybar.enable = true;
       wayland.windowManager.hyprland.settings = {
         input = {
@@ -84,11 +135,11 @@ in
         ];
         bind = [
           # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
-          "SUPER, RETURN, exec, alacritty"
+          "SUPER, RETURN, exec, footclient"
           "SUPER SHIFT, RETURN, exec, rofi -show drun"
           "SUPER SHIFT, Q, killactive,"
           "SUPER, M, exit, "
-          "SUPER, B, exec, alacritty --title bluetuith -e bluetuith"
+          "SUPER, B, exec, footclient --title=bluetuith bluetuith"
           "SUPER, A, exec, ${ani-script}/bin/ani-cli-advanced"
           "SUPER SHIFT, A, exec, ani-cli --rofi -c"
           "SUPER, f, fullscreen"
@@ -159,6 +210,11 @@ in
           # Move/resize windows with mainMod + LMB/RMB and dragging
           "SUPER, mouse:272, movewindow"
           # "bindm = SUPER, mouse:273, resizewindow"
+        ];
+
+        bindm = [ 
+          "Super, mouse:272, movewindow"
+          "Super, mouse:273, resizewindow"
         ];
         binde = [
           ",XF86MonBrightnessUp, exec, brightnessctl set 10%+"
