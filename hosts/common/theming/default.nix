@@ -128,10 +128,10 @@ let
 in
 {
   home-manager.users.${username} = {
-    xdg.configFile."rofi".source = "${catpuccin-rofi}/.config";
-    xdg.dataFile."rofi/themes".source = "${catpuccin-rofi}/share";
+    # xdg.configFile."rofi".source = "${catpuccin-rofi}/.config";
+    # xdg.dataFile."rofi/themes".source = "${catpuccin-rofi}/share";
 
-    programs.waybar.style = ./waybar-style.css;
+    # programs.waybar.style = ./waybar-style.css;
     # add catppuccin theme to waybar
     xdg.configFile."waybar/catppuccin.css".source = "${catppuccin-waybar}/${variant}.css";
 
@@ -172,6 +172,6 @@ in
     package = pkgs.kdePackages.sddm; # NEEDED for the catppuccin theme
   };*/
 
-  boot.loader.grub.theme = grub-theme;
+  # boot.loader.grub.theme = grub-theme;
 
 }

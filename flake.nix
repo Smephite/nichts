@@ -24,14 +24,15 @@
         };
 
         agenix.url = "github:ryantm/agenix";
-
+        stylix.url = "github:danth/stylix";
         schizofox = {
             url = "github:schizofox/schizofox";
             inputs = {
                 nixpkgs.follows = "nixpkgs";
             };
         };
-
+        
+        nixos-hardware.url = "github:NixOS/nixos-hardware/master";
         neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
         nixvim = {

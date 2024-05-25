@@ -24,7 +24,7 @@ in
       bluez
       dunst 
       swww
-      flameshot
+      sway-contrib.grimshot
     ];
 
     # hyprland settings
@@ -41,8 +41,8 @@ in
           gaps_in = 2;
           gaps_out = 1;
           border_size = 1;
-          "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-          "col.inactive_border" = "rgba(595959aa)";
+          # "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
+          # "col.inactive_border" = "rgba(595959aa)";
           layout = "dwindle";
         };
         decoration.rounding = 5;
@@ -85,7 +85,7 @@ in
           "SUPER, P, pseudo, # dwindle"
           "SUPER, S, togglesplit, # dwindle"
           "SUPER, C, exec, /home/vali/.config/wallpaper/colorscheme-setter"
-          ",PRINT, exec, flameshot"
+          ",PRINT, exec, mkdir -p ~/Pictures/Screenshots && ${pkgs.sway-contrib.grimshot}/bin/grimshot savecopy anything ~/Pictures/Screenshots/screenshot-$(date -Iminutes).png"
 
           
           # Move focus with mainMod + arrow keys"

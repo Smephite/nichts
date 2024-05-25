@@ -6,5 +6,6 @@ _: {
       	./neovim.nix
         ./fish.nix
         ./nixvim.nix
+        ./ranger.nix
     ];
 }

@@ -15,6 +15,7 @@ in
   environment.systemPackages = with pkgs; [
     (python3.withPackages python-packages)
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    nheko
     neovim
     typst
     cm_unicode
@@ -31,8 +32,8 @@ in
     #   as counting the number of packages takes over 800 (!!!) ms,
     #   which makes it very unpleasant to use as default thing
     #   to display when starting a terminal
+    # fastfetch    
     zathura
-    fastfetch    
     wlr-randr
     alacritty
     wget
@@ -57,6 +58,8 @@ in
     gnome.eog
     sherlock
     xfce.thunar
+    ranger
+    nitch
 
     plocate
     alsa-utils

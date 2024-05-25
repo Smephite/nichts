@@ -12,12 +12,12 @@ in
         shell = {
           program = "zsh";
         };
+        /*
         font.normal.family = "JetBrainsMono Nerd Font";
         font.bold.family = "JetBrainsMono Nerd Font";
         font.italic.family = "JetBrainsMono Nerd Font";
         font.bold_italic.family = "JetBrainsMono Nerd Font";
         window.opacity = 0.8;
-        # TODO: maybe use a different way to manage the theme
         colors = {
           primary = {
             background = "#282a36";
@@ -84,7 +84,7 @@ in
             cyan = "#a4ffff";
             white = "#ffffff";
           };
-        };
+        };*/
       };
     };
   };
