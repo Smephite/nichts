@@ -127,7 +127,7 @@ in
           "SUPER SHIFT, RETURN, exec, rofi -show drun"
           "SUPER SHIFT, Q, killactive,"
           "SUPER, M, exit, "
-          "SUPER, B, exec, footclient --title=bluetuith bluetuith"
+          "SUPER, B, exec, footclient --title=bluetuith ${pkgs.bluetuith}/bin/bluetuith"
           "SUPER, A, exec, ${pkgs.ani-cli-advanced}/bin/ani-cli-advanced"
           "SUPER SHIFT, A, exec, ani-cli --rofi -c"
           "SUPER, f, fullscreen"
