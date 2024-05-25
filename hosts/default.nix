@@ -25,7 +25,7 @@ in {
         ../modules
         inputs.home-manager.nixosModules.home-manager
         inputs.agenix.nixosModules.default
-        inputs.nixos-hardware.nixosModules.framework.amd-7040
+        inputs.nixos-hardware.nixosModules.framework-13-7040-amd
     ];
   };
 }
