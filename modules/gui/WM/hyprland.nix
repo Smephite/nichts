@@ -19,6 +19,7 @@ in
       	enable = true;
     };
   services.gnome.gnome-keyring.enable = cfg.gnome-keyring;
+  services.displayManager.sddm.wayland.enable = true;
   systemd.user.services.polkit-gnome-authentication-agent-1 = mkIf cfg.gnome-keyring {
     description = "polkit-gnome-authentication-agent-1";
     wantedBy = [ "graphical-session.target" ];

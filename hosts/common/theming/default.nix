@@ -147,6 +147,12 @@ in
         wallpaper = ,${catppuccin-wallpapers}/landscapes/Rainnight.jpg
       '';
     };
+
+    xsession.windowManager.i3.config.startup = [
+      {
+      command = "feh --bg-scale ${catppuccin-wallpapers}/landscapes/Rainnight.jpg";
+      }
+    ];
   };
   environment.systemPackages = with pkgs; [ 
     # catppuccin-sddm-corners-patched 
@@ -160,10 +166,11 @@ in
     qt6.qtsvg qt6.qtdeclarative
     qt6.qtwayland
   ];
+  /*
   services.displayManager.sddm = {
     theme = "catppuccin-${variant}";
     package = pkgs.kdePackages.sddm; # NEEDED for the catppuccin theme
-  };
+  };*/
 
   # boot.loader.grub.theme = grub-theme;
 

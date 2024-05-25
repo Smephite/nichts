@@ -1,9 +1,14 @@
-{ inputs, outputs, pkgs, profile-config, ... }:
+{ inputs, outputs, config, pkgs, profile-config, ... }:
 
 {
+  imports = [ ../../options/common/gpu/nvidia.nix ];
+
   networking.hostId = "aefab460";
   networking.interfaces.enp7s0.useDHCP = true;
   systemd.services.zfs-mount.enable = true;
+  nixpkgs.config.allowUnfree = true;
+  networking.networkmanager.enable = true;
+  environment.systemPackages = with pkgs; [ networkmanager ]; # cli tool for managing connections
 
   boot = {
     kernelParams = [ "nvidia-drm.modeset=1" ];
@@ -15,6 +20,7 @@
     loader.grub = {
       gfxpayloadEfi = "keep";
       gfxmodeEfi = "1280x1024";
+      useOSProber = true;
     };
     
     # efiInstallAsRemovable = true; #DEPRECATED
@@ -26,20 +32,22 @@
   services.zfs.autoScrub.enable = true;
   services.zfs.trim.enable = true;
 
-  services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.opengl.enable = true;
-  hardware.nvidia.modesetting.enable = true;
+  # services.xserver.videoDrivers = [ "nvidia" ];
+  # hardware.opengl.enable = true;
+  # hardware.nvidia.modesetting.enable = true;
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
 
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.sddm.enableGnomeKeyring = true;
 
+  # boot.kernelPackages = pkgs.linuxPackages_xanmod_stable; #  config.boot.zfs.package.latestCompatibleLinuxPackages;
 
-  services.xserver.enable = true;
-  services.xserver.displayManager = {
+
+  /*services.xserver.displayManager = {
     sddm.enable = true;
     sessionPackages = [  ];
-    
-  };
+  };*/
 
   # virtualisation.virtualbox.host.enable = true;
   # programs.hyprland.xwayland.enable = true;
@@ -65,21 +73,51 @@
           gitPath = "/home/${username}/repos/nichts";
           monitors = [
             {
-              name = "LaptopMain";
-              device = "eDP-1";
+              name = "Main";
+              device = "DP-2";
               resolution = {
-                x = 2256;
-                y = 1504;
+                x = 2560;
+                y = 1440;
               };
-              scale = 1.175;
-              refresh_rate = 60;
+              scale = 1.0;
+              refresh_rate = 144;
               position = {
                 x = 0;
                 y = 0;
               };
             }
+            {
+              name = "Right";
+              device = "HDMI-A-3";
+              resolution = {
+                x = 2560;
+                y = 1440;
+              };
+              scale = 1.0;
+              refresh_rate = 144;
+              position = {
+                x = 2560;
+                y = 200;
+              };
+              transform = 3;
+            }
+            {
+              name = "Left";
+              device = "HDMI-A-2";
+              resolution = {
+                x = 2560;
+                y = 1440;
+              };
+              scale = 1.0;
+              refresh_rate = 144;
+              position = {
+                x = -1440;
+                y = 200;
+              };
+              transform = 1;
+            }
           ];
-          wayland = false;
+          wayland = true;
       };
       home-manager = {
           enable = true;
@@ -92,10 +130,10 @@
         mpv.enable = true;
         schizofox.enable = false;
         obs.enable = true;
-        vivado.enable = true;
+        vivado.enable = false;
         rofi.enable = true;
         zathura.enable = true;
-        i3.enable = true;
+        i3.enable = false;
         # neovim.enable = true;
         git = {
             enable = true;
@@ -108,14 +146,14 @@
             enable = true;
             profiling = false;
         };
-        # neovim-old.enable = true;
-        nixvim.enable = true;
+        neovim-old.enable = true;
+        # nixvim.enable = true;
     };
     services = {
         pipewire.enable = true;
     };
-    # WM.hyprland.enable = true;
-    # WM.hyprland.gnome-keyring = true;
+    WM.hyprland.enable = true;
+    WM.hyprland.gnome-keyring = true;
     
 
   };
