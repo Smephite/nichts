@@ -10,7 +10,6 @@ in
     ../../options/desktop/fonts.nix
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # use zsh as default shell
   users.users.${username}.shell = pkgs.zsh;

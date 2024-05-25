@@ -41,7 +41,7 @@
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.sddm.enableGnomeKeyring = true;
 
-  # boot.kernelPackages = pkgs.linuxPackages_xanmod_stable; #  config.boot.zfs.package.latestCompatibleLinuxPackages;
+  boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 
 
   /*services.xserver.displayManager = {
