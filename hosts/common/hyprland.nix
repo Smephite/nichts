@@ -128,7 +128,7 @@ in
           "SUPER SHIFT, Q, killactive,"
           "SUPER, M, exit, "
           "SUPER, B, exec, footclient --title=bluetuith bluetuith"
-          "SUPER, A, exec, ${ani-script}/bin/ani-cli-advanced"
+          "SUPER, A, exec, ${pkgs.ani-cli-advanced}/bin/ani-cli-advanced"
           "SUPER SHIFT, A, exec, ani-cli --rofi -c"
           "SUPER, f, fullscreen"
           "SUPER, E, exec, nautilus --new-window "
