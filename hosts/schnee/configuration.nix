@@ -133,6 +133,7 @@
         vivado.enable = false;
         rofi.enable = true;
         zathura.enable = true;
+        stylix.enable = true;
         i3.enable = false;
         # neovim.enable = true;
         git = {
