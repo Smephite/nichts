@@ -26,10 +26,20 @@ add_custom_scripts = self: super: {
 
 };
 
+add_catppuccin_wallpapers = self: super: {
+  catppuccin-wallpapers = super.fetchFromGitHub {
+    owner = "zhichaoh";
+    repo = "catppuccin-wallpapers";
+    rev = "1023077979591cdeca76aae94e0359da1707a60e"; 
+    sha256 = "sha256-h+cFlTXvUVJPRMpk32jYVDDhHu1daWSezFcvhJqDpmU=";
+  };
+
+};
 in
 {
   nixpkgs.overlays = [
       add_nur
       add_custom_scripts
+      add_catppuccin_wallpapers
   ];
 }
