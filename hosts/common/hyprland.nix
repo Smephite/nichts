@@ -6,19 +6,6 @@ let
   cfg = config.modules.WM.hyprland;
 
 
-  ani-script = pkgs.writeShellApplication {
-    name = "ani-cli-advanced";
-    runtimeInputs = with pkgs; [ ani-cli ];
-    text = ''
-      selection=$(printf "\\ueacf Continue\n\\uf002 Search\n\\uea81 Delete History" | rofi -p "ani-cli" -dmenu -i)
-      case $selection in 
-        *Search) ani-cli --rofi;;
-        *Continue) ani-cli --rofi -c;;
-        "*Delete History") ani-cli -D;;
-      esac
-
-    '';
-  };
 in
 {
   config = mkIf cfg.enable {
@@ -34,6 +21,7 @@ in
       dunst 
       # wireplumber 
       pciutils # lspci is needed by hyprland
+      bluez
       dunst 
       swww
       flameshot
@@ -89,7 +77,7 @@ in
           "SUPER SHIFT, Q, killactive,"
           "SUPER, M, exit, "
           "SUPER, B, exec, alacritty --title bluetuith -e bluetuith"
-          "SUPER, A, exec, ${ani-script}/bin/ani-cli-advanced"
+          "SUPER, A, exec, ${pkgs.ani-cli-advanced}/bin/ani-cli-advanced"
           "SUPER SHIFT, A, exec, ani-cli --rofi -c"
           "SUPER, f, fullscreen"
           "SUPER, E, exec, nautilus --new-window "

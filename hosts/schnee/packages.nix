@@ -34,7 +34,6 @@ in
 
 
   nixpkgs.config.permittedInsecurePackages = [
-    "electron-12.2.3" # NEEDED for etcher
     "electron-24.8.6" # NEEDED for Webcord
     "electron-19.1.9"
   ];
@@ -49,7 +48,6 @@ in
     signal-desktop
     nextcloud-client
     (python3.withPackages python-packages)
-    etcher
     vlc
     audacity
     thunderbird
@@ -61,7 +59,7 @@ in
     gnomeExtensions.appindicator
     gnomeExtensions.auto-move-windows
     gnomeExtensions.removable-drive-menu
-    pkgs.nordvpn # nur.repos.LuisChDev.nordvpn
+    # pkgs.nordvpn # nur.repos.LuisChDev.nordvpn
     # openvpn # used by nordvpn because NordLynx crashes gnome when used in the gnome-extension
     # unstable.gnomeExtensions.gnordvpn-local
     # gnomeExtensions.pop-shell
