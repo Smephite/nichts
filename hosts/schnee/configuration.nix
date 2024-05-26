@@ -22,17 +22,17 @@
       gfxmodeEfi = "1280x1024";
       useOSProber = true;
     };
-
-
-    
-    # efiInstallAsRemovable = true; #DEPRECATED
-    /*
-    loader.grub.mirroredBoots = [
-      # {devices = [ "/dev/disk/by-id/nvme-Samsung_SSD_960_PRO_512GB_S3EWNX0K401532W-part1"]; path = "/boot/efis/nvme-Samsung_SSD_960_PRO_512GB_S3EWNX0K401532W-part1";}
-      {devices = [ "/dev/disk/by-id/ata-KINGSTON_SA400S37960G_50026B7783226E2F-part1"]; path = "/boot/efis/ata-KINGSTON_SA400S37960G_50026B7783226E2F-part1";}
-    ];
-    */
   };
+
+  services.displayManager = {
+      sessionPackages = [ pkgs.hyprland ]; # pkgs.gnome.gnome-session.sessions ];
+      defaultSession = "hyprland";
+      sddm = {
+        enable = true;
+        wayland.enable = true;
+    };
+  };
+
   services.zfs.autoScrub.enable = true;
   services.zfs.trim.enable = true;
 
