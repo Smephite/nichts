@@ -41,6 +41,7 @@ in
   environment.systemPackages = with pkgs; [
     jetbrains.idea-community
     steam
+    discord
     ani-cli
     okular
     texliveFull
@@ -77,5 +78,9 @@ in
     hyprland-protocols
     flameshot
     feh
+    gamescope
+    xorg.xrandr # see configuration.nix: needed for xwayland applications to start on right monitor
+    teamspeak_client
+    wine
   ];
 }
