@@ -31,35 +31,43 @@
   #   { device = "rpool/data/var/log";
   #     fsType = "zfs";
   #   };
+  #
+
+  boot.loader.grub.device = "/dev/disk/by-id/nvme-Samsung_SSD_960_PRO_512GB_S3EWNX0K401532W-part2";
 
   fileSystems."/boot" =
     { device = "bpool/boot";
       fsType = "zfs";
       # options = [ "zfsutil" ];
     };
+
+  /*
   fileSystems."/boot/efis" =
     { device = "bpool/boot/efis";
       fsType = "zfs";
       # options = [ "zfsutil" ];
     };
+    */
 
   # fileSystems."/boot/nixos/root" =
   #   { device = "bpool/nixos/root";
   #     fsType = "zfs";
   #   };
 
+  /*
   fileSystems."/boot/efis/ata-KINGSTON_SA400S37960G_50026B7783226E2F-part1" =
     { device = "/dev/disk/by-uuid/2557-B645";
       fsType = "vfat";
       depends = [ "/boot/efis" ];
       mountPoint = "/boot/efis/ata-KINGSTON_SA400S37960G_50026B7783226E2F-part1";
     };
+    */
 
-  fileSystems."/boot/efis/nvme-Samsung_SSD_960_PRO_512GB_S3EWNX0K401532W-part1" =
-    { device = "/dev/disk/by-uuid/2558-3353";
+  fileSystems."/boot/efi" =
+    { device = "/dev/disk/by-id/nvme-Samsung_SSD_960_PRO_512GB_S3EWNX0K401532W-part1";  #"/dev/disk/by-uuid/2558-3353";
       fsType = "vfat";
-      depends = [ "/boot/efis" ];
-      mountPoint = "/boot/efis/nvme-Samsung_SSD_960_PRO_512GB_S3EWNX0K401532W-part1";
+      depends = [ "/boot" ];
+      mountPoint = "/boot/efi";
     };
 
   swapDevices =

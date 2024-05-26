@@ -15,19 +15,23 @@
     initrd.supportedFilesystems = [ "zfs" ];
     supportedFilesystems = [ "zfs" ];
     zfs.extraPools = [ "bpool" ]; # pool for /boot
-    loader.efi.efiSysMountPoint = "/boot/efis/nvme-Samsung_SSD_960_PRO_512GB_S3EWNX0K401532W-part1";
+    loader.efi.efiSysMountPoint = "/boot/efi";
 
     loader.grub = {
       gfxpayloadEfi = "keep";
       gfxmodeEfi = "1280x1024";
       useOSProber = true;
     };
+
+
     
     # efiInstallAsRemovable = true; #DEPRECATED
+    /*
     loader.grub.mirroredBoots = [
       # {devices = [ "/dev/disk/by-id/nvme-Samsung_SSD_960_PRO_512GB_S3EWNX0K401532W-part1"]; path = "/boot/efis/nvme-Samsung_SSD_960_PRO_512GB_S3EWNX0K401532W-part1";}
       {devices = [ "/dev/disk/by-id/ata-KINGSTON_SA400S37960G_50026B7783226E2F-part1"]; path = "/boot/efis/ata-KINGSTON_SA400S37960G_50026B7783226E2F-part1";}
     ];
+    */
   };
   services.zfs.autoScrub.enable = true;
   services.zfs.trim.enable = true;
@@ -65,6 +69,18 @@
   # systemd.tmpfiles.rules = [
   #   "L+ /run/gdm/.config/monitors.xml - - - - ${pkgs.writeText "gdm-monitors.xml" (builtins.readFile ./monitors.xml)}"
   # ];
+  
+  #TODO: Add to  modules.other.system.monitors as option
+  home-manager.users."dragyx".wayland.windowManager.hyprland.settings = {
+    workspace = [
+      "1,monitor:DP-2,default:true"
+    ];
+    exec-once = [
+      "xrandr --output DP-2 --primary" # make sure xwayland windows open on right monitor:
+    ];
+  };
+
+
     modules = {
     other = {
       system = rec {
