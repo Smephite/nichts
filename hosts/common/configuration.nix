@@ -38,5 +38,7 @@ in
     };
   };
 
+  time.timeZone = "Europe/Zurich";
+
 
 }

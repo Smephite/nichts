@@ -11,7 +11,6 @@
   services.fwupd.enable = true;
 
   nixpkgs.config.allowUnfree = true;
-  time.timeZone = "Europe/Zurich";
   security.sudo.package = pkgs.sudo.override { withInsults = true; };
 
   services.displayManager = {
