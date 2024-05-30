@@ -39,6 +39,24 @@ in {
             shells = [ pkgs.zsh ];
             pathsToLink = [ "/share/zsh" ];
         };
+        systemd.services.nitch_cached = {
+          description  = "Caches nitch output to /home/${username}/.cache/nitch.cached";
+          wantedBy = [ "multi-user.target" ];
+          serviceConfig = {
+            Type = "simple";
+            User = "${username}";
+            ExecStart = "${pkgs.bash}/bin/bash -c 'SHELL=zsh ${pkgs.nitch}/bin/nitch > /home/${username}/.cache/nitch.cached'";
+            WorkingDirectory="/home/${username}/.cache";
+          };
+        };
+        systemd.timers."nitch_cached" = {
+            wantedBy = [ "timers.target" ];
+            timerConfig = {
+                OnBootSec =  "1s";
+                OnUnitActiveSec = "1m";
+                Unit = "nitch_cached.service";
+            };
+        };
         home-manager.users.${username} = {
             home.packages = with pkgs; [ nix-output-monitor nitch ];
             programs.zoxide.enable = true;
@@ -55,13 +73,12 @@ in {
                     kys = "shutdown now";
                     cd = "z";
                     nv = "nvim";
-                    #TODO fix hardcoding of git repo path and profile name
                     rebuild = "nh os switch";
                     flake = "cd '${gitPath}'";
 
                 } // cfg.extraAliases;
                 initExtraFirst = mkIf cfg.profiling "zmodload zsh/zprof";
-                initExtra = lib.strings.concatStrings ([  "\nnitch" ] ++ (if cfg.profiling then ["zprof"] else [""]));
+                initExtra = lib.strings.concatStrings ([  "\nif [ -f /home/${username}/.cache/nitch.cached ]; then cat /home/${username}/.cache/nitch.cached; fi" ] ++ (if cfg.profiling then ["\nzprof"] else [""]));
                 history = {
                     path = "${config.home-manager.users.${username}.xdg.dataHome}/zsh/zsh_history";
                     size = 99999;
