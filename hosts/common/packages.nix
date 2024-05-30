@@ -70,6 +70,7 @@ in
     imagemagick
 
     telegram-desktop
+    tg
 
     calc
 
