@@ -169,7 +169,7 @@
         mpv.enable = true;
         firefox.enable = true;
         obs.enable = true;
-        vivado.enable = true;
+        # vivado.enable = true;
         rofi.enable = true;
         zathura.enable = true;
         stylix.enable = true;
