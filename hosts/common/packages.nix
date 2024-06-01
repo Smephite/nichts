@@ -67,6 +67,16 @@ in
     alsa-utils
     foot
 
+    # image manipulation
+    gimp
+    imagemagick
+
+    telegram-desktop
+    tg
+
+    calc
+
+
     # partition management
     parted
     gnufdisk

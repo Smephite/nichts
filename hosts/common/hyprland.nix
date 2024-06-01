@@ -44,13 +44,14 @@ let
 
       mkdir -p "$dir"
       
-      cp $src/hyprlock.conf $out/hyprlock.conf
-      sed -i -e 's/mocha.conf/${variant}.conf/g' "$out/hyprlock.conf"
+      cp $src/hyprlock.conf $dir/hyprlock.conf
+      sed -i -e "s~\$HOME/\.config/hypr/mocha.conf~$dir/${variant}.conf~g" "$dir/hyprlock.conf"
       cp "${hyprland-catppuccin}/themes/${variant}.conf" "$dir/${variant}.conf"       
 
       runHook postInstall
     '';
   };
+
 
 
 in
@@ -64,6 +65,7 @@ in
       hyprland
       hyprshade
       lxqt.lxqt-openssh-askpass
+      libdrm
 
       dunst 
       # wireplumber 
@@ -78,7 +80,8 @@ in
     home-manager.users.${username} = {
 
       xdg.configFile."hypr/hyprlock.conf".source = "${hyprlock-catppuccin}/.config/hypr/hyprlock.conf";
-      xdg.configFile."hypr/${variant}.conf".source = "${hyprlock-catppuccin}/.config/hypr/${variant}.conf";
+      xdg.configFile."background".source = "${pkgs.catppuccin-wallpapers}/mandelbrot/mandelbrot_gap_pink.png";
+      # xdg.configFile."hypr/${variant}.conf".source = "${hyprlock-catppuccin}/.config/hypr/${variant}.conf";
 
       programs.waybar.enable = true;
       wayland.windowManager.hyprland.settings = {
