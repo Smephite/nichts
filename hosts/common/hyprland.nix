@@ -90,6 +90,8 @@ in
           natural_scroll = true;
           sensitivity = 0;
           kb_variant = "altgr-intl";
+          accel_profile = "flat";
+          force_no_accel = true;
         };
         general = {
           gaps_in = 2;
@@ -193,12 +195,12 @@ in
           # resize windows
           "SUPER, -, resizeactive, -30"
           "SUPER, +, resizeactive, 30"
-          
-          # Scroll through existing workspaces with mainMod + scroll"
+
+# Scroll through existing workspaces with mainMod + scroll"
           "SUPER, mouse_down, workspace, e+1"
           "SUPER, mouse_up, workspace, e-1"
-          
-          # Move/resize windows with mainMod + LMB/RMB and dragging
+
+# Move/resize windows with mainMod + LMB/RMB and dragging
           "SUPER, mouse:272, movewindow"
           # "bindm = SUPER, mouse:273, resizewindow"
         ];
