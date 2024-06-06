@@ -48,12 +48,11 @@ let
     '';
 
   };
-  # catppuccin-sddm-corners-patched = pkgs.catppuccin-sddm-corners.overrideAttrs (prevAttrs: {
-
-  #   postInstall = (prevAttrs.postInstall or "") + ''
-  #     sed -i -E "s/passwordMaskDelay: [0-9]+/passwordMaskDelay: 0/" $out/share/sddm/themes/catppuccin-sddm-corners/components/PasswordPanel.qml
-  #   '';
-  # });
+  catppuccin-sddm-corners-patched = pkgs.catppuccin-sddm-corners.overrideAttrs (prevAttrs: {
+    postInstall = (prevAttrs.postInstall or "") + ''
+      sed -i -E "s/passwordMaskDelay: [0-9]+/passwordMaskDelay: 0/" $out/share/sddm/themes/catppuccin-sddm-corners/components/PasswordPanel.qml
+    '';
+  });
   catppuccin-sddm = pkgs.stdenv.mkDerivation rec {
     pname="catppuccin-sddm";
     version="1.0.0";
@@ -154,8 +153,9 @@ in
       }
     ];
   };
+  # TODO: only add if sddm is enabled
   environment.systemPackages = with pkgs; [ 
-    # catppuccin-sddm-corners-patched 
+    catppuccin-sddm-corners-patched 
     catppuccin
     catppuccin-sddm
 
@@ -166,12 +166,10 @@ in
     qt6.qtsvg qt6.qtdeclarative
     qt6.qtwayland
   ];
-  /*
   services.displayManager.sddm = {
     theme = "catppuccin-${variant}";
     package = pkgs.kdePackages.sddm; # NEEDED for the catppuccin theme
-  };*/
-
+  };
   # boot.loader.grub.theme = grub-theme;
 
 }
