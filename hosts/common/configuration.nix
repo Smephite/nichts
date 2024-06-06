@@ -27,12 +27,12 @@ in
     extraOptions = "experimental-features = nix-command flakes";
   };
 
+
   modules = {
 
     programs = {
       foot.enable = true;
       foot.server = true;
-      ranger.enable = true;
       nh.enable = true;
 
     };
