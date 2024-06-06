@@ -18,5 +18,6 @@ _: {
         ./steam.nix
         ./minecraft.nix
         ./stylix.nix
+        ./greetd.nix
     ];
 }

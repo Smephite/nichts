@@ -43,7 +43,7 @@
   hardware.bluetooth.powerOnBoot = true;
 
   services.gnome.gnome-keyring.enable = true;
-  security.pam.services.sddm.enableGnomeKeyring = true;
+  # security.pam.services.sddm.enableGnomeKeyring = true;
 
   boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 
@@ -81,7 +81,11 @@
   };
 
 
-    modules = {
+  modules = {
+    login = {
+      greetd.enable = true;
+      session = "Hyprland";
+    };
     other = {
       system = rec {
           hostname = "schnee";
@@ -170,9 +174,7 @@
         pipewire.enable = true;
     };
     WM.hyprland.enable = true;
-    WM.hyprland.gnome-keyring = true;
-    
-
+    WM.hyprland.gnome-keyring.enable = true;
   };
   system.stateVersion = "21.11"; # Did you read the comment?
 }

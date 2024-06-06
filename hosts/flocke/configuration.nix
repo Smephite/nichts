@@ -14,6 +14,9 @@
   time.timeZone = "Europe/Zurich";
   security.sudo.package = pkgs.sudo.override { withInsults = true; };
 
+
+
+  /*
   services.displayManager = {
       sessionPackages = [ pkgs.hyprland ]; # pkgs.gnome.gnome-session.sessions ];
       defaultSession = "hyprland";
@@ -22,6 +25,7 @@
         wayland.enable = true;
     };
   };
+  */
 
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -105,6 +109,10 @@
   services.hardware.bolt.enable = true;
 
   modules = {
+    login = {
+      greetd.enable = true;
+      session = "Hyprland";
+    };
     other = {
       system = rec {
           hostname = "flocke";
@@ -173,6 +181,10 @@
         rofi.enable = true;
         zathura.enable = true;
         stylix.enable = true;
+        steam = {
+          enable = true;
+          gamescope = true;
+        };
         # neovim.enable = true;
         git = {
             enable = true;
@@ -191,9 +203,23 @@
     services = {
         pipewire.enable = true;
     };
-    WM.hyprland.enable = true;
-    WM.hyprland.gnome-keyring = true;
+
+
+    WM.hyprland = {
+      enable = true;
+      gnome-keyring.enable = true;
+    };
   };
+
+  # set LD_PRELOAD to correctly load everything for steam: see https://github.com/ROCm/ROCm/issues/2934
+  programs.steam.package = pkgs.steam.overrideAttrs (prevAttrs: {
+    nativeBuildInputs = (prevAttrs.nativeBuildInputs or []) 
+                      ++ [ pkgs.makeBinaryWrapper ];
+    postInstall = (prevAttrs.postInstall or "") + ''
+      wrapProgram $out/bin/steam --set LD_PRELOAD "${pkgs.libdrm}/lib/libdrm_amdgpu.so"
+    '';
+  });
+    
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
