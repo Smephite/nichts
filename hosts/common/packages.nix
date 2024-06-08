@@ -35,7 +35,6 @@ in
     # fastfetch    
     zathura
     wlr-randr
-    alacritty
     wget
     gnumake
     zoxide
@@ -73,6 +72,7 @@ in
     tg
 
     calc
+    tldr
 
 
     # partition management
