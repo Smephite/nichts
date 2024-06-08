@@ -126,7 +126,7 @@ in
               orientation = "horizontal";
             };
             pulseaudio = {
-              format = "{icon} {volume}%";
+              format = "{icon}  {volume}%";
               format-bluetooth = "{icon} {volume}%";
               format-muted = "";
               format-icons = {
@@ -176,7 +176,7 @@ in
               ];
             };
             wireplumber = {
-              format = "{icon} {volume}%";
+              format = "{icon}  {volume}%";
               format-muted = "󰖁";
               format-icons = [
                 ""
