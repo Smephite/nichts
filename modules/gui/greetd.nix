@@ -20,7 +20,12 @@ in
       enable = true;
       settings = {
         default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet -c \"${session}\"";
+          command = ''
+            ${pkgs.greetd.tuigreet}/bin/tuigreet \
+              -c \"${session}\" \
+              -r 
+              -t --time-format "DD.MM.YYYY"
+              --asteriks'';
         };
       };
     };
