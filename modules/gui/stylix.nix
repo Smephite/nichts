@@ -48,9 +48,6 @@ in {
                     popups = 14;
 
                 };
-                sansSerif = config.stylix.fonts.monospace;
-                serif = config.stylix.fonts.monospace;
-                emoji = config.stylix.fonts.monospace;
                 monospace = {
                     package = (pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];});
                     name = "JetBrains Mono Nerd Font";
