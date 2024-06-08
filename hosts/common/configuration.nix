@@ -14,7 +14,7 @@ in
   # use zsh as default shell
   users.users.${username}.shell = pkgs.zsh;
   users.defaultUserShell = pkgs.zsh;
-
+  networking.dhcpcd.wait = "background";
   services.locate = {
     enable = true;
     interval = "hourly";
