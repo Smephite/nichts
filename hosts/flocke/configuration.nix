@@ -37,12 +37,15 @@
   hardware.opengl.driSupport32Bit = true;
   hardware.opengl.enable = true;
 
+
+
   services.logrotate.checkConfig = false;
 
   networking.hostName = "flocke"; # Define your hostname.
   networking.hostId = "adf23c31";
   networking.interfaces.wlp1s0.useDHCP = true;
   networking.networkmanager.enable = true;
+  # networking.connman.enable = true;
   environment.systemPackages = with pkgs; [ networkmanager ]; # cli tool for managing connections
 
   boot = {
@@ -85,16 +88,12 @@
     rocmPackages.clr.icd
   ];
 
-  services.power-profiles-daemon.enable = false;
+  services.power-profiles-daemon.enable = true;
 
   # stock nixos power management
   powerManagement.enable = true;
 
 
- swapDevices = [ {
-    device = "/var/lib/swapfile";
-    size = 32*1024;
-  } ];
 
 
   # be nice to your ssds
