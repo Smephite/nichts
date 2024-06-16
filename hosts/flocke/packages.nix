@@ -34,7 +34,6 @@ in
     thunderbird
     eclipses.eclipse-java
     openjdk
-    firefox
     # pkgs.nordvpn # nur.repos.LuisChDev.nordvpn
     material-icons
     material-design-icons
@@ -53,6 +52,7 @@ in
     ani-cli # The stable version is very outdated
     superTuxKart
     nnn
+    dissent
   ];
 
 }
