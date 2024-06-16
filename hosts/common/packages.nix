@@ -49,7 +49,7 @@ in
     htop 
     okular
     smartmontools
-    networkmanager
+    # networkmanager
     pkg-config
     sof-firmware # audio
     nix-index
