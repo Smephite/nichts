@@ -19,7 +19,6 @@ in
 
     # security audits
     lynis
-    element-desktop
     jetbrains.idea-community
     jetbrains.rust-rover
     baobab
