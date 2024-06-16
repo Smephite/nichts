@@ -25,6 +25,7 @@ in
     git
     broot
     unzip
+    calc
     rsync
     # neofetch 
     # fastfetch has the option to set a timeout for
@@ -52,6 +53,7 @@ in
     # networkmanager
     pkg-config
     sof-firmware # audio
+    easyeffects
     nix-index
     # --------- optional
     gnome.eog

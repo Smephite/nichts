@@ -46,6 +46,7 @@ in
     okular
     texliveFull
     android-tools
+    betterdiscordctl
     signal-desktop
     nextcloud-client
     (python3.withPackages python-packages)
