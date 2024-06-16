@@ -54,7 +54,6 @@ in
     thunderbird
     eclipses.eclipse-java
     openjdk
-    firefox
     gnomeExtensions.forge # Window manager
     gnomeExtensions.disable-unredirect-fullscreen-windows
     gnomeExtensions.appindicator
@@ -69,7 +68,6 @@ in
     material-icons
     material-design-icons
     libreoffice
-    gimp
     spotify
     # minecraft
     prismlauncher
