@@ -28,6 +28,11 @@ let
     '';
   };
 
+  hyprlock-cat = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/logos/exports/1544x1544_circle.png";
+    hash = "sha256-A85wBdJ2StkgODmxtNGfbNq8PU3G3kqnBAwWvQXVtqo=";
+  };
+
   hyprlock-catppuccin = pkgs.stdenv.mkDerivation {
     name = "hyprlock-catppuccin";
     version = "0.0";
@@ -46,6 +51,9 @@ let
       
       cp $src/hyprlock.conf $dir/hyprlock.conf
       sed -i -e "s~\$HOME/\.config/hypr/mocha.conf~$dir/${variant}.conf~g" "$dir/hyprlock.conf"
+      sed -i -e "s~\~/.config/background~${pkgs.catppuccin-wallpapers}/mandelbrot/mandelbrot_full_flamingo.png~g" "$dir/hyprlock.conf"
+      sed -i -e "s~\~/.face~${hyprlock-cat}~g" "$dir/hyprlock.conf"
+      # sed -i -e "s~\~/.face~/tmp/hyprlock.png~g" "$dir/hyprlock.conf"
       cp "${hyprland-catppuccin}/themes/${variant}.conf" "$dir/${variant}.conf"       
 
       runHook postInstall
@@ -76,12 +84,20 @@ in
       sway-contrib.grimshot
     ];
 
+    services.logind.lidSwitch = "suspend";
     # hyprland settings
     home-manager.users.${username} = {
 
       xdg.configFile."hypr/hyprlock.conf".source = "${hyprlock-catppuccin}/.config/hypr/hyprlock.conf";
-      xdg.configFile."background".source = "${pkgs.catppuccin-wallpapers}/mandelbrot/mandelbrot_gap_pink.png";
+      # xdg.configFile."background".source = "${pkgs.catppuccin-wallpapers}/mandelbrot/mandelbrot_gap_pink.png";
       # xdg.configFile."hypr/${variant}.conf".source = "${hyprlock-catppuccin}/.config/hypr/${variant}.conf";
+      
+      services.hypridle = {
+        enable = true;
+        settings = {
+          before_sleep_cmd = "hyprlock";
+        };
+      };
 
       programs.waybar.enable = true;
       wayland.windowManager.hyprland.settings = {
@@ -99,7 +115,7 @@ in
           border_size = 1;
           # "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
           # "col.inactive_border" = "rgba(595959aa)";
-          layout = "dwindle";
+          layout = "master";
         };
         decoration.rounding = 5;
         misc.disable_hyprland_logo = true;
@@ -125,6 +141,7 @@ in
         debug.enable_stdout_logs = true;
         windowrulev2 = [
           "float,title:bluetuith"
+          "float,title:nmtui"
         ];
         bind = [
           # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
@@ -133,6 +150,7 @@ in
           "SUPER SHIFT, Q, killactive,"
           "SUPER, M, exit, "
           "SUPER, B, exec, footclient --title=bluetuith ${pkgs.bluetuith}/bin/bluetuith"
+          "SUPER, N, exec, footclient --title=nmtui ${pkgs.networkmanager}/bin/nmtui"
           "SUPER, A, exec, ${pkgs.ani-cli-advanced}/bin/ani-cli-advanced"
           "SUPER SHIFT, A, exec, ani-cli --rofi -c"
           "SUPER, f, fullscreen"
