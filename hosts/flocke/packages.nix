@@ -51,7 +51,6 @@ in
     ani-cli # The stable version is very outdated
     superTuxKart
     nnn
-    dissent
   ];
 
 }
