@@ -81,5 +81,7 @@ in
     parted
     gnufdisk
     lapce
+
+    yazi
   ];
 }
