@@ -8,5 +8,6 @@ _: {
         ./nixvim.nix
         ./ranger.nix
         ./nh.nix
+        ./atuin.nix
     ];
 }
