@@ -28,6 +28,9 @@ in {
               maya-dark
             ];
             search.force = true;
+            settings = {
+              "media.ffmpeg.vaapi.enabled" = true; # enable hardware accelerated video playback (vaapi)
+            };
           };
         };
 
