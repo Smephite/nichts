@@ -39,22 +39,22 @@ in {
             shells = [ pkgs.zsh ];
             pathsToLink = [ "/share/zsh" ];
         };
-        systemd.services.nitch_cached = {
+        systemd.services.nitch-cached = {
           description  = "Caches nitch output to /home/${username}/.cache/nitch.cached";
           wantedBy = [ "multi-user.target" ];
           serviceConfig = {
             Type = "simple";
-            User = "${username}";
-            ExecStart = "${pkgs.bash}/bin/bash -c 'SHELL=zsh ${pkgs.nitch}/bin/nitch > /home/${username}/.cache/nitch.cached'";
+            User = "root";
+            ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.sudo}/bin/sudo -u ${username} ${pkgs.nitch}/bin/nitch > /home/${username}/.cache/nitch.cached'";
             WorkingDirectory="/home/${username}/.cache";
           };
         };
-        systemd.timers."nitch_cached" = {
+        systemd.timers."nitch-cached" = {
             wantedBy = [ "timers.target" ];
             timerConfig = {
                 OnBootSec =  "1s";
                 OnUnitActiveSec = "1m";
-                Unit = "nitch_cached.service";
+                Unit = "nitch-cached.service";
             };
         };
         home-manager.users.${username} = {
