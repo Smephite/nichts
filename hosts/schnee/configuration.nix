@@ -145,6 +145,7 @@
       };
     };
     programs = {
+        atuin.enable = false; # does not work with zfs
         firefox.enable = true;
         vesktop.enable = false;
         btop.enable = true;
