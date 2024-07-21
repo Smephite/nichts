@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: let
   username = config.modules.other.system.username;
@@ -30,10 +31,10 @@ in {
 
   modules = {
     programs = {
-      foot.enable = true;
-      foot.server = true;
-      nh.enable = true;
-      atuin.enable = true;
+      foot.enable = lib.mkDefault true;
+      foot.server = lib.mkDefault true;
+      nh.enable = lib.mkDefault true;
+      atuin.enable = lib.mkDefault true;
     };
   };
 
