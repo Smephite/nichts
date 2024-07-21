@@ -1,21 +1,26 @@
 # which default packages to use for the system
-{ inputs, outputs, profile-config, pkgs, ...}:
-
-let 
-  python-packages = ps: with ps; [
-    pandas
-    numpy
-    opencv4
-    ipython
-  ];
-in
 {
-
+  inputs,
+  outputs,
+  profile-config,
+  pkgs,
+  ...
+}: let
+  python-packages = ps:
+    with ps; [
+      pandas
+      numpy
+      opencv4
+      ipython
+    ];
+in {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     # inputs.vivado2019flake.vivado-2019_2
     mars-mips
+
+    obsidian
 
     # security audits
     lynis
@@ -23,7 +28,7 @@ in
     jetbrains.rust-rover
     baobab
     amdvlk
-    texlive.combined.scheme-full 
+    texlive.combined.scheme-full
     android-tools
     signal-desktop
     nextcloud-client
@@ -52,5 +57,4 @@ in
     superTuxKart
     nnn
   ];
-
 }
