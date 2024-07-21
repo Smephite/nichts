@@ -10,6 +10,23 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
+  services.xserver.videoDrivers = [ "modesetting" ];
+  systemd.tmpfiles.rules = [
+    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
+  ];
+  hardware.opengl.extraPackages = with pkgs; [
+   # VA-API and VDPAU
+    vaapiVdpau
+
+    # AMD ROCm OpenCL runtime
+    rocmPackages.clr
+    rocmPackages.clr.icd
+  ];
+
+  hardware.opengl = {
+
+    };
+
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/2aaba0f2-e8dc-4583-a81e-2d35cc238e79";
       fsType = "ext4";
@@ -21,7 +38,20 @@
       fsType = "vfat";
     };
 
-  swapDevices = [ ];
+  swapDevices = [ {
+      device = "/var/lib/swapfile";
+      size = 2*32*1024; # twice the size of system ram for hibernation
+  } ];
+
+  boot.kernelParams = [ "resume_offset=228702208" ];
+  boot.resumeDevice = "/dev/mapper/cryptroot"; # neede for hibernation to work 
+  # boot.resumeDevice = "/var/lib/swapfile"; # neede for hibernation to work 
+  # see https://discourse.nixos.org/t/hibernate-doesnt-work-anymore/24673/5
+  security.protectKernelImage = false;
+  # see https://discourse.nixos.org/t/btrfs-swap-not-enough-swap-space-for-hibernation/36805/4
+  systemd.services.systemd-logind.environment = {
+    SYSTEMD_BYPASS_HIBERNATION_MEMORY_CHECK = "1";
+  };
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
