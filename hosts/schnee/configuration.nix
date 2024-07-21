@@ -145,6 +145,7 @@
       };
     };
     programs = {
+        firefox.enable = true;
         vesktop.enable = false;
         btop.enable = true;
         mpv.enable = true;
