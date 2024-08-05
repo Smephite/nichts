@@ -21,12 +21,14 @@ in {
             id = 0;
             isDefault = true;
             search.default = "DuckDuckGo";
+            /*
             extensions = with pkgs.nur.repos.rycee.firefox-addons; [
               ublock-origin
               bitwarden
               darkreader
               maya-dark
             ];
+            */
             search.force = true;
             settings = {
               "media.ffmpeg.vaapi.enabled" = true; # enable hardware accelerated video playback (vaapi)
