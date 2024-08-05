@@ -11,6 +11,7 @@ in {
       ./flocke
       ../modules
       inputs.home-manager.nixosModules.home-manager
+      inputs.nixos-hardware.nixosModules.framework-13-7040-amd
       # inputs.agenix.nixosModules.default
     ];
   };
@@ -24,7 +25,6 @@ in {
       ../modules
       inputs.home-manager.nixosModules.home-manager
       # inputs.agenix.nixosModules.default
-      inputs.nixos-hardware.nixosModules.framework-13-7040-amd
     ];
   };
 }
