@@ -43,10 +43,12 @@ in {
             programs.git = {
                 inherit (cfg) enable userName userEmail;
                 extraConfig = {
+                    /* currently broken (rust compile error)
                     core = {
                         editor = cfg.editor;
                         pager = "${pkgs.delta}/bin/delta";
                     };
+                    */
                     init.defaultBranch = cfg.defaultBranch;
                     push.autoSetupRemote = true;
                     commit = {
@@ -56,7 +58,7 @@ in {
                     # gpg.format = "ssh";
 #                    user.signingkey = "key::${cfg.signingKey}";
                     merge.conflictstyle = "zdiff3";
-                    interactive.diffFilter = "${pkgs.delta}/bin/delta --color-only";
+                    # currently broken: interactive.diffFilter = "${pkgs.delta}/bin/delta --color-only";
                     diff.algorithm = "histogram";
                     transfer.fsckobjects = true;
                     fetch.fsckobjects = true;
