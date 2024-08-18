@@ -191,10 +191,6 @@
             defaultBranch = "main";
         };
         starship.enable = true;
-        zsh = {
-            enable = true;
-            profiling = false;
-        };
         neovim-old.enable = true;
         # nixvim.enable = true;
     };
