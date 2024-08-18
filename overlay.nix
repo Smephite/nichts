@@ -33,13 +33,26 @@ add_catppuccin_wallpapers = self: super: {
     rev = "1023077979591cdeca76aae94e0359da1707a60e"; 
     sha256 = "sha256-h+cFlTXvUVJPRMpk32jYVDDhHu1daWSezFcvhJqDpmU=";
   };
-
 };
+
+
+pin_hyprland = self: super: rec {
+  nixpkgs_pinned = (import (super.fetchFromGitHub {
+    owner = "NixOS";
+    repo = "nixpkgs";
+    rev = "13fe00cb6c75461901f072ae62b5805baef9f8b2";
+    hash = "sha256-9AVY0ReCmSGXHrlx78+1RrqcDgVSRhHUKDVV1LLBy28=";
+  } ) { system = super.system; });
+
+  hyprland = nixpkgs_pinned.hyprland;
+};
+
 in
 {
   nixpkgs.overlays = [
       add_nur
       add_custom_scripts
       add_catppuccin_wallpapers
+      pin_hyprland
   ];
 }

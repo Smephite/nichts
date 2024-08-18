@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   lib,
   ...
 }: let
@@ -30,6 +31,8 @@ in {
           };
         };
       };
+      # TODO: move this somewhere else
+      programs.foot.settings.main.shell = "${pkgs.zellij}/bin/zellij";
     };
   };
 }
