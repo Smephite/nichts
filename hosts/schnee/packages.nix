@@ -65,7 +65,6 @@ in
     # unstable.gnomeExtensions.gnordvpn-local
     # gnomeExtensions.pop-shell
     gnomeExtensions.unite # remove window decoration
-    gnome.gnome-tweaks
     material-icons
     material-design-icons
     libreoffice
