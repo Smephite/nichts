@@ -12,6 +12,7 @@ in {
       ../modules
       inputs.home-manager.nixosModules.home-manager
       # inputs.agenix.nixosModules.default
+      inputs.nixos-hardware.nixosModules.framework-13-7040-amd
     ];
   };
   schnee = lib.nixosSystem {
@@ -24,7 +25,6 @@ in {
       ../modules
       inputs.home-manager.nixosModules.home-manager
       # inputs.agenix.nixosModules.default
-      inputs.nixos-hardware.nixosModules.framework-13-7040-amd
     ];
   };
 }
