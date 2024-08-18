@@ -21,16 +21,16 @@ in {
             id = 0;
             isDefault = true;
             search.default = "DuckDuckGo";
-            /*
-            extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-              ublock-origin
-              bitwarden
-              darkreader
-              maya-dark
-            ];
-            */
+            userContent = ''
+            @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); /* set default namespace to XUL */
+
+            #TabsToolbar {visibility: collapse; !important; }
+            /* #navigator-toolbox {visibility: collapse;} */
+            browser {margin-right: -14px; margin-bottom: -14px; !important; }
+            '';
             search.force = true;
             settings = {
+              "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
               "media.ffmpeg.vaapi.enabled" = true; # enable hardware accelerated video playback (vaapi)
             };
           };
