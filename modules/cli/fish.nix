@@ -1,4 +1,5 @@
 {
+    inputs,
     config,
     lib,
     pkgs,
@@ -19,6 +20,12 @@ in {
     config = mkIf cfg.enable {
         programs.fish.enable = true;
 
+        nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+        programs.nix-index = {
+            enable = true;
+            enableFishIntegration = true;
+        };
+        programs.command-not-found.enable = lib.mkForce false;
         users.users.${username}.shell = pkgs.fish;
 
 
@@ -58,7 +65,7 @@ in {
                   } cfg.extraAliases ];
               };
             # TODO: move this somewhere else
-            programs.foot.settings.main.shell = "${pkgs.fish}/bin/fish";
+            programs.foot.settings.main.shell = lib.mkDefault "${pkgs.fish}/bin/fish";
         };
     };
 }
