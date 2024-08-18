@@ -25,7 +25,6 @@ in {
     cm_unicode
     eza # exa is unmaintained
     hwinfo
-    zsh
     git
     broot
     unzip
@@ -83,7 +82,6 @@ in {
     # partition management
     parted
     gnufdisk
-    lapce
 
     kdeconnect
     yazi

@@ -1,4 +1,5 @@
 {
+    inputs,
     config,
     lib,
     pkgs,
@@ -14,17 +15,19 @@ in {
             description = "extra shell aliases";
             default = {};
         };
-        profiling = mkOption {
-            type = types.bool;
-            description = "enable zsh profiling";
-            default = false;
-        };
     };
 
     config = mkIf cfg.enable {
         programs.fish.enable = true;
 
+        nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+        programs.nix-index = {
+            enable = true;
+            enableFishIntegration = true;
+        };
+        programs.command-not-found.enable = lib.mkForce false;
         users.users.${username}.shell = pkgs.fish;
+
 
         environment = {
             shells = [ pkgs.fish ];
@@ -36,31 +39,33 @@ in {
                   enable = true;
                   interactiveShellInit = "set fish_greeting";
                   plugins = [
+                    {
+                      name = "sponge";
+                      inherit (pkgs.fishPlugins.sponge) src;
+                    }
+                    {
+                      name = "done";
+                      inherit (pkgs.fishPlugins.done) src;
+                    }
+                    {
+                      name = "puffer";
+                      inherit (pkgs.fishPlugins.puffer) src;
+                    }
                   ];
-                  shellAliases = {
-
+                  shellAbbrs = lib.mkMerge[{
+                      rebuild = "nh os switch";
+                      update = "nh os switch --update";
                       cl = "clear";
                       cp = "cp -ivr";
                       mv = "mv -iv";
-                      rm = "trash -v";
-                      l = "eza -a --icons";
-                      e = "eza -lha --icons --git";
-                      untar = "tar -xvf";
-                      untargz = "tar -xzf";
-                      mnt = "udisksctl mount -b";
-                      umnt = "udisksctl unmount -b";
-                      v = "nvim";
-                      kys = "shutdown now";
+                      ls = "eza -a --icons";
+                      nv = "nvim";
                       gpl = "curl https://www.gnu.org/licenses/gpl-3.0.txt -o LICENSE";
                       agpl = "curl https://www.gnu.org/licenses/agpl-3.0.txt -o LICENSE";
-                      g = "git";
-                      gs = "g stash";
-                      n = "nix";
-                      woman = "man";
-                      open = "xdg-open";
-                      ":q" = "exit";
-                  } // cfg.extraAliases;
+                  } cfg.extraAliases ];
               };
+            # TODO: move this somewhere else
+            programs.foot.settings.main.shell = lib.mkDefault "${pkgs.fish}/bin/fish";
         };
     };
 }

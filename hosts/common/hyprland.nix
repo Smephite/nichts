@@ -103,7 +103,6 @@ in
       wayland.windowManager.hyprland.settings = {
         input = {
           kb_layout = "us";
-          natural_scroll = true;
           sensitivity = 0;
           kb_variant = "altgr-intl";
           accel_profile = "flat";
@@ -115,8 +114,9 @@ in
           border_size = 1;
           # "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
           # "col.inactive_border" = "rgba(595959aa)";
-          layout = "master";
+          layout = "dwindle";
         };
+        cursor.no_hardware_cursors = true;
         decoration.rounding = 5;
         misc.disable_hyprland_logo = true;
         animations = {
@@ -139,10 +139,12 @@ in
         };
         gestures.workspace_swipe = true;
         debug.enable_stdout_logs = true;
+        debug.disable_logs = false; # FIXME: RESET TO TRUE
         windowrulev2 = [
           "float,title:bluetuith"
           "float,title:nmtui"
         ];
+        # render.explicit_sync = 0; # TODO: Remove this and fix Hyprland
         bind = [
           # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
           "SUPER, RETURN, exec, footclient"
