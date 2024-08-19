@@ -16,10 +16,10 @@ in {
         settings = {
           #$ on_force_close = "quit";
           pane_frames = false;
-          default_layout = "compact";
+          # default_layout = "normal";
           ui = {
             pane_frames = {
-              hide_session_name = true;
+              # hide_session_name = true;
               rounded_corners = true;
             };
           };
