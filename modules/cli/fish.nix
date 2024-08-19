@@ -60,6 +60,7 @@ in {
                       mv = "mv -iv";
                       ls = "eza -a --icons";
                       nv = "nvim";
+                      flake = "cd ${config.modules.other.system.gitPath}";
                       gpl = "curl https://www.gnu.org/licenses/gpl-3.0.txt -o LICENSE";
                       agpl = "curl https://www.gnu.org/licenses/agpl-3.0.txt -o LICENSE";
                   } cfg.extraAliases ];
