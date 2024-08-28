@@ -10,6 +10,7 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
+  # see https://nixos.wiki/wiki/AMD_GPU
   services.xserver.videoDrivers = [ "modesetting" ];
   systemd.tmpfiles.rules = [
     "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
@@ -22,10 +23,6 @@
     rocmPackages.clr
     rocmPackages.clr.icd
   ];
-
-  hardware.opengl = {
-
-    };
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/2aaba0f2-e8dc-4583-a81e-2d35cc238e79";
@@ -44,8 +41,7 @@
   } ];
 
   boot.kernelParams = [ "resume_offset=228702208" ];
-  boot.resumeDevice = "/dev/mapper/cryptroot"; # neede for hibernation to work 
-  # boot.resumeDevice = "/var/lib/swapfile"; # neede for hibernation to work 
+  boot.resumeDevice = "/dev/mapper/cryptroot"; # needed for hibernation to work 
   # see https://discourse.nixos.org/t/hibernate-doesnt-work-anymore/24673/5
   security.protectKernelImage = false;
   # see https://discourse.nixos.org/t/btrfs-swap-not-enough-swap-space-for-hibernation/36805/4

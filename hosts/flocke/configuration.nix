@@ -11,32 +11,8 @@
   services.fwupd.enable = true;
 
   nixpkgs.config.allowUnfree = true;
+
   security.sudo.package = pkgs.sudo.override { withInsults = true; };
-
-
-
-  /*
-  services.displayManager = {
-      sessionPackages = [ pkgs.hyprland ]; # pkgs.gnome.gnome-session.sessions ];
-      defaultSession = "hyprland";
-      sddm = {
-        enable = true;
-        wayland.enable = true;
-    };
-  };
-  */
-
-
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
-
-  # hardware.opengl.driSupport = true;
-  hardware.opengl.driSupport32Bit = true;
-  hardware.opengl.enable = true;
-
-
 
   services.logrotate.checkConfig = false;
 
@@ -44,7 +20,7 @@
   networking.hostId = "adf23c31";
   networking.interfaces.wlp1s0.useDHCP = true;
   networking.networkmanager.enable = true;
-  # networking.connman.enable = true;
+
   environment.systemPackages = with pkgs; [ networkmanager ]; # cli tool for managing connections
 
   boot = {
@@ -78,33 +54,11 @@
     };
   };
 
-  # see https://nixos.wiki/wiki/AMD_GPU
-  services.xserver.videoDrivers = [ "amdgpu" ];
-  systemd.tmpfiles.rules = [
-    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
-  ];
-  hardware.opengl.extraPackages =  with pkgs; [
-    rocmPackages.clr.icd
-  ];
-
-  services.power-profiles-daemon.enable = true;
-
-  # stock nixos power management
-  powerManagement.enable = true;
-
-
-
 
   # be nice to your ssds
   services.fstrim.enable = true;
-  # services.xserver.enable = pkgs.lib.mkForce false;
 
   security.polkit.enable = true;
-  home-manager.users."dragyx".home.packages = with pkgs; [ vesktop ];
-
-
-  # Mainly for coding weekend
-  services.hardware.bolt.enable = true;
 
   modules = {
     login = {
@@ -196,23 +150,14 @@
     };
     services = {
         pipewire.enable = true;
+        satpaper.enable = true;
     };
-
-
     WM.hyprland = {
       enable = true;
       gnome-keyring.enable = true;
     };
   };
 
-  # set LD_PRELOAD to correctly load everything for steam: see https://github.com/ROCm/ROCm/issues/2934
-  programs.steam.package = pkgs.steam.overrideAttrs (prevAttrs: {
-    nativeBuildInputs = (prevAttrs.nativeBuildInputs or []) 
-                      ++ [ pkgs.makeBinaryWrapper ];
-    postInstall = (prevAttrs.postInstall or "") + ''
-      wrapProgram $out/bin/steam --set LD_PRELOAD "${pkgs.libdrm}/lib/libdrm_amdgpu.so"
-    '';
-  });
     
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
