@@ -62,6 +62,7 @@ in {
                       nv = "nvim";
                       gpl = "curl https://www.gnu.org/licenses/gpl-3.0.txt -o LICENSE";
                       agpl = "curl https://www.gnu.org/licenses/agpl-3.0.txt -o LICENSE";
+                      flake = "cd ${self}"
                   } cfg.extraAliases ];
               };
             # TODO: move this somewhere else
