@@ -4,6 +4,7 @@ My personal collection of NixOS configuration files
 ## TODO
 - [ ] remove the options directory and move configuration to a new modules/hardware (or something along the lines)
 - [ ] add a proper neovim configuration with nix
+- [ ] format the project with a formatter (and always do so before a new commit)
 
 
 ## Project Structure 
