@@ -5,7 +5,6 @@ _: {
     ./hyprland.nix
     ./waybar.nix
     ./theming
-    ./cli
   ];
 
 
