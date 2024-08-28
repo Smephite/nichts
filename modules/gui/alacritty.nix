@@ -5,7 +5,6 @@ with lib; let
 in {
   options.modules.programs.alacritty = {
     enable = mkEnableOption "alacritty";
-    catppuccin = mkEnableOption "catppuccin";
     opacity = mkOption {
       description = "opacity of alacritty";
       type = types.number;
@@ -28,14 +27,6 @@ in {
           opacity = cfg.opacity;
         };
 
-        colors = mkIf cfg.catppuccin {
-          primary = {
-            background = "#1e1e2e";
-            foreground = "#cdd6f4";
-            dim_foreground = "#7f849c";
-            bright_foreground = "#cdd6f4";
-          };
-        };
       };
     };
   };
