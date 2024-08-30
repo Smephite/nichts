@@ -1,22 +1,26 @@
-{ config, lib, pkgs, modulesPath, ... }:
-
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  ...
+}: {
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+  ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ "amdgpu" ];
-  boot.kernelModules = [ "kvm-amd" ];
-  boot.extraModulePackages = [ ];
+  boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "thunderbolt" "usb_storage" "sd_mod"];
+  boot.initrd.kernelModules = ["amdgpu"];
+  boot.kernelModules = ["kvm-amd"];
+  boot.extraModulePackages = [];
 
   # see https://nixos.wiki/wiki/AMD_GPU
-  services.xserver.videoDrivers = [ "modesetting" ];
+  services.xserver.videoDrivers = ["modesetting"];
   systemd.tmpfiles.rules = [
     "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
   ];
   hardware.opengl.extraPackages = with pkgs; [
-   # VA-API and VDPAU
+    # VA-API and VDPAU
     vaapiVdpau
 
     # AMD ROCm OpenCL runtime
@@ -24,24 +28,25 @@
     rocmPackages.clr.icd
   ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/2aaba0f2-e8dc-4583-a81e-2d35cc238e79";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/2aaba0f2-e8dc-4583-a81e-2d35cc238e79";
+    fsType = "ext4";
+  };
 
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/9D34-36F8";
+    fsType = "vfat";
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/9D34-36F8";
-      fsType = "vfat";
-    };
-
-  swapDevices = [ {
+  swapDevices = [
+    {
       device = "/var/lib/swapfile";
-      size = 2*32*1024; # twice the size of system ram for hibernation
-  } ];
+      size = 2 * 32 * 1024; # twice the size of system ram for hibernation
+    }
+  ];
 
-  boot.kernelParams = [ "resume_offset=228702208" ];
-  boot.resumeDevice = "/dev/mapper/cryptroot"; # needed for hibernation to work 
+  boot.kernelParams = ["resume_offset=228702208"];
+  boot.resumeDevice = "/dev/mapper/cryptroot"; # needed for hibernation to work
   # see https://discourse.nixos.org/t/hibernate-doesnt-work-anymore/24673/5
   security.protectKernelImage = false;
   # see https://discourse.nixos.org/t/btrfs-swap-not-enough-swap-space-for-hibernation/36805/4

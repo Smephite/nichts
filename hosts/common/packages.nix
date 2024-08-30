@@ -85,5 +85,8 @@ in {
 
     kdeconnect
     yazi
+
+    # nix formatter
+    alejandra
   ];
 }

@@ -1,27 +1,28 @@
-{ config, lib, pkgs, ...}:
-
-with lib;
-let
-    vivado_pkg = pkgs.nur.repos.Nick1296.vivado-2019-2;
-    vivado-desktop-symbol = pkgs.makeDesktopItem {
-      name = "vivado-2019-2";
-      desktopName = "Vivado2019.2";
-      exec = "${vivado_pkg}/bin/vivado2019.2";
-    };
-    cfg = config.modules.programs.vivado;
-    username = config.modules.other.system.username;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  vivado_pkg = pkgs.nur.repos.Nick1296.vivado-2019-2;
+  vivado-desktop-symbol = pkgs.makeDesktopItem {
+    name = "vivado-2019-2";
+    desktopName = "Vivado2019.2";
+    exec = "${vivado_pkg}/bin/vivado2019.2";
+  };
+  cfg = config.modules.programs.vivado;
+  username = config.modules.other.system.username;
+in {
   options.modules.programs.vivado.enable = mkEnableOption "vivado";
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [     
+    environment.systemPackages = with pkgs; [
       # this propietary software is huge, but I need it for
       # university
       vivado_pkg
       vivado-desktop-symbol
     ];
-
 
     # Create udev rules. Reference: https://blog.kotatsu.dev/posts/2021-09-14-vivado-on-nixos/
     services.udev.packages = [

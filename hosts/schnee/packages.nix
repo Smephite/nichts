@@ -1,37 +1,40 @@
-{ inputs, outputs, pkgs, profile-config, ... }:
-
-let 
-# nur-no-pkgs = import inputs.nur-no-pkgs { pkgs = inputs.nixpkgs.legacyPackages.${profile-config.system}; nurpkgs = inputs.nixpkgs.legacyPackages.${profile-config.system}; };
-python-packages = ps: with ps; [
-  pandas
-  numpy
-  opencv4
-  ipython
-  # bt-dualboot for synching up bluetooth between Windows and Linux
-  (
-  buildPythonPackage rec {
-    pname = "bt-dualboot";
-    version = "1.0.1";
-    src = fetchPypi {
-      inherit pname version;
-      sha256 = "sha256-pjzGvLkotQllzyrnxqDIjGlpBOvUPkWpv0eooCUrgv8=";
-    };
-    doCheck = false;
-    propagatedBuildInputs = [
-      pkgs.chntpw
-    ];
-  }
-)
-];
-in
 {
+  inputs,
+  outputs,
+  pkgs,
+  profile-config,
+  ...
+}: let
+  # nur-no-pkgs = import inputs.nur-no-pkgs { pkgs = inputs.nixpkgs.legacyPackages.${profile-config.system}; nurpkgs = inputs.nixpkgs.legacyPackages.${profile-config.system}; };
+  python-packages = ps:
+    with ps; [
+      pandas
+      numpy
+      opencv4
+      ipython
+      # bt-dualboot for synching up bluetooth between Windows and Linux
+      (
+        buildPythonPackage rec {
+          pname = "bt-dualboot";
+          version = "1.0.1";
+          src = fetchPypi {
+            inherit pname version;
+            sha256 = "sha256-pjzGvLkotQllzyrnxqDIjGlpBOvUPkWpv0eooCUrgv8=";
+          };
+          doCheck = false;
+          propagatedBuildInputs = [
+            pkgs.chntpw
+          ];
+        }
+      )
+    ];
+in {
   imports = [
-    # nur-no-pkgs.repos.LuisChDev.modules.nordvpn 
+    # nur-no-pkgs.repos.LuisChDev.modules.nordvpn
     # ../../modules/programs/java.nix
   ];
 
   #  services.nordvpn.enable = true;
-
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-24.8.6" # NEEDED for Webcord

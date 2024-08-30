@@ -5,6 +5,4 @@ _: {
     ./hyprland.nix
     ./theming
   ];
-
-
 }

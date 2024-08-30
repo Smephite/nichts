@@ -1,30 +1,30 @@
-{ config, lib, pkgs, ... }: 
-
-with lib;
-let 
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.modules.WM.hyprland;
   username = config.modules.other.system.username;
   monitors = config.modules.other.system.monitors;
-in
-{
+in {
   options.modules.WM.hyprland = {
     enable = mkEnableOption "hyprland";
     gnome-keyring.enable = mkEnableOption "gnome-keyring";
   };
 
-
   config = mkIf cfg.enable {
-
     services.displayManager = {
-        sessionPackages = [ pkgs.hyprland ]; # pkgs.gnome.gnome-session.sessions ];
-        defaultSession = "hyprland";
+      sessionPackages = [pkgs.hyprland]; # pkgs.gnome.gnome-session.sessions ];
+      defaultSession = "hyprland";
     };
 
-    environment.systemPackages = with pkgs; [ xwayland ];
+    environment.systemPackages = with pkgs; [xwayland];
 
     programs.xwayland.enable = true;
     programs.hyprland = {
-        enable = true;
+      enable = true;
     };
 
     services.gnome.gnome-keyring.enable = cfg.gnome-keyring.enable;
@@ -33,40 +33,43 @@ in
     services.displayManager.sddm.wayland.enable = true;
     systemd.user.services.polkit-gnome-authentication-agent-1 = mkIf cfg.gnome-keyring.enable {
       description = "polkit-gnome-authentication-agent-1";
-      wantedBy = [ "graphical-session.target" ];
-      wants = [ "graphical-session.target" ];
-      after = [ "graphical-session.target" ];
+      wantedBy = ["graphical-session.target"];
+      wants = ["graphical-session.target"];
+      after = ["graphical-session.target"];
       serviceConfig = {
-          Type = "simple";
-          ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
+        Type = "simple";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
       };
     };
 
     home-manager.users.${username} = {
-      home.packages = with pkgs; [ 
+      home.packages = with pkgs; [
         bluetuith
         brightnessctl
         # needed for wayland copy / paste support in neovim
         wl-clipboard
       ];
 
-
       wayland.windowManager.hyprland = {
         enable = true;
         systemd.enable = true;
         xwayland.enable = true;
         settings = {
-          exec-once = (
-              if cfg.gnome-keyring.enable then 
-                ["${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"]
+          exec-once =
+            (
+              if cfg.gnome-keyring.enable
+              then ["${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"]
               else []
-            ) ++ [ "${pkgs.swww}/bin/swww-daemon" ];
-          monitor = map (
-            m: "${m.device},${builtins.toString m.resolution.x}x${builtins.toString m.resolution.y}@${builtins.toString m.refresh_rate},${builtins.toString m.position.x}x${builtins.toString m.position.y},${builtins.toString m.scale},transform,${builtins.toString m.transform}"
-            ) monitors; #TODO: default value
+            )
+            ++ ["${pkgs.swww}/bin/swww-daemon"];
+          monitor =
+            map (
+              m: "${m.device},${builtins.toString m.resolution.x}x${builtins.toString m.resolution.y}@${builtins.toString m.refresh_rate},${builtins.toString m.position.x}x${builtins.toString m.position.y},${builtins.toString m.scale},transform,${builtins.toString m.transform}"
+            )
+            monitors; #TODO: default value
           input = {
             kb_layout = "us";
             sensitivity = 0;
@@ -129,22 +132,20 @@ in
             "SUPER, C, exec, /home/vali/.config/wallpaper/colorscheme-setter"
             ",PRINT, exec, mkdir -p ~/Pictures/Screenshots && ${pkgs.sway-contrib.grimshot}/bin/grimshot savecopy anything ~/Pictures/Screenshots/screenshot-$(date -Iminutes).png"
 
-            
             # Move focus with mainMod + arrow keys"
             "SUPER, h, movefocus, l"
             "SUPER, l, movefocus, r"
             "SUPER, k, movefocus, u"
             "SUPER, j, movefocus, d"
-            
+
             # move window to next / previous workspace"
             "SUPER CTRL, h, movetoworkspace, r-1"
             "SUPER CTRL, l, movetoworkspace, r+1"
-            
+
             # move to next / previous workspace"
             "SUPER CTRL, j, workspace, r-1"
             "SUPER CTRL, k, workspace, r+1"
-            
-            
+
             # Switch workspaces with mainMod + [0-9]"
             "SUPER, 1, workspace, 1"
             "SUPER, 2, workspace, 2"
@@ -157,9 +158,6 @@ in
             "SUPER, 9, workspace, 9"
             "SUPER, 0, workspace, 10"
 
-
-
-            
             # Move active window to a workspace with mainMod + SHIFT + [0-9]"
             "SUPER SHIFT, 1, movetoworkspace, 1"
             "SUPER SHIFT, 2, movetoworkspace, 2"
@@ -172,7 +170,6 @@ in
             "SUPER SHIFT, 9, movetoworkspace, 9"
             "SUPER SHIFT, 0, movetoworkspace, 10"
 
-
             "SUPER SHIFT, h, movewindow, l"
             "SUPER SHIFT, l, movewindow, r"
             "SUPER SHIFT, k, movewindow, u"
@@ -181,7 +178,6 @@ in
             # resize windows
             "SUPER, -, resizeactive, -30"
             "SUPER, +, resizeactive, 30"
-
 
             # Scroll through existing workspaces with mainMod + scroll"
             "SUPER, mouse_down, workspace, e+1"
@@ -192,7 +188,7 @@ in
             # "bindm = SUPER, mouse:273, resizewindow"
           ];
 
-          bindm = [ 
+          bindm = [
             "Super, mouse:272, movewindow"
             "Super, mouse:273, resizewindow"
           ];

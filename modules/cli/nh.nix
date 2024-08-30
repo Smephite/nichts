@@ -1,7 +1,10 @@
 # blatantly stolen from github.com/bloxx12/nichts
-{ lib, config, ... }:
-with lib;
-let 
+{
+  lib,
+  config,
+  ...
+}:
+with lib; let
   cfg = config.modules.programs.nh;
   gitPath = config.modules.other.system.gitPath;
 in {

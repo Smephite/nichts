@@ -1,4 +1,10 @@
-{ config, lib, inputs, pkgs, ... }:
+{
+  config,
+  lib,
+  inputs,
+  pkgs,
+  ...
+}:
 with lib; let
   username = config.modules.other.system.username;
   cfg = config.modules.programs.alacritty;
@@ -26,7 +32,6 @@ in {
           blur = cfg.blur;
           opacity = cfg.opacity;
         };
-
       };
     };
   };

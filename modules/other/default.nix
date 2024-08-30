@@ -1,9 +1,8 @@
 _: {
-    imports = [
-        ./home-manager.nix
-        ./system.nix
-        ./xdg.nix
-        ./displaymanager.nix
-    ];
+  imports = [
+    ./home-manager.nix
+    ./system.nix
+    ./xdg.nix
+    ./displaymanager.nix
+  ];
 }
-

@@ -1,7 +1,11 @@
-{ config, lib, pkgs, ...}:
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   # taken from https://github.com/bloxx12/nichts/blob/main/options/common/gpu/nvidia.nix
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = ["nvidia"];
   hardware.graphics = {
     enable = true;
     # package = pkgs-unstable.mesa.drivers;
@@ -16,9 +20,6 @@
     nvidiaSettings = false;
   };
 
-
-
-  
   environment.sessionVariables = lib.mkIf config.modules.WM.hyprland.enable {
     LIBVA_DRIVER_NAME = "nvidia";
     XDG_SESSION_TYPE = "wayland";
@@ -37,5 +38,3 @@
     #NIXOS_XDG_OPEN_USE_PORTAL = "1";
   };
 }
-
-

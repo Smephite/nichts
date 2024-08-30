@@ -1,20 +1,25 @@
-{ inputs, outputs, config, pkgs, profile-config, ... }:
-
 {
-  imports = [ ../../options/common/gpu/nvidia.nix ];
+  inputs,
+  outputs,
+  config,
+  pkgs,
+  profile-config,
+  ...
+}: {
+  imports = [../../options/common/gpu/nvidia.nix];
 
   networking.hostId = "aefab460";
   networking.interfaces.enp7s0.useDHCP = true;
   systemd.services.zfs-mount.enable = true;
   nixpkgs.config.allowUnfree = true;
   networking.networkmanager.enable = true;
-  environment.systemPackages = with pkgs; [ networkmanager ]; # cli tool for managing connections
+  environment.systemPackages = with pkgs; [networkmanager]; # cli tool for managing connections
 
   boot = {
-    kernelParams = [ "nvidia-drm.modeset=1" ];
-    initrd.supportedFilesystems = [ "zfs" ];
-    supportedFilesystems = [ "zfs" ];
-    zfs.extraPools = [ "bpool" ]; # pool for /boot
+    kernelParams = ["nvidia-drm.modeset=1"];
+    initrd.supportedFilesystems = ["zfs"];
+    supportedFilesystems = ["zfs"];
+    zfs.extraPools = ["bpool"]; # pool for /boot
     loader.efi.efiSysMountPoint = "/boot/efi";
 
     loader.grub = {
@@ -25,11 +30,11 @@
   };
 
   services.displayManager = {
-      sessionPackages = [ pkgs.hyprland ]; # pkgs.gnome.gnome-session.sessions ];
-      defaultSession = "hyprland";
-      sddm = {
-        enable = true;
-        wayland.enable = true;
+    sessionPackages = [pkgs.hyprland]; # pkgs.gnome.gnome-session.sessions ];
+    defaultSession = "hyprland";
+    sddm = {
+      enable = true;
+      wayland.enable = true;
     };
   };
 
@@ -47,11 +52,12 @@
 
   boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 
-
-  /*services.xserver.displayManager = {
+  /*
+    services.xserver.displayManager = {
     sddm.enable = true;
     sessionPackages = [  ];
-  };*/
+  };
+  */
 
   # virtualisation.virtualbox.host.enable = true;
   # programs.hyprland.xwayland.enable = true;
@@ -65,11 +71,11 @@
   # services.xserver.displayManager.gdm.wayland = true;
 
   # monitor config for gdm (wayland)
-  
+
   # systemd.tmpfiles.rules = [
   #   "L+ /run/gdm/.config/monitors.xml - - - - ${pkgs.writeText "gdm-monitors.xml" (builtins.readFile ./monitors.xml)}"
   # ];
-  
+
   #TODO: Add to  modules.other.system.monitors as option
   home-manager.users."dragyx".wayland.windowManager.hyprland.settings = {
     workspace = [
@@ -80,7 +86,6 @@
     ];
   };
 
-
   modules = {
     login = {
       greetd.enable = true;
@@ -88,91 +93,91 @@
     };
     other = {
       system = rec {
-          hostname = "schnee";
-          username = "dragyx";
-          gitPath = "/home/${username}/repos/nichts";
-          monitors = [
-            {
-              name = "Main";
-              device = "DP-2";
-              resolution = {
-                x = 2560;
-                y = 1440;
-              };
-              scale = 1.0;
-              refresh_rate = 144;
-              position = {
-                x = 0;
-                y = 0;
-              };
-            }
-            {
-              name = "Right";
-              device = "HDMI-A-3";
-              resolution = {
-                x = 2560;
-                y = 1440;
-              };
-              scale = 1.0;
-              refresh_rate = 144;
-              position = {
-                x = 2560;
-                y = 200;
-              };
-              transform = 3;
-            }
-            {
-              name = "Left";
-              device = "HDMI-A-2";
-              resolution = {
-                x = 2560;
-                y = 1440;
-              };
-              scale = 1.0;
-              refresh_rate = 144;
-              position = {
-                x = -1440;
-                y = 200;
-              };
-              transform = 1;
-            }
-          ];
-          wayland = true;
+        hostname = "schnee";
+        username = "dragyx";
+        gitPath = "/home/${username}/repos/nichts";
+        monitors = [
+          {
+            name = "Main";
+            device = "DP-2";
+            resolution = {
+              x = 2560;
+              y = 1440;
+            };
+            scale = 1.0;
+            refresh_rate = 144;
+            position = {
+              x = 0;
+              y = 0;
+            };
+          }
+          {
+            name = "Right";
+            device = "HDMI-A-3";
+            resolution = {
+              x = 2560;
+              y = 1440;
+            };
+            scale = 1.0;
+            refresh_rate = 144;
+            position = {
+              x = 2560;
+              y = 200;
+            };
+            transform = 3;
+          }
+          {
+            name = "Left";
+            device = "HDMI-A-2";
+            resolution = {
+              x = 2560;
+              y = 1440;
+            };
+            scale = 1.0;
+            refresh_rate = 144;
+            position = {
+              x = -1440;
+              y = 200;
+            };
+            transform = 1;
+          }
+        ];
+        wayland = true;
       };
       home-manager = {
-          enable = true;
-          enableDirenv = true;
+        enable = true;
+        enableDirenv = true;
       };
     };
     programs = {
-        firefox.enable = true;
-        vesktop.enable = false;
-        btop.enable = true;
-        mpv.enable = true;
-        schizofox.enable = false;
-        obs.enable = true;
-        vivado.enable = false;
-        rofi.enable = true;
-        zathura.enable = true;
-        stylix.enable = true;
-        i3.enable = false;
-        # neovim.enable = true;
-        git = {
-            enable = true;
-            userName = "Dragyx";
-            userEmail = "66752602+Dragyx@users.noreply.github.com";
-            defaultBranch = "main";
-        };
-        starship.enable = true;
-        neovim-old.enable = true;
-        # nixvim.enable = true;
+      firefox.enable = true;
+      vesktop.enable = false;
+      btop.enable = true;
+      mpv.enable = true;
+      schizofox.enable = false;
+      obs.enable = true;
+      vivado.enable = false;
+      rofi.enable = true;
+      zathura.enable = true;
+      stylix.enable = true;
+      i3.enable = false;
+      # neovim.enable = true;
+      git = {
+        enable = true;
+        userName = "Dragyx";
+        userEmail = "66752602+Dragyx@users.noreply.github.com";
+        defaultBranch = "main";
+      };
+      starship.enable = true;
+      neovim-old.enable = true;
+      # nixvim.enable = true;
     };
     services = {
-        pipewire.enable = true;
+      pipewire.enable = true;
     };
-    WM = { 
+    WM = {
       waybar.enable = true;
-      hyprland= {
+      hyprland = {
         enable = true;
         gnome-keyring.enable = true;
       };

@@ -12,7 +12,6 @@
       installation_mode = "force_installed";
     };
   };
-
 in {
   imports = [
     ../../options/common/pin-registry.nix
@@ -51,7 +50,6 @@ in {
         (mkFirefoxExtension "privacy-badger17" "jid1-MnnxcxisBPnSXQ@jetpack")
       ];
     };
-    
   };
 
   time.timeZone = "Europe/Zurich";
