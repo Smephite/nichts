@@ -105,7 +105,7 @@
               y = 1440;
             };
             scale = 1.0;
-            refresh_rate = 144;
+            refresh_rate = 143.998001;
             position = {
               x = 0;
               y = 0;
@@ -119,7 +119,7 @@
               y = 1440;
             };
             scale = 1.0;
-            refresh_rate = 144;
+            refresh_rate = 74.9999001;
             position = {
               x = 2560;
               y = 200;
@@ -134,7 +134,7 @@
               y = 1440;
             };
             scale = 1.0;
-            refresh_rate = 144;
+            refresh_rate = 74.9999001;
             position = {
               x = -1440;
               y = 200;

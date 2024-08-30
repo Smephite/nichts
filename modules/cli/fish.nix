@@ -71,8 +71,6 @@ in {
           cfg.extraAliases
         ];
       };
-      # TODO: move this somewhere else
-      programs.foot.settings.main.shell = lib.mkDefault "${pkgs.fish}/bin/fish";
     };
   };
 }
