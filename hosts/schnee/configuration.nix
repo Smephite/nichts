@@ -170,8 +170,13 @@
     services = {
         pipewire.enable = true;
     };
-    WM.hyprland.enable = true;
-    WM.hyprland.gnome-keyring.enable = true;
+    WM = { 
+      waybar.enable = true;
+      hyprland= {
+        enable = true;
+        gnome-keyring.enable = true;
+      };
+    };
   };
   system.stateVersion = "21.11"; # Did you read the comment?
 }

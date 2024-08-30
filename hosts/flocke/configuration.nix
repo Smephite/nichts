@@ -3,6 +3,7 @@
 {
   imports = [
     ../common/default.nix
+    ../../options/common/bluetooth.nix # FIXME: add proper hardware section to modules and move this there
     ./packages.nix
   ];
 
@@ -152,9 +153,13 @@
         pipewire.enable = true;
         satpaper.enable = true;
     };
-    WM.hyprland = {
-      enable = true;
-      gnome-keyring.enable = true;
+
+    WM = { 
+      waybar.enable = true;
+      hyprland= {
+        enable = true;
+        gnome-keyring.enable = true;
+      };
     };
   };
 
