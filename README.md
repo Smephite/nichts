@@ -5,6 +5,7 @@ My personal collection of NixOS configuration files
 - [ ] remove the options directory and move configuration to a new modules/hardware (or something along the lines)
 - [ ] add a proper neovim configuration with nix
 - [ ] format the project with a formatter (and always do so before a new commit)
+- [ ] form subsets of packages and include options for adding them (e.g. for nix development, rust, etc.)
 
 
 ## Project Structure 
@@ -21,13 +22,13 @@ My personal collection of NixOS configuration files
 │  │  ├── default.nix
 │  │  ├── hyprland.nix
 │  │  ├── packages.nix
-│  │  ├── theming
-│  │  │  ├── default.nix
-│  │  │  ├── wallpapers
-│  │  │  │  └── default.jpg
-│  │  │  ├── waybar-style.css
-│  │  │  └── waybar-style.css.bak
-│  │  └── waybar.nix
+│  │  └── theming
+│  │     ├── catppuccin.css -> /home/dragyx/.config/waybar/catppuccin.css
+│  │     ├── default.nix
+│  │     ├── wallpapers
+│  │     │  └── default.jpg
+│  │     ├── waybar-style.css
+│  │     └── waybar-style.css.bak
 │  ├── default.nix
 │  ├── flocke
 │  │  ├── configuration.nix
@@ -77,10 +78,11 @@ My personal collection of NixOS configuration files
 │  │  ├── WM
 │  │  │  ├── default.nix
 │  │  │  ├── hyprland.nix
-│  │  │  └── i3
-│  │  │     ├── default.nix
-│  │  │     ├── i3-new.nix
-│  │  │     └── polybar.sh
+│  │  │  ├── i3
+│  │  │  │  ├── default.nix
+│  │  │  │  ├── i3-new.nix
+│  │  │  │  └── polybar.sh
+│  │  │  └── waybar.nix
 │  │  └── zathura.nix
 │  ├── other
 │  │  ├── default.nix
