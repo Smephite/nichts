@@ -54,5 +54,6 @@ in
       add_custom_scripts
       add_catppuccin_wallpapers
       pin_hyprland
+      inputs.rust-overlay.overlays.default
   ];
 }
