@@ -137,15 +137,16 @@ in
     wayland.windowManager.hyprland.settings.exec-once = [
       "hyprshade auto"
       "dunst"
-      "hyprpaper"
     ];
 
+    /*
     xdg.configFile."hypr/hyprpaper.conf" = { #TODO: generic path
       text = ''
         preload = ${catppuccin-wallpapers}/landscapes/Rainnight.jpg
         wallpaper = ,${catppuccin-wallpapers}/landscapes/Rainnight.jpg
       '';
     };
+    */
 
     xsession.windowManager.i3.config.startup = [
       {
