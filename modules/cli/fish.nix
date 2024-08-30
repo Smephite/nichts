@@ -7,6 +7,7 @@
 }: with lib; let
     cfg = config.modules.programs.fish;
     username = config.modules.other.system.username;
+    gitPath = config.modules.other.system.gitPath;
 in {
     options.modules.programs.fish = {
         enable = mkEnableOption "fish";
@@ -58,11 +59,13 @@ in {
                       cl = "clear";
                       cp = "cp -ivr";
                       mv = "mv -iv";
-                      ls = "eza -a --icons";
+                      ls = "eza --icons";
+                      la = "eza --icons -a";
+                      ll = "eza --icons -lha";
                       nv = "nvim";
                       gpl = "curl https://www.gnu.org/licenses/gpl-3.0.txt -o LICENSE";
                       agpl = "curl https://www.gnu.org/licenses/agpl-3.0.txt -o LICENSE";
-                      flake = "cd ${self}"
+                      flake = "cd \"${gitPath}\"";
                   } cfg.extraAliases ];
               };
             # TODO: move this somewhere else
