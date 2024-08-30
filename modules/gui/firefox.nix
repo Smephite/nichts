@@ -21,7 +21,7 @@ in {
             id = 0;
             isDefault = true;
             search.default = "DuckDuckGo";
-            userContent = ''
+            userChrome = ''
             @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); /* set default namespace to XUL */
 
             #TabsToolbar {visibility: collapse; !important; }
@@ -32,45 +32,47 @@ in {
             settings = {
               "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
               "media.ffmpeg.vaapi.enabled" = true; # enable hardware accelerated video playback (vaapi)
+              "media.peerconnection.enabled" = false;
+              "browser.newtabpage.activity-stream.showSponsored" = false;
+              "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
             };
           };
         };
 
-	policies = {
-	    DisableTelemetry = true;
-        DisableFirefoxStudies = true;
-        EnableTrackingProtection = {
-          Value= true;
-          Locked = true;
-          Cryptomining = true;
-          Fingerprinting = true;
-        };
-        DisablePocket = true;
-        DisableFirefoxAccounts = true;
-        DisableAccounts = true;
-        DisableFirefoxScreenshots = true;
-        OverrideFirstRunPage = "";
-        OverridePostUpdatePage = "";
-        DontCheckDefaultBrowser = true;
-        DisplayBookmarksToolbar = "never"; # alternatives: "always" or "newtab"
-        DisplayMenuBar = "default-off"; # alternatives: "always", "never" or "default-on"
-        SearchBar = "unified"; # alternative: "separate"
-        FirefoxSuggest = {
-          WebSuggestions = true;
-          ImproveSuggest = true;
-          Locked = true;
-        };
-        SearchSuggestEnabled = true;
-        theme = {
-          colors = {
-            background-darker = "181825";
-            background = "1e1e2e";
-            foreground = "cdd6f4";
+        policies = {
+        DisableTelemetry = true;
+          DisableFirefoxStudies = true;
+          EnableTrackingProtection = {
+            Value= true;
+            Locked = true;
+            Cryptomining = true;
+            Fingerprinting = true;
           };
-        };
+          DisablePocket = true;
+          DisableFirefoxAccounts = true;
+          DisableAccounts = true;
+          DisableFirefoxScreenshots = true;
+          OverrideFirstRunPage = "";
+          OverridePostUpdatePage = "";
+          DontCheckDefaultBrowser = true;
+          DisplayBookmarksToolbar = "never"; # alternatives: "always" or "newtab"
+          DisplayMenuBar = "default-off"; # alternatives: "always", "never" or "default-on"
+          SearchBar = "unified"; # alternative: "separate"
+          FirefoxSuggest = {
+            WebSuggestions = true;
+            ImproveSuggest = true;
+            Locked = true;
+          };
+          SearchSuggestEnabled = true;
+          theme = {
+            colors = {
+              background-darker = "181825";
+              background = "1e1e2e";
+              foreground = "cdd6f4";
+            };
+          };
 
-        OfferToSaveLogins = false;
-
+          OfferToSaveLogins = false;
           font = "Lexend";
           ExtensionSettings = lib.mkMerge [{
             "uBlock0@raymondhill.net" = {
@@ -78,7 +80,7 @@ in {
                   installation_mode = "force_installed";
                 };
           } cfg.extensions];
-        };
+          };
       };
     };
   };
