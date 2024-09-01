@@ -125,7 +125,7 @@
     programs = {
       minecraft.enable = true;
       minecraft.wayland = true;
-      vesktop.enable = false;
+      vesktop.enable = true;
       btop.enable = true;
       mpv.enable = true;
       firefox.enable = true;
