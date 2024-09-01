@@ -48,6 +48,8 @@ in {
         (mkFirefoxExtension "tree-style-tab" "treestyletab@piro.sakura.ne.jp")
         (mkFirefoxExtension "vvz-coursereview" "{64a9abc5-b0dd-4855-831c-7b73290c0613}")
         (mkFirefoxExtension "privacy-badger17" "jid1-MnnxcxisBPnSXQ@jetpack")
+        (mkFirefoxExtension "terms-of-service-didnt-read" "jid0-3GUEt1r69sQNSrca5p8kx9Ezc3U@jetpack")
+        (mkFirefoxExtension "multi-account-containers" "@testpilot-containers")
       ];
     };
   };
