@@ -1,19 +1,29 @@
-{ config, lib, ... }: 
-
-with lib;
-let 
+{
+  config,
+  lib,
+  ...
+}:
+with lib; let
   username = config.modules.other.system.username;
   cfg = config.modules.theming;
-{
-  options.modules.theming.theme = mkOption {
-    type = with types; nullOr (
-      enum [ "catppuccin" ]
-    );
-    default = null;
-    example = "catppuccin";
-    description = "Select which system wide theme to use";
+in {
+  config = {
+    modules.theming.themes.catppuccin.enable = cfg.theme == "catppuccin";
   };
-
-  imports = [ ./base ] ++ 
-            lists.optionals cfg.theme != null "./${cfg.theme}"
+  options = {
+    modules.theming = {
+      theme = mkOption {
+        type = with types;
+          nullOr (
+            enum ["catppuccin"]
+          );
+        default = null;
+        example = "catppuccin";
+        description = "Select which system wide theme to use";
+      };
+      themes = {
+        catppuccin.enable = mkEnableOption "catppuccin";
+      };
+    };
+  };
 }

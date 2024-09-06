@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   pkgs,
   lib,
@@ -33,6 +34,7 @@ in {
     extraOptions = "experimental-features = nix-command flakes";
   };
 
+
   modules = {
     programs = {
       foot.enable = lib.mkDefault true;
@@ -52,6 +54,7 @@ in {
         (mkFirefoxExtension "multi-account-containers" "@testpilot-containers")
       ];
     };
+    theming.theme = "catppuccin";
   };
 
   time.timeZone = "Europe/Zurich";

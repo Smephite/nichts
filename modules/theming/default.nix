@@ -1,3 +1,7 @@
 _: {
-  imports = [ options.nix ]
+  imports = [
+    ./options.nix
+    ./catppuccin
+    ./base
+  ];
 }

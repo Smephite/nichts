@@ -3,6 +3,5 @@ _: {
     ./configuration.nix
     ./packages.nix
     ./hyprland.nix
-    ./theming
   ];
 }

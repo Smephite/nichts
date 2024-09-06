@@ -5,5 +5,6 @@ _: {
     ./tui
     ./other
     ./services
+    ./theming
   ];
 }
