@@ -17,6 +17,12 @@
     };
   };
 
+  add_nixpkgs_small = self: super: rec {
+    small = import inputs.nixpkgs-small {system = super.system;};
+    # TODO: remove once xdg-desktop-portal-hyprland builds on normal unstable
+    xdg-desktop-portal-hyprland = small.xdg-desktop-portal-hyprland;
+  };
+
   add_custom_scripts = self: super: {
     ani-cli-advanced = super.writeShellApplication {
       name = "ani-cli-advanced";
@@ -57,6 +63,7 @@ in {
     add_nur
     add_custom_scripts
     add_catppuccin_wallpapers
+    add_nixpkgs_small
     pin_hyprland
     inputs.rust-overlay.overlays.default
   ];
