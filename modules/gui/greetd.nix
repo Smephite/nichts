@@ -20,6 +20,7 @@ in {
     services.greetd = {
       enable = true;
       settings = {
+        terminal.vt = 2; # set to 2 so the systemd logs don't clutter the ui
         default_session = {
           command = ''
             ${pkgs.greetd.tuigreet}/bin/tuigreet \
