@@ -4,25 +4,28 @@
 in {
   iso = lib.nixosSystem {
     system = "x86_64-linux";
-    specialargs = {inherit lib inputs self;};
+    specialArgs = {inherit lib inputs self;};
     modules = [
-      inputs.stylix.nixosmodules.stylix
+      inputs.stylix.nixosModules.stylix
       ../overlay.nix # todo: move this somewhere else
       ../modules
-      inputs.home-manager.nixosmodules.home-manager
+      inputs.home-manager.nixosModules.home-manager
+
       ./iso
+      "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
+      "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"
     ];
   };
   flocke = lib.nixosSystem {
     system = "x86_64-linux";
-    specialargs = {inherit lib inputs self;};
+    specialArgs = {inherit lib inputs self;};
     modules = [
-      inputs.stylix.nixosmodules.stylix
+      inputs.stylix.nixosModules.stylix
       ../overlay.nix # todo: move this somewhere else
       ./flocke
       ../modules
-      inputs.home-manager.nixosmodules.home-manager
-      inputs.nixos-hardware.nixosmodules.framework-13-7040-amd
+      inputs.home-manager.nixosModules.home-manager
+      inputs.nixos-hardware.nixosModules.framework-13-7040-amd
     ];
   };
   schnee = lib.nixosSystem {

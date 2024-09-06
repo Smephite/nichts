@@ -4,8 +4,8 @@
   ...
 }: {
   imports = [
+    ../../options/desktop/monitors.nix
     ../common/default.nix
-    ./packages.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -17,29 +17,8 @@
 
   environment.systemPackages = with pkgs; [networkmanager]; # cli tool for managing connections
 
-  boot = {
-    kernelParams = [];
-    initrd.supportedFilesystems = ["ext4"];
-    supportedFilesystems = ["ext4"];
-    loader = {
-      efi.efiSysMountPoint = "/boot";
-      efi.canTouchEfiVariables = true;
-      grub = {
-        enable = true;
-        device = "nodev";
-        efiSupport = true;
-        useOSProber = true;
-        extraEntries = ''
-          menuentry "Reboot" {
-            reboot
-          }
-          menuentry "Poweroff" {
-            halt
-          }
-        '';
-      };
-    };
-  };
+  # IMPORTANT: empty password!
+  users.users.${config.modules.other.system.username}.password = "";
 
   # be nice to your ssds
   services.fstrim.enable = true;
@@ -56,6 +35,7 @@
         username = "dragyx";
         gitPath = "/home/${username}/repos/nichts";
         wayland = true;
+        monitors = [];
       };
       home-manager = {
         enable = true;
@@ -78,7 +58,7 @@
       neovim-old.enable = true;
       # nixvim.enable = true;
     };
-    services = pipewire.enable = true;
+    services.pipewire.enable = true;
 
     WM = {
       waybar.enable = true;
