@@ -123,7 +123,7 @@
       };
     };
     programs = {
-      minecraft.enable = true;
+      minecraft.enable = false;
       minecraft.wayland = true;
       vesktop.enable = true;
       btop.enable = true;
@@ -133,7 +133,7 @@
       # vivado.enable = true;
       rofi.enable = true;
       zathura.enable = true;
-      stylix.enable = true;
+      stylix.enable = false;
       steam = {
         enable = true;
         gamescope = true;
