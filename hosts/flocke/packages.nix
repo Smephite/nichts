@@ -46,9 +46,6 @@ in {
     spotify
     okular
     # minecraft
-    prismlauncher-unwrapped
-    glfw-wayland-minecraft
-    glxinfo
     # window manager
     flameshot
     feh

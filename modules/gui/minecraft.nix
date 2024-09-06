@@ -29,6 +29,7 @@ in {
       # Install minecraft
       home.packages = with pkgs; [
         prismlauncher
+        glxinfo
       ];
     };
   };
