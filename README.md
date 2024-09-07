@@ -8,6 +8,7 @@ My personal collection of NixOS configuration files
 
 
 ## Project Structure 
+
 ```
 .
 ├── assets
@@ -19,10 +20,8 @@ My personal collection of NixOS configuration files
 │  ├── common
 │  │  ├── configuration.nix
 │  │  ├── default.nix
-│  │  ├── hyprland.nix
 │  │  ├── packages.nix
 │  │  └── theming
-│  │     ├── catppuccin.css -> /home/dragyx/.config/waybar/catppuccin.css
 │  │     ├── default.nix
 │  │     ├── wallpapers
 │  │     │  └── default.jpg
@@ -33,6 +32,10 @@ My personal collection of NixOS configuration files
 │  │  ├── configuration.nix
 │  │  ├── default.nix
 │  │  ├── hardware-configuration.nix
+│  │  └── packages.nix
+│  ├── iso
+│  │  ├── configuration.nix
+│  │  ├── default.nix
 │  │  └── packages.nix
 │  └── schnee
 │     ├── configuration.nix
@@ -94,7 +97,18 @@ My personal collection of NixOS configuration files
 │  │  ├── firewall.nix
 │  │  ├── pipewire.nix
 │  │  ├── satpaper.nix
+│  │  ├── satpaper_unsupported.patch
 │  │  └── ssh.nix
+│  ├── theming
+│  │  ├── base
+│  │  │  └── default.nix
+│  │  ├── catppuccin
+│  │  │  ├── cursor.nix
+│  │  │  ├── default.nix
+│  │  │  ├── hyprland.nix
+│  │  │  └── waybar.nix
+│  │  ├── default.nix
+│  │  └── options.nix
 │  └── tui
 │     ├── btop.nix
 │     ├── default.nix
@@ -118,7 +132,6 @@ My personal collection of NixOS configuration files
 │     ├── fonts.nix
 │     └── monitors.nix
 ├── overlay.nix
-└── README.md
+├── README.md
 ```
-
-
+```
