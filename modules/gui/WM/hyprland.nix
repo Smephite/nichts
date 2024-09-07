@@ -20,7 +20,19 @@ in {
       defaultSession = "hyprland";
     };
 
-    environment.systemPackages = with pkgs; [xwayland];
+    environment.systemPackages = with pkgs; [
+      xwayland
+      swww
+      hyprshade
+      hyprlock
+      rofi-wayland
+      waybar
+      lxqt.lxqt-openssh-askpass
+      libdrm
+      dunst
+      pciutils # lspci is needed by hyprland
+      sway-contrib.grimshot
+    ];
 
     programs.xwayland.enable = true;
     programs.hyprland = {

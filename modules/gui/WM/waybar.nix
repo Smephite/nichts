@@ -10,9 +10,10 @@ with lib; let
 in {
   options.modules.WM.waybar.enable = lib.mkEnableOption "waybar";
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [waybar];
+    # environment.systemPackages = with pkgs; [waybar];
     home-manager.users.${username} = {
       programs.waybar = {
+        enable = true;
         systemd.enable = true;
         settings = {
           main = {

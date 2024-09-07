@@ -51,11 +51,11 @@ with lib; let
       mkdir -p "$dir"
 
       cp $src/hyprlock.conf $dir/hyprlock.conf
-      sed -i -e "s~\$HOME/\.config/hypr/mocha.conf~$dir/${cfg.variant}.conf~g" "$dir/hyprlock.conf"
+      sed -i -e "s~\$HOME/\.config/hypr/mocha.conf~$dir/${cfg.flavor}.conf~g" "$dir/hyprlock.conf"
       sed -i -e "s~\~/.config/background~${pkgs.catppuccin-wallpapers}/mandelbrot/mandelbrot_full_flamingo.png~g" "$dir/hyprlock.conf"
       sed -i -e "s~\~/.face~${hyprlock-cat}~g" "$dir/hyprlock.conf"
       # sed -i -e "s~\~/.face~/tmp/hyprlock.png~g" "$dir/hyprlock.conf"
-      cp "${hyprland-catppuccin}/themes/${cfg.variant}.conf" "$dir/${cfg.variant}.conf"
+      cp "${hyprland-catppuccin}/themes/${cfg.flavor}.conf" "$dir/${cfg.flavor}.conf"
 
       runHook postInstall
     '';
@@ -71,7 +71,7 @@ in {
     home-manager.users.${username} = {
       xdg.configFile."hypr/hyprlock.conf".source = "${hyprlock-catppuccin}/.config/hypr/hyprlock.conf";
       # xdg.configFile."background".source = "${pkgs.catppuccin-wallpapers}/mandelbrot/mandelbrot_gap_pink.png";
-      # xdg.configFile."hypr/${variant}.conf".source = "${hyprlock-catppuccin}/.config/hypr/${variant}.conf";
+      # xdg.configFile."hypr/${flavor}.conf".source = "${hyprlock-catppuccin}/.config/hypr/${flavor}.conf";
 
       services.hypridle = {
         enable = true;

@@ -19,6 +19,7 @@ in {
       enabled = cfg.enable;
       inherit config lib pkgs;
     })
+    ./hyprland.nix
   ];
 
   config = mkIf cfg.enable {
