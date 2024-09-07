@@ -22,6 +22,9 @@ in {
       programs.foot = {
         enable = true;
         server.enable = cfg.server;
+        settings = {
+          main.dpi-aware = "yes";
+        };
       };
     };
   };
