@@ -1,16 +1,19 @@
 { enabled, config, pkgs, lib, ... }: 
 
 let
-  username = modules.other.system.username;
-  cfg = modules.theming.themes.catppuccin.flavor;
+  username = config.modules.other.system.username;
+  cfg = config.modules.theming.themes.catppuccin;
 in
 {
-  home-manager.users.${username} = lib.mkIf enabled {
-    home.pointerCursor = {
-      gtk.enable = true;
-      package = pkgs.catppuccin-cursors.${cfg.flavor}Pink;
-      name = "${cfg.flavor}Pink";
-      size = 22;
+  #TODO: Make the accent configurable
+  config = lib.mkIf enabled {
+    home-manager.users.${username} = {
+      home.pointerCursor = {
+        gtk.enable = true;
+        package = pkgs.catppuccin-cursors."${cfg.flavor}Mauve";
+        name = "catppuccin-${cfg.flavor}-mauve-cursors";
+        size = 22;
+      };
     };
   };
 }
