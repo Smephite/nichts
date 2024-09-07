@@ -41,13 +41,11 @@ in {
     modules.theming.themes.catppuccin = {
       flavor = lib.mkOption {
         type = with types;
-            enum [ "latte" "frappe" "macchiate" "mocha" ];
+          enum ["latte" "frappe" "macchiate" "mocha"];
         default = "mocha";
         example = "latte";
         description = "Select which catppuccin flavor to use";
       }; #TODO: add accents
     };
-
-
   };
 }

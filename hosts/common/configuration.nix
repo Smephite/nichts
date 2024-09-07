@@ -34,7 +34,6 @@ in {
     extraOptions = "experimental-features = nix-command flakes";
   };
 
-
   modules = {
     programs = {
       foot.enable = lib.mkDefault true;

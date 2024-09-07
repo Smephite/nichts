@@ -45,7 +45,6 @@
       sha256 = "sha256-h+cFlTXvUVJPRMpk32jYVDDhHu1daWSezFcvhJqDpmU=";
     };
   };
-
 in {
   nixpkgs.overlays = [
     add_nur

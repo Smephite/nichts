@@ -1,9 +1,11 @@
-{ config, pkgs, lib, ... }: 
-
-let
-  username = config.modules.other.system.username;
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  username = config.modules.other.system.username;
+in {
   home-manager.users.${username} = {
     home.pointerCursor = lib.mkDefault {
       gtk.enable = true;
@@ -11,9 +13,5 @@ in
       name = "Bibata-Modern-Ice";
       size = 22;
     };
-
   };
-
-
-
 }

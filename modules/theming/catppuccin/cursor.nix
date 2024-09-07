@@ -1,10 +1,13 @@
-{ enabled, config, pkgs, lib, ... }: 
-
-let
+{
+  enabled,
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   username = config.modules.other.system.username;
   cfg = config.modules.theming.themes.catppuccin;
-in
-{
+in {
   #TODO: Make the accent configurable
   config = lib.mkIf enabled {
     home-manager.users.${username} = {
