@@ -5,7 +5,7 @@
 }:
 with lib; let
   cfg = config.modules.themes.cursor;
-  username = config.modules.other.system.username;
+  username = config.modules.system.username;
 in {
   options.modules.themes.cursor = {
     enable = mkEnableOption "cursor theming";

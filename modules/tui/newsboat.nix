@@ -5,7 +5,7 @@
 }:
 with lib; let
   cfg = config.modules.programs.newsboat;
-  username = config.modules.other.system.username;
+  username = config.modules.system.username;
 in {
   options.modules.programs.newsboat.enable = mkEnableOption "newsboat";
 

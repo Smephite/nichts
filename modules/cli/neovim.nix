@@ -11,7 +11,7 @@
     hash = "sha256-NF92CweRFQ1qZS8NXoTUEljazRGXgXS2AuDt5IWmwBc=";
   };
   cfg = config.modules.programs.neovim-old;
-  username = config.modules.other.system.username;
+  username = config.modules.system.username;
 in {
   options.modules.programs.neovim-old.enable = lib.mkEnableOption "neovim-old";
 

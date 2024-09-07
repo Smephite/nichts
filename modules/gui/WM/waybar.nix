@@ -5,7 +5,7 @@
   ...
 }:
 with lib; let
-  username = config.modules.other.system.username;
+  username = config.modules.system.username;
   cfg = config.modules.WM.waybar;
 in {
   options.modules.WM.waybar.enable = lib.mkEnableOption "waybar";

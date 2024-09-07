@@ -6,7 +6,7 @@
 }:
 with lib; let
   cfg = config.modules.themes.qt;
-  username = config.modules.other.system.username;
+  username = config.modules.system.username;
 in {
   options.modules.themes.qt = {
     enable = mkEnableOption "qt theming";

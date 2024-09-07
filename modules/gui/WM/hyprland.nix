@@ -6,8 +6,8 @@
 }:
 with lib; let
   cfg = config.modules.WM.hyprland;
-  username = config.modules.other.system.username;
-  monitors = config.modules.other.system.monitors;
+  username = config.modules.system.username;
+  monitors = config.modules.system.monitors;
 in {
   options.modules.WM.hyprland = {
     enable = mkEnableOption "hyprland";

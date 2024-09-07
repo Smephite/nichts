@@ -7,7 +7,7 @@
 }:
 with lib; let
   cfg = config.modules.programs.ranger;
-  username = config.modules.other.system.username;
+  username = config.modules.system.username;
 in {
   options.modules.programs.ranger.enable = mkEnableOption "ranger";
 

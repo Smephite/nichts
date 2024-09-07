@@ -5,7 +5,7 @@
   ...
 }:
 with lib; let
-  username = config.modules.other.system.username;
+  username = config.modules.system.username;
   cfg = config.modules.theming.themes.catppuccin;
 
   hyprland-catppuccin = pkgs.stdenv.mkDerivation {

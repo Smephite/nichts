@@ -7,7 +7,7 @@
 }:
 with lib; let
   cfg = config.modules.programs.foot;
-  username = config.modules.other.system.username;
+  username = config.modules.system.username;
 in {
   options.modules.programs.foot = {
     enable = mkEnableOption "foot";

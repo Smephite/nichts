@@ -76,7 +76,7 @@
   #   "L+ /run/gdm/.config/monitors.xml - - - - ${pkgs.writeText "gdm-monitors.xml" (builtins.readFile ./monitors.xml)}"
   # ];
 
-  #TODO: Add to  modules.other.system.monitors as option
+  #TODO: Add to  modules.system.monitors as option
   home-manager.users."dragyx".wayland.windowManager.hyprland.settings = {
     workspace = [
       "1,monitor:DP-2,default:true"
@@ -91,63 +91,61 @@
       greetd.enable = true;
       session = "Hyprland";
     };
-    other = {
-      system = rec {
-        hostname = "schnee";
-        username = "dragyx";
-        gitPath = "/home/${username}/repos/nichts";
-        monitors = [
-          {
-            name = "Main";
-            device = "DP-2";
-            resolution = {
-              x = 2560;
-              y = 1440;
-            };
-            scale = 1.0;
-            refresh_rate = 143.998001;
-            position = {
-              x = 0;
-              y = 0;
-            };
-          }
-          {
-            name = "Right";
-            device = "HDMI-A-3";
-            resolution = {
-              x = 2560;
-              y = 1440;
-            };
-            scale = 1.0;
-            refresh_rate = 74.9999001;
-            position = {
-              x = 2560;
-              y = 200;
-            };
-            transform = 3;
-          }
-          {
-            name = "Left";
-            device = "HDMI-A-2";
-            resolution = {
-              x = 2560;
-              y = 1440;
-            };
-            scale = 1.0;
-            refresh_rate = 74.9999001;
-            position = {
-              x = -1440;
-              y = 200;
-            };
-            transform = 1;
-          }
-        ];
-        wayland = true;
-      };
-      home-manager = {
-        enable = true;
-        enableDirenv = true;
-      };
+    system = rec {
+      hostname = "schnee";
+      username = "dragyx";
+      gitPath = "/home/${username}/repos/nichts";
+      monitors = [
+        {
+          name = "Main";
+          device = "DP-2";
+          resolution = {
+            x = 2560;
+            y = 1440;
+          };
+          scale = 1.0;
+          refresh_rate = 143.998001;
+          position = {
+            x = 0;
+            y = 0;
+          };
+        }
+        {
+          name = "Right";
+          device = "HDMI-A-3";
+          resolution = {
+            x = 2560;
+            y = 1440;
+          };
+          scale = 1.0;
+          refresh_rate = 74.9999001;
+          position = {
+            x = 2560;
+            y = 200;
+          };
+          transform = 3;
+        }
+        {
+          name = "Left";
+          device = "HDMI-A-2";
+          resolution = {
+            x = 2560;
+            y = 1440;
+          };
+          scale = 1.0;
+          refresh_rate = 74.9999001;
+          position = {
+            x = -1440;
+            y = 200;
+          };
+          transform = 1;
+        }
+      ];
+      wayland = true;
+    };
+    other.home-manager = {
+      enable = true;
+      enableDirenv = true;
     };
     programs = {
       firefox.enable = true;

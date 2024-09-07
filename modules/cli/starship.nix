@@ -5,7 +5,7 @@
 }:
 with lib; let
   cfg = config.modules.programs.starship;
-  username = config.modules.other.system.username;
+  username = config.modules.system.username;
 in {
   options.modules.programs.starship.enable = mkEnableOption "starship";
 

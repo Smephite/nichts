@@ -6,7 +6,7 @@
 }:
 with lib; let
   cfg = config.modules.programs.nh;
-  gitPath = config.modules.other.system.gitPath;
+  gitPath = config.modules.system.gitPath;
 in {
   options.modules.programs.nh.enable = mkEnableOption "nh";
 

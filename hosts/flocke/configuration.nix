@@ -66,61 +66,59 @@
       greetd.enable = true;
       session = "Hyprland";
     };
-    other = {
-      system = rec {
-        hostname = "flocke";
-        username = "dragyx";
-        gitPath = "/home/${username}/repos/nichts";
-        monitors = [
-          {
-            name = "LaptopMain";
-            device = "eDP-1";
-            resolution = {
-              x = 2256;
-              y = 1504;
-            };
-            scale = 1.333333; # 1.175;
-            refresh_rate = 60.0;
-            position = {
-              x = 0;
-              y = 0;
-            };
-          }
-          rec {
-            name = "CodingWeekend";
-            device = "DP-9";
-            resolution = {
-              x = 2560;
-              y = 1440;
-            };
-            refresh_rate = 60.0;
-            scale = 1;
-            position = {
-              x = -152;
-              y = -resolution.y;
-            };
-          }
-          rec {
-            name = "CodingWeekend2";
-            device = "DP-10";
-            resolution = {
-              x = 2560;
-              y = 1440;
-            };
-            refresh_rate = 60.0;
-            scale = 1;
-            position = {
-              x = -152;
-              y = -resolution.y;
-            };
-          }
-        ];
-        wayland = true;
-      };
-      home-manager = {
-        enable = true;
-        enableDirenv = true;
-      };
+    system = rec {
+      hostname = "flocke";
+      username = "dragyx";
+      gitPath = "/home/${username}/repos/nichts";
+      monitors = [
+        {
+          name = "LaptopMain";
+          device = "eDP-1";
+          resolution = {
+            x = 2256;
+            y = 1504;
+          };
+          scale = 1.333333; # 1.175;
+          refresh_rate = 60.0;
+          position = {
+            x = 0;
+            y = 0;
+          };
+        }
+        rec {
+          name = "CodingWeekend";
+          device = "DP-9";
+          resolution = {
+            x = 2560;
+            y = 1440;
+          };
+          refresh_rate = 60.0;
+          scale = 1;
+          position = {
+            x = -152;
+            y = -resolution.y;
+          };
+        }
+        rec {
+          name = "CodingWeekend2";
+          device = "DP-10";
+          resolution = {
+            x = 2560;
+            y = 1440;
+          };
+          refresh_rate = 60.0;
+          scale = 1;
+          position = {
+            x = -152;
+            y = -resolution.y;
+          };
+        }
+      ];
+      wayland = true;
+    };
+    other.home-manager = {
+      enable = true;
+      enableDirenv = true;
     };
     programs = {
       minecraft.enable = false;

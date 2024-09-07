@@ -6,7 +6,7 @@
   ...
 }:
 with lib; let
-  username = config.modules.other.system.username;
+  username = config.modules.system.username;
   cfg = config.modules.programs.alacritty;
 in {
   options.modules.programs.alacritty = {

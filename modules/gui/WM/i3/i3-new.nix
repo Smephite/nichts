@@ -6,8 +6,8 @@
 }:
 with lib; let
   cfg = config.modules.programs.i3;
-  username = config.modules.other.system.username;
-  monitors = config.modules.other.system.monitors;
+  username = config.modules.system.username;
+  monitors = config.modules.system.monitors;
   mod = "Mod4";
 in {
   options.modules.programs.i3.enable = mkEnableOption "i3";

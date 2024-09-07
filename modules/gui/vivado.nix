@@ -12,7 +12,7 @@ with lib; let
     exec = "${vivado_pkg}/bin/vivado2019.2";
   };
   cfg = config.modules.programs.vivado;
-  username = config.modules.other.system.username;
+  username = config.modules.system.username;
 in {
   options.modules.programs.vivado.enable = mkEnableOption "vivado";
 

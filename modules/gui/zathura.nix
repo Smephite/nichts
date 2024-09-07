@@ -6,7 +6,7 @@
 }:
 with lib; let
   cfg = config.modules.programs.zathura;
-  username = config.modules.other.system.username;
+  username = config.modules.system.username;
   catppuccin = pkgs.fetchFromGitHub {
     owner = "catppuccin";
     repo = "zathura";

@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  username = config.modules.other.system.username;
+  username = config.modules.system.username;
 in {
   home-manager.users.${username} = {
     home.pointerCursor = lib.mkDefault {

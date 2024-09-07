@@ -18,7 +18,7 @@
   environment.systemPackages = with pkgs; [networkmanager]; # cli tool for managing connections
 
   # IMPORTANT: empty password!
-  users.users.${config.modules.other.system.username}.password = "";
+  users.users.${config.modules.system.username}.password = "";
 
   # be nice to your ssds
   services.fstrim.enable = true;

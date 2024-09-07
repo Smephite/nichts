@@ -5,7 +5,7 @@
 }:
 with lib; let
   cfg = config.modules.themes.gtk;
-  username = config.modules.other.system.username;
+  username = config.modules.system.username;
   hmCfg = config.home-manager.users.${username};
 in {
   options.modules.themes.gtk = {

@@ -7,7 +7,7 @@
 with lib;
 #IMPORTANT: requires rust-overlay as flake input!
   let
-    username = config.modules.other.system.username;
+    username = config.modules.system.username;
     cfg = config.modules.services.satpaper;
     /*
     rustPlatform = pkgs.makeRustPlatform {

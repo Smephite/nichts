@@ -3,7 +3,7 @@
   lib,
   ...
 }: let
-  username = config.modules.other.system.username;
+  username = config.modules.system.username;
 in {
   networking = {
     networkmanager = {

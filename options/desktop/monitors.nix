@@ -4,7 +4,7 @@
   ...
 }:
 with lib; {
-  options.modules.other.system.monitors = mkOption {
+  options.modules.system.monitors = mkOption {
     description = "
       List of monitors to use
     ";

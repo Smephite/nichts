@@ -7,8 +7,8 @@
 }:
 with lib; let
   cfg = config.modules.programs.fish;
-  username = config.modules.other.system.username;
-  gitPath = config.modules.other.system.gitPath;
+  username = config.modules.system.username;
+  gitPath = config.modules.system.gitPath;
 in {
   options.modules.programs.fish = {
     enable = mkEnableOption "fish";

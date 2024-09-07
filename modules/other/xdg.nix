@@ -3,7 +3,7 @@
   config,
   ...
 }: let
-  username = config.modules.other.system.username;
+  username = config.modules.system.username;
   hmCfg = config.home-manager.users.${username};
 
   primary_browser = "schizofox.desktop";

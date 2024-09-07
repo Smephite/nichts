@@ -5,7 +5,7 @@
   ...
 }: let
   cfg = config.modules.programs.zellij;
-  inherit (config.modules.other.system) username;
+  inherit (config.modules.system) username;
 in {
   options.modules.programs.zellij.enable = lib.mkEnableOption "zellij";
   config = lib.mkIf cfg.enable {

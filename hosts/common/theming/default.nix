@@ -5,8 +5,8 @@
 }:
 # TODO: Make this more generic / reusable
 let
-  username = config.modules.other.system.username;
-  gitPath = config.modules.other.system.gitPath;
+  username = config.modules.system.username;
+  gitPath = config.modules.system.gitPath;
 
   variant = "frappe";
 

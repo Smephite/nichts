@@ -6,9 +6,9 @@
 }:
 with lib; let
   cfg = config.modules.programs.zsh;
-  username = config.modules.other.system.username;
-  hostname = config.modules.other.system.hostname;
-  gitPath = config.modules.other.system.gitPath;
+  username = config.modules.system.username;
+  hostname = config.modules.system.hostname;
+  gitPath = config.modules.system.gitPath;
 in {
   options.modules.programs.zsh = {
     enable = mkEnableOption "zsh";
