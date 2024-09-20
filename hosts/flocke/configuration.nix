@@ -5,7 +5,6 @@
 }: {
   imports = [
     ../common/default.nix
-    ../../options/common/bluetooth.nix # FIXME: add proper hardware section to modules and move this there
     ./packages.nix
   ];
 
@@ -70,6 +69,7 @@
       hostname = "flocke";
       username = "dragyx";
       gitPath = "/home/${username}/repos/nichts";
+      bluetooth.enable = true;
       monitors = [
         {
           name = "LaptopMain";

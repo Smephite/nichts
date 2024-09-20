@@ -6,20 +6,22 @@ in {
     system = "x86_64-linux";
     specialArgs = {inherit lib inputs self;};
     modules = [
+      inputs.disko.nixosModules.disko
       inputs.stylix.nixosModules.stylix
       ../overlay.nix # todo: move this somewhere else
       ../modules
       inputs.home-manager.nixosModules.home-manager
 
       ./iso
-      "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
-      "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"
+      # "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
+      # "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/channel.nix"
     ];
   };
   flocke = lib.nixosSystem {
     system = "x86_64-linux";
     specialArgs = {inherit lib inputs self;};
     modules = [
+      inputs.disko.nixosModules.disko
       inputs.stylix.nixosModules.stylix
       ../overlay.nix # todo: move this somewhere else
       ./flocke

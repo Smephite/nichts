@@ -61,7 +61,7 @@ in {
     # --------- optional
     gnome.eog
     sherlock
-    xfce.thunar
+    nautilus
     ranger
     nitch
 

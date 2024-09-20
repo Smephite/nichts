@@ -6,5 +6,6 @@ _: {
     ./other
     ./services
     ./theming
+    ./system
   ];
 }

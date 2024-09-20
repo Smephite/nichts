@@ -41,12 +41,6 @@
   services.zfs.autoScrub.enable = true;
   services.zfs.trim.enable = true;
 
-  # services.xserver.videoDrivers = [ "nvidia" ];
-  # hardware.opengl.enable = true;
-  # hardware.nvidia.modesetting.enable = true;
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
-
   services.gnome.gnome-keyring.enable = true;
   # security.pam.services.sddm.enableGnomeKeyring = true;
 
@@ -95,6 +89,7 @@
       hostname = "schnee";
       username = "dragyx";
       gitPath = "/home/${username}/repos/nichts";
+      bluetooth.enable = true;
       monitors = [
         {
           name = "Main";
