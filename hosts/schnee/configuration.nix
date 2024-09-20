@@ -26,6 +26,26 @@
     sessionPackages = [  ];
   };
   */
+  boot = {
+    kernelParams = [];
+    loader = {
+      efi.efiSysMountPoint = "/boot";
+      efi.canTouchEfiVariables = true;
+      grub = {
+        enable = true;
+        device = "nodev";
+        efiSupport = true;
+        extraEntries = ''
+          menuentry "Reboot" {
+            reboot
+          }
+          menuentry "Poweroff" {
+            halt
+          }
+        '';
+      };
+    };
+  };
 
   # virtualisation.virtualbox.host.enable = true;
   # programs.hyprland.xwayland.enable = true;
