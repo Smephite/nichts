@@ -4,5 +4,6 @@ _: {
     ./neovim.nix
     ./newsboat.nix
     ./yazi.nix
+    ./helix
   ];
 }
