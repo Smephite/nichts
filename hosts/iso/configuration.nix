@@ -1,9 +1,11 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   imports = [
+    ./hardware-configuration.nix #TODO: find a way to do this without being system specific
     ../../options/desktop/monitors.nix
     ../common/default.nix
   ];
@@ -24,30 +26,37 @@
   services.fstrim.enable = true;
   security.polkit.enable = true;
 
+  # to not create conflicts with the existing installation
+  # disko.devices.disk.main.content.partitions.root.content.name = "cryptrootISO";
+  # disko.devices.disk.main.content.partitions.root.content.name = "cryptrootISO";
+
   modules = {
     login = {
-      greetd.enable = true;
+      greetd.enable = false;
       session = "Hyprland";
     };
-    other = {
-      system = rec {
-        hostname = "iso";
-        username = "dragyx";
-        gitPath = "/home/${username}/repos/nichts";
-        wayland = true;
-        monitors = [];
+    system = rec {
+      hostname = "iso";
+      username = "dragyx";
+      gitPath = "/home/${username}/repos/nichts";
+      wayland = true;
+      monitors = [];
+      disks = {
+        auto-partition.enable = true;
+        swap-size = null; # disable swap (usb sticks are smalle, no space to waste)
+        main-disk = "/dev/disk/by-id/usb-USB_USB_DISK_3.1_21592608-0:0";
+        name-suffix = "INSTALL";
       };
-      home-manager = {
-        enable = true;
-        enableDirenv = true;
-      };
+    };
+    other.home-manager = {
+      enable = true;
+      enableDirenv = true;
     };
     programs = {
       vesktop.enable = true;
       btop.enable = true;
       firefox.enable = true;
       rofi.enable = true;
-      stylix.enable = true;
       git = {
         enable = true;
         userName = "Dragyx";
