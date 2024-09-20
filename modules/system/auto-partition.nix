@@ -159,7 +159,7 @@ in {
                         extraArgs = ["-L" "${name}${cfg.name-suffix}" "-f"];
                         subvolumes = {
                           "/${name}" = {
-                            mountpoint = "/${name}";
+                            mountpoint = "/disks/${name}";
                             # make accessible for user
                             mountOptions = ["subvol=${name}" "compress=zstd" "noatime" "-R" username];
                           };

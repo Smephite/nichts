@@ -137,6 +137,16 @@
         }
       ];
       wayland = true;
+      disks = {
+        auto-partition.enable = true;
+        swap-size = "64G";
+        main-disk = "/dev/disk/by-id/23198F92-5359-4828-9735-097E46692060";
+        storage-disks = {
+          "small" = "/dev/disk/by-id/AB5CDF5C-A130-43B4-95D5-54C549F0EE4B";    
+          "medium" = "/dev/disk/by-id/85C78E27-7516-43FD-BC24-826E23942071";
+          "large" = "/dev/disk/by-id/0xe633c355"
+        };
+      };
     };
     other.home-manager = {
       enable = true;
