@@ -37,7 +37,8 @@ in {
             inline-diagnostics = {
               cursor-line = "hint";
               other-lines = "error";
-            };*/
+            };
+            */
           };
           keys.normal = {
             C-g = [":new" ":insert-output ${pkgs.gitui}" ":buffer-close!" ":redraw"];
