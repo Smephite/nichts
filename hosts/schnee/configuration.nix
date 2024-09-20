@@ -15,36 +15,10 @@
   networking.networkmanager.enable = true;
   environment.systemPackages = with pkgs; [networkmanager]; # cli tool for managing connections
 
-  boot = {
-    kernelParams = ["nvidia-drm.modeset=1"];
-    initrd.supportedFilesystems = ["zfs"];
-    supportedFilesystems = ["zfs"];
-    zfs.extraPools = ["bpool"]; # pool for /boot
-    loader.efi.efiSysMountPoint = "/boot/efi";
 
-    loader.grub = {
-      gfxpayloadEfi = "keep";
-      gfxmodeEfi = "1280x1024";
-      useOSProber = true;
-    };
-  };
-
-  services.displayManager = {
-    sessionPackages = [pkgs.hyprland]; # pkgs.gnome.gnome-session.sessions ];
-    defaultSession = "hyprland";
-    sddm = {
-      enable = true;
-      wayland.enable = true;
-    };
-  };
-
-  services.zfs.autoScrub.enable = true;
-  services.zfs.trim.enable = true;
 
   services.gnome.gnome-keyring.enable = true;
   # security.pam.services.sddm.enableGnomeKeyring = true;
-
-  boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 
   /*
     services.xserver.displayManager = {
@@ -140,11 +114,11 @@
       disks = {
         auto-partition.enable = true;
         swap-size = "64G";
-        main-disk = "/dev/disk/by-id/23198F92-5359-4828-9735-097E46692060";
+        main-disk = "/dev/disk/by-id/nvme-Samsung_SSD_960_PRO_512GB_S3EWNX0K401532W";
         storage-disks = {
-          "small" = "/dev/disk/by-id/AB5CDF5C-A130-43B4-95D5-54C549F0EE4B";    
-          "medium" = "/dev/disk/by-id/85C78E27-7516-43FD-BC24-826E23942071";
-          "large" = "/dev/disk/by-id/0xe633c355"
+          "small" = "/dev/disk/by-id/nvme-eui.1847418009800001001b448b44810a1a";    
+          "medium" = "/dev/disk/by-id/wwn-0x50026b7783226e2f";
+          "large" = "/dev/disk/by-id/wwn-0x5000c500bda8dba1";
         };
       };
     };
@@ -162,7 +136,6 @@
       vivado.enable = false;
       rofi.enable = true;
       zathura.enable = true;
-      stylix.enable = true;
       i3.enable = false;
       # neovim.enable = true;
       git = {

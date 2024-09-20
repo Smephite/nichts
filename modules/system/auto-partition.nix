@@ -6,8 +6,9 @@
 }: let
   cfg = config.modules.system.disks;
   inherit (config.modules.system) username;
+  inherit (config.users.users.${username}) uid;
   inherit (lib) mkIf types mapAttrs mkOption mkEnableOption;
-in {
+  in {
   options.modules.system.disks = {
     auto-partition.enable = mkEnableOption "disko";
     main-disk = mkOption {
@@ -48,6 +49,13 @@ in {
   };
 
   config = mkIf cfg.auto-partition.enable {
+    assertions = [
+      {
+        assertion = !((uid == null) && (cfg.storage-disks == {}));
+        message = "To mount storage disks, the uid (users.users.<name>.uid) must be set!";
+      }
+    ];
+
     services.btrfs.autoScrub = {
       enable = true;
       interval = "weekly";
@@ -81,6 +89,7 @@ in {
       #   };
       # };
     };
+
     # reference: https://haseebmajid.dev/posts/2024-07-30-how-i-setup-btrfs-and-luks-on-nixos-using-disko/
     disko.devices = {
       disk =
@@ -142,27 +151,25 @@ in {
         }
         // lib.mapAttrs (
           name: device: {
-            main = {
-              type = "disk";
-              device = device;
-              content = {
-                type = "gpt";
-                partitions = {
-                  "${name}${cfg.name-suffix}" = {
-                    size = "100%";
-                    label = "luks${cfg.name-suffix}";
+            type = "disk";
+            device = device;
+            content = {
+              type = "gpt";
+              partitions = {
+                "${name}${cfg.name-suffix}" = {
+                  size = "100%";
+                  label = "luks-${name}${cfg.name-suffix}";
+                  content = {
+                    type = "luks";
+                    name = "crypt-${name}${cfg.name-suffix}";
                     content = {
-                      type = "luks";
-                      name = "crypt-${name}${cfg.name-suffix}";
-                      content = {
-                        type = "btrfs";
-                        extraArgs = ["-L" "${name}${cfg.name-suffix}" "-f"];
-                        subvolumes = {
-                          "/${name}" = {
-                            mountpoint = "/disks/${name}";
-                            # make accessible for user
-                            mountOptions = ["subvol=${name}" "compress=zstd" "noatime" "-R" username];
-                          };
+                      type = "btrfs";
+                      extraArgs = ["-L" "${name}${cfg.name-suffix}" "-f"];
+                      subvolumes = {
+                        "/${name}" = {
+                          mountpoint = "/disk-${name}";
+                          # make accessible for user
+                          mountOptions = ["subvol=${name}" "compress=zstd" "noatime"];
                         };
                       };
                     };
@@ -172,7 +179,7 @@ in {
             };
           }
         )
-        cfg.storageDisks;
+        cfg.storage-disks;
     };
     fileSystems."/var/log".neededForBoot = true;
     # needed so that the non-boot disks are also decrypted
