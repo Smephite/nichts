@@ -16,6 +16,7 @@
 
   networking.hostName = "iso"; # Define your hostname.
   networking.hostId = "ff13dcb3";
+  networking.networkmanager.enable = true;
 
   environment.systemPackages = with pkgs; [networkmanager]; # cli tool for managing connections
 
