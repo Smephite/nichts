@@ -34,6 +34,7 @@ in {
     system = "x86_64-linux";
     specialArgs = {inherit lib inputs self;};
     modules = [
+      inputs.disko.nixosModules.disko
       inputs.stylix.nixosModules.stylix
       ../overlay.nix # TODO: move this somewhere else
       ./schnee

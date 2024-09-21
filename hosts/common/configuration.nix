@@ -33,6 +33,8 @@ in {
     package = pkgs.nixFlakes;
     extraOptions = "experimental-features = nix-command flakes";
   };
+  #TODO: MOVE this somewhere else
+  users.users.${username}.uid = 1000;
 
   modules = {
     programs = {
