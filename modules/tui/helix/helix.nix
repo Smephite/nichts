@@ -41,7 +41,7 @@ in {
             */
           };
           keys.normal = {
-            C-g = [":new" ":insert-output ${pkgs.gitui}" ":buffer-close!" ":redraw"];
+            "space".g = [":new" ":insert-output ${pkgs.lazygit}/bin/lazygit" ":buffer-close!" ":redraw"];
             esc = ["collapse_selection" "keep_primary_selection"];
             A-H = "goto_previous_buffer";
             A-L = "goto_next_buffer";

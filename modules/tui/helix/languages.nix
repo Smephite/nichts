@@ -9,6 +9,7 @@
   inherit (lib) mkIf getExe;
 in {
   config = mkIf cfg.enable {
+    environment.systemPackages = [ pkgs.lldb ]; # lldb debugger for C, C++, Rust etc.
     home-manager.users.${username} = {
       programs.helix.languages = {
         language = let
