@@ -37,51 +37,35 @@ in {
   #  services.nordvpn.enable = true;
 
   nixpkgs.config.permittedInsecurePackages = [
-    "electron-24.8.6" # NEEDED for Webcord
-    "electron-19.1.9"
   ];
 
   environment.systemPackages = with pkgs; [
-    # jetbrains.idea-community
-    # steam
-    # discord
-    # ani-cli
-    # okular
-    # # texliveFull
-    # # android-tools
-    # betterdiscordctl
-    # signal-desktop
-    # nextcloud-client
-    # (python3.withPackages python-packages)
-    # vlc
-    # audacity
-    # thunderbird
-    # eclipses.eclipse-java
-    # openjdk
-    # # gnomeExtensions.forge # Window manager
-    # # gnomeExtensions.disable-unredirect-fullscreen-windows
-    # # gnomeExtensions.appindicator
-    # # gnomeExtensions.auto-move-windows
-    # # gnomeExtensions.removable-drive-menu
-    # # pkgs.nordvpn # nur.repos.LuisChDev.nordvpn
-    # # openvpn # used by nordvpn because NordLynx crashes gnome when used in the gnome-extension
-    # # unstable.gnomeExtensions.gnordvpn-local
-    # # gnomeExtensions.pop-shell
-    # # gnomeExtensions.unite # remove window decoration
-    # material-icons
-    # material-design-icons
-    # libreoffice
-    # spotify
-    # # minecraft
-    # prismlauncher
-    # # window manager
-    # # hyprland
-    # hyprland-protocols
-    # flameshot
-    # feh
-    # gamescope
-    # xorg.xrandr # see configuration.nix: needed for xwayland applications to start on right monitor
-    # teamspeak_client
-    # wine
+    discord
+    ani-cli
+    okular
+    # texliveFull
+    # android-tools
+    betterdiscordctl
+    signal-desktop
+    nextcloud-client
+    (python3.withPackages python-packages)
+    vlc
+    audacity
+    thunderbird
+    openjdk
+    material-icons
+    material-design-icons
+    libreoffice
+    spotify
+    # minecraft
+    prismlauncher
+    # window manager
+    hyprland-protocols
+    flameshot
+    feh
+    gamescope
+    xorg.xrandr # see configuration.nix: needed for xwayland applications to start on right monitor
+    teamspeak_client
+    wine
   ];
 }
