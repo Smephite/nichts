@@ -9,7 +9,7 @@
   inherit (lib) mkIf getExe;
 in {
   config = mkIf cfg.enable {
-    environment.systemPackages = [ pkgs.lldb ]; # lldb debugger for C, C++, Rust etc.
+    environment.systemPackages = [pkgs.lldb]; # lldb debugger for C, C++, Rust etc.
     home-manager.users.${username} = {
       programs.helix.languages = {
         language = let
@@ -18,6 +18,11 @@ in {
             args = ["fmt" "-" "--ext" lang];
           };
         in [
+          {
+            name = "nix";
+            auto-format = true;
+            formatter.command = "${getExe pkgs.alejandra} -q";
+          }
           {
             name = "bash";
             auto-format = true;
