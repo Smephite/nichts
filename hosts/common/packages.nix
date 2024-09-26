@@ -45,6 +45,7 @@ in {
     python3
     nodejs
     gcc
+    gdb
     cargo
     rustc
     rust-analyzer
