@@ -4,8 +4,7 @@
   inputs,
   pkgs,
   ...
-}:
-let
+}: let
   inherit (lib) mkIf mkOption mkEnableOption types attrsToList mkMerge;
   username = config.modules.system.username;
   cfg = config.modules.programs.firefox;
@@ -123,10 +122,7 @@ in {
                 installation_mode = "force_installed";
               };
             }
-          ]; /* ++ (builtins.map 
-                  (pair: mkFirefoxExtension { inherit (pair) name; id = pair.value; } ) 
-                  (lib.attrsToList cfg.extensions));*/
-
+          ];
         };
       };
     };
