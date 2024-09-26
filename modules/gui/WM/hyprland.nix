@@ -89,10 +89,13 @@ in {
             monitors; #TODO: default value
           input = {
             kb_layout = "us";
-            sensitivity = 0;
             kb_variant = "altgr-intl";
+            kb_options = "compose:ALT_R";
+            sensitivity = 0;
             accel_profile = "flat";
             force_no_accel = true;
+            repeat_rate = 50;
+            repeat_delay = 200;
           };
           general = {
             gaps_in = 2;
