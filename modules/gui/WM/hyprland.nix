@@ -65,6 +65,11 @@ in {
         wl-clipboard
       ];
 
+      services.hypridle = {
+        enable = true;
+        settings.before_sleep_cmd = "${getExe pkgs.hyprlock}";
+      };
+
       wayland.windowManager.hyprland = {
         enable = true;
         systemd.enable = true;

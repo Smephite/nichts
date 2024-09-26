@@ -72,13 +72,6 @@ in {
       xdg.configFile."hypr/hyprlock.conf".source = "${hyprlock-catppuccin}/.config/hypr/hyprlock.conf";
       # xdg.configFile."background".source = "${pkgs.catppuccin-wallpapers}/mandelbrot/mandelbrot_gap_pink.png";
       # xdg.configFile."hypr/${flavor}.conf".source = "${hyprlock-catppuccin}/.config/hypr/${flavor}.conf";
-
-      services.hypridle = {
-        enable = true;
-        settings = {
-          before_sleep_cmd = "hyprlock";
-        };
-      };
     };
   };
 }
