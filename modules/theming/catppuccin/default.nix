@@ -11,6 +11,7 @@ with lib; let
 in {
   imports = [
     inputs.catppuccin.nixosModules.catppuccin
+    # TODO: maybe write a nice function for less boilerplate    
     (import ./waybar.nix {
       enabled = cfg.enable;
       inherit config lib;
@@ -19,7 +20,14 @@ in {
       enabled = cfg.enable;
       inherit config lib pkgs;
     })
+    /*
+    (import ./firefox.nix {
+      enabled = cfg.enable;
+      inherit config lib pkgs;
+    })*/
+
     ./hyprland.nix
+
   ];
 
   config = mkIf cfg.enable {

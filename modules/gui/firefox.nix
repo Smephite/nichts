@@ -5,14 +5,22 @@
   pkgs,
   ...
 }:
-with lib; let
+let
+  inherit (lib) mkIf mkOption mkEnableOption types attrsToList mkMerge;
   username = config.modules.system.username;
   cfg = config.modules.programs.firefox;
+  mkFirefoxExtension = name: id: {
+    name = id;
+    value = {
+      install_url = "https://addons.mozilla.org/firefox/downloads/latest/${name}/latest.xpi";
+      installation_mode = "force_installed";
+    };
+  };
 in {
   options.modules.programs.firefox = {
     enable = mkEnableOption "firefox";
     extensions = mkOption {
-      description = "firefox extensions (format like https://discourse.nixos.org/t/declare-firefox-extensions-and-settings/36265)";
+      description = "firefox extensions (formatted as { name = id; } attrset)";
       type = types.attrs;
       default = {};
     };
@@ -108,15 +116,17 @@ in {
 
           OfferToSaveLogins = false;
           font = "Lexend";
-          ExtensionSettings = lib.mkMerge [
+          ExtensionSettings = mkMerge [
             {
               "uBlock0@raymondhill.net" = {
                 install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
                 installation_mode = "force_installed";
               };
             }
-            cfg.extensions
-          ];
+          ]; /* ++ (builtins.map 
+                  (pair: mkFirefoxExtension { inherit (pair) name; id = pair.value; } ) 
+                  (lib.attrsToList cfg.extensions));*/
+
         };
       };
     };
