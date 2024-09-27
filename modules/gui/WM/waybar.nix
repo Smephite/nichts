@@ -166,28 +166,32 @@ in {
               tooltip = false;
             };
             backlight = {
-              format = "{percent}% {icon} ";
+              format = "{icon} ";
               format-icons = [
-                "󰌶"
-                "󱩎"
-                "󱩏"
-                "󱩐"
-                "󱩑"
-                "󱩒"
-                "󱩓"
-                "󱩔"
-                "󱩕"
-                "󱩖"
-                "󰛨"
+                "░"
+                "▁"
+                "▂"
+                "▃"
+                "▄"
+                "▅"
+                "▆"
+                "▇"
+                "█"
               ];
             };
             wireplumber = {
-              format = "{icon}  {volume}%";
+              format = "{icon}";
               format-muted = "󰖁";
               format-icons = [
-                ""
-                ""
-                "󰕾"
+                "░"
+                "▁"
+                "▂"
+                "▃"
+                "▄"
+                "▅"
+                "▆"
+                "▇"
+                "█"
               ];
             };
             tray = {
