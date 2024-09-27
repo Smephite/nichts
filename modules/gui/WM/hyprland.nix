@@ -81,7 +81,10 @@ in {
               then ["${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"]
               else []
             )
-            ++ ["${pkgs.swww}/bin/swww-daemon"];
+            ++ [
+              "${pkgs.swww}/bin/swww-daemon"
+              "${getExe pkgs.nextcloud-client}"
+            ];
           monitor =
             map (
               m: "${m.device},${builtins.toString m.resolution.x}x${builtins.toString m.resolution.y}@${builtins.toString m.refresh_rate},${builtins.toString m.position.x}x${builtins.toString m.position.y},${builtins.toString m.scale},transform,${builtins.toString m.transform}"
