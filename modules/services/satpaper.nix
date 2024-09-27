@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   pkgs,
   lib,
@@ -9,6 +10,9 @@ with lib;
   let
     username = config.modules.system.username;
     cfg = config.modules.services.satpaper;
+
+    # FIXME: make this generic!
+    system = "x86_64-linux";
     /*
     rustPlatform = pkgs.makeRustPlatform {
       cargo = pkgs.rust-bin.selectLatestNightlyWith (toolchain: toolchain.default);
@@ -34,20 +38,22 @@ with lib;
       };
     };
     */
-    satpaper = pkgs.stdenv.mkDerivation {
-      name = "satpaper";
-      version = "0.6.0";
-      src = pkgs.fetchurl {
-        url = "https://github.com/Colonial-Dev/satpaper/releases/download/0.6.0/satpaper-x86_64-unknown-linux-musl";
-        sha256 = "sha256-Z4Dc2/g7AcvLMme7dnnQgXPIrR9AImHXhqwWr2NHSNg=";
-      };
-      phases = ["installPhase" "patchPhase"];
-      installPhase = ''
-        mkdir -p $out/bin
-        cp $src $out/bin/satpaper
-        chmod +x $out/bin/satpaper
-      '';
-    };
+    # satpaper = pkgs.stdenv.mkDerivation {
+    #   name = "satpaper";
+    #   version = "0.6.0";
+    #   src = pkgs.fetchurl {
+    #     url = "https://github.com/Colonial-Dev/satpaper/releases/download/0.6.0/satpaper-x86_64-unknown-linux-musl";
+    #     sha256 = "sha256-Z4Dc2/g7AcvLMme7dnnQgXPIrR9AImHXhqwWr2NHSNg=";
+    #   };
+    #   phases = ["installPhase" "patchPhase"];
+    #   installPhase = ''
+    #     mkdir -p $out/bin
+    #     cp $src $out/bin/satpaper
+    #     chmod +x $out/bin/satpaper
+    #   '';
+    # };
+
+    satpaper = inputs.satpaper.packages.${system}.default;
   in {
     options.modules.services.satpaper = {
       enable = mkEnableOption "satpaper";
