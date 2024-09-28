@@ -1,11 +1,5 @@
 # which default packages to use for the system
-{
-  inputs,
-  outputs,
-  profile-config,
-  pkgs,
-  ...
-}: let
+{pkgs, ...}: let
   python-packages = ps:
     with ps; [
       pandas
@@ -30,14 +24,7 @@ in {
     unzip
     calc
     rsync
-    # neofetch
-    # fastfetch has the option to set a timeout for
-    #   for each module, which makes it dramatically faster
-    #   as counting the number of packages takes over 800 (!!!) ms,
-    #   which makes it very unpleasant to use as default thing
-    #   to display when starting a terminal
-    # fastfetch
-    zathura
+    okular
     wlr-randr
     wget
     gnumake
@@ -52,7 +39,6 @@ in {
     clippy
     lsof
     htop
-    okular
     smartmontools
     # networkmanager
     pkg-config
