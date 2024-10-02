@@ -28,11 +28,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     satpaper = {
       url = "github:Dragyx/satpaper";
       inputs.nixpkgs.follows = "nixpkgs";

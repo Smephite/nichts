@@ -1,7 +1,6 @@
 {
   inputs,
   config,
-  pkgs,
   lib,
   ...
 }:
@@ -13,45 +12,6 @@ with lib;
 
     # FIXME: make this generic!
     system = "x86_64-linux";
-    /*
-    rustPlatform = pkgs.makeRustPlatform {
-      cargo = pkgs.rust-bin.selectLatestNightlyWith (toolchain: toolchain.default);
-      rustc = pkgs.rust-bin.selectLatestNightlyWith (toolchain: toolchain.default);
-    };
-    satpaper = rustPlatform.buildRustPackage rec {
-      pname = "satpaper";
-      version = "0.6.0";
-
-      src = pkgs.fetchFromGitHub {
-        owner = "Colonial-Dev";
-        repo = "satpaper";
-        rev = "b2016c63ffeafc70538fd2b02fa60d1c077fd694";
-        hash = "sha256-NjHgpHsDOXuMcaDPoE6AEDVyjAMWRtoZ0fQ2uJiRwDE=";
-      };
-      cargoHash = "sha256-lD9KZcQ9bKnA1qdvCJfE0uJrP1lWVTlTS7PM5PKLpDA=";
-
-      meta = {
-        description = "Display near-real-time satellite imagery on your desktop.";
-        homepage = "https://github.com/Colonial-Dev/satpaper";
-        license = lib.licenses.mit; #TODO: add apache as well
-        maintainers = [];
-      };
-    };
-    */
-    # satpaper = pkgs.stdenv.mkDerivation {
-    #   name = "satpaper";
-    #   version = "0.6.0";
-    #   src = pkgs.fetchurl {
-    #     url = "https://github.com/Colonial-Dev/satpaper/releases/download/0.6.0/satpaper-x86_64-unknown-linux-musl";
-    #     sha256 = "sha256-Z4Dc2/g7AcvLMme7dnnQgXPIrR9AImHXhqwWr2NHSNg=";
-    #   };
-    #   phases = ["installPhase" "patchPhase"];
-    #   installPhase = ''
-    #     mkdir -p $out/bin
-    #     cp $src $out/bin/satpaper
-    #     chmod +x $out/bin/satpaper
-    #   '';
-    # };
 
     satpaper = inputs.satpaper.packages.${system}.default;
   in {

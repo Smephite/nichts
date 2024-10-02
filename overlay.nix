@@ -1,8 +1,4 @@
-{
-  inputs,
-  outputs,
-  ...
-}: let
+{inputs, ...}: let
   add_nur = self: super: {
     # nur-no-pkgs = import inputs.nur-no-pkgs { pkgs = inputs.nixpkgs.legacyPackages.${profile-config.system}; nurpkgs = inputs.nixpkgs.legacyPackages.${profile-config.system}; };
     nur = import inputs.nur {
@@ -51,6 +47,5 @@ in {
     add_custom_scripts
     add_catppuccin_wallpapers
     add_nixpkgs_small
-    inputs.rust-overlay.overlays.default
   ];
 }
