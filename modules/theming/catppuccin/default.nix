@@ -4,10 +4,10 @@
   pkgs,
   lib,
   ...
-}:
-with lib; let
+}: let
   username = config.modules.system.username;
   cfg = config.modules.theming.themes.catppuccin;
+  inherit (lib) mkIf mkOption types;
 in {
   imports = [
     inputs.catppuccin.nixosModules.catppuccin
@@ -47,13 +47,34 @@ in {
   };
   options = {
     modules.theming.themes.catppuccin = {
-      flavor = lib.mkOption {
-        type = with types;
-          enum ["latte" "frappe" "macchiate" "mocha"];
+      flavor = mkOption {
+        type =
+          types.enum ["latte" "frappe" "macchiate" "mocha"];
         default = "mocha";
         example = "latte";
         description = "Select which catppuccin flavor to use";
       }; #TODO: add accents
+      accent = mkOption {
+        type = types.enum [
+          "rosewater"
+          "flamingo"
+          "pink"
+          "mauve"
+          "red"
+          "maroon"
+          "peach"
+          "yellow"
+          "green"
+          "teal"
+          "sky"
+          "sapphire"
+          "blue"
+          "lavender"
+        ];
+        default = "mauve";
+        example = "maroon";
+        description = "Set an accent color where possible";
+      };
     };
   };
 }
