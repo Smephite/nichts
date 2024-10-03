@@ -131,7 +131,6 @@
       # vivado.enable = true;
       rofi.enable = true;
       zathura.enable = true;
-      stylix.enable = false;
       steam = {
         enable = true;
         gamescope = true;

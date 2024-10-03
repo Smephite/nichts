@@ -1,32 +1,23 @@
 # nichts
+
 My personal collection of NixOS configuration files
 
 ## TODO
-- [ ] remove the options directory and move configuration to a new modules/hardware (or something along the lines)
-- [ ] add a proper neovim configuration with nix
-- [ ] form subsets of packages and include options for adding them (e.g. for nix development, rust, etc.)
 
+- [ ] remove the options directory and move configuration to a new
+      modules/hardware (or something along the lines)
 
-## Project Structure 
+## Project Structure
 
 ```
 .
-├── assets
-│  └── wallpaper
-│     └── default.png
 ├── flake.lock
 ├── flake.nix
 ├── hosts
 │  ├── common
 │  │  ├── configuration.nix
 │  │  ├── default.nix
-│  │  ├── packages.nix
-│  │  └── theming
-│  │     ├── default.nix
-│  │     ├── wallpapers
-│  │     │  └── default.jpg
-│  │     ├── waybar-style.css
-│  │     └── waybar-style.css.bak
+│  │  └── packages.nix
 │  ├── default.nix
 │  ├── flocke
 │  │  ├── configuration.nix
@@ -36,6 +27,8 @@ My personal collection of NixOS configuration files
 │  ├── iso
 │  │  ├── configuration.nix
 │  │  ├── default.nix
+│  │  ├── hardware-configuration.nix
+│  │  ├── hardware-configuration2.nix
 │  │  └── packages.nix
 │  └── schnee
 │     ├── configuration.nix
@@ -74,7 +67,6 @@ My personal collection of NixOS configuration files
 │  │  ├── rofi.nix
 │  │  ├── schizofox.nix
 │  │  ├── steam.nix
-│  │  ├── stylix.nix
 │  │  ├── vesktop.nix
 │  │  ├── vivado.nix
 │  │  ├── WM
@@ -97,21 +89,34 @@ My personal collection of NixOS configuration files
 │  │  ├── firewall.nix
 │  │  ├── pipewire.nix
 │  │  ├── satpaper.nix
-│  │  ├── satpaper_unsupported.patch
 │  │  └── ssh.nix
+│  ├── system
+│  │  ├── auto-partition.nix
+│  │  ├── bluetooth.nix
+│  │  ├── default.nix
+│  │  └── nix
+│  │     ├── default.nix
+│  │     └── nix.nix
 │  ├── theming
 │  │  ├── base
 │  │  │  └── default.nix
 │  │  ├── catppuccin
 │  │  │  ├── cursor.nix
 │  │  │  ├── default.nix
+│  │  │  ├── firefox.nix
 │  │  │  ├── hyprland.nix
+│  │  │  ├── test_waybar_with_theme.sh
+│  │  │  ├── waybar.css
 │  │  │  └── waybar.nix
 │  │  ├── default.nix
 │  │  └── options.nix
 │  └── tui
 │     ├── btop.nix
 │     ├── default.nix
+│     ├── helix
+│     │  ├── default.nix
+│     │  ├── helix.nix
+│     │  └── languages.nix
 │     ├── neovim.nix
 │     ├── newsboat.nix
 │     └── yazi.nix
@@ -120,10 +125,8 @@ My personal collection of NixOS configuration files
 │  ├── boot
 │  │  └── grub-boot.nix
 │  ├── common
-│  │  ├── bluetooth.nix
 │  │  ├── gpu
 │  │  │  ├── nvidia.nix
-│  │  │  ├── nvidia_535_wayland.nix
 │  │  │  └── nvidia_wayland.nix
 │  │  ├── networking.nix
 │  │  ├── pin-registry.nix
@@ -132,6 +135,5 @@ My personal collection of NixOS configuration files
 │     ├── fonts.nix
 │     └── monitors.nix
 ├── overlay.nix
-├── README.md
-```
+└── README.md
 ```

@@ -7,7 +7,6 @@ in {
     specialArgs = {inherit lib inputs self;};
     modules = [
       inputs.disko.nixosModules.disko
-      inputs.stylix.nixosModules.stylix
       ../overlay.nix # todo: move this somewhere else
       ../modules
       inputs.home-manager.nixosModules.home-manager
@@ -22,7 +21,6 @@ in {
     specialArgs = {inherit lib inputs self;};
     modules = [
       inputs.disko.nixosModules.disko
-      inputs.stylix.nixosModules.stylix
       ../overlay.nix # todo: move this somewhere else
       ./flocke
       ../modules
@@ -35,7 +33,6 @@ in {
     specialArgs = {inherit lib inputs self;};
     modules = [
       inputs.disko.nixosModules.disko
-      inputs.stylix.nixosModules.stylix
       ../overlay.nix # TODO: move this somewhere else
       ./schnee
       ../modules

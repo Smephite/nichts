@@ -16,6 +16,7 @@ in {
     # nheko
     neovim
     typst
+    prismlauncher
     cm_unicode
     eza # exa is unmaintained
     hwinfo
