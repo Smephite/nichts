@@ -72,7 +72,6 @@ in {
           device = "nodev";
           efiSupport = true;
           enableCryptodisk = true;
-          useOSProber = true;
           extraEntries = ''
             menuentry "Reboot" {
               reboot
