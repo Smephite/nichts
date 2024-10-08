@@ -150,7 +150,6 @@
       rofi.enable = true;
       zathura.enable = true;
       i3.enable = false;
-      # neovim.enable = true;
       git = {
         enable = true;
         userName = "Dragyx";
@@ -159,8 +158,6 @@
       };
       starship.enable = true;
       neovim-old.enable = true;
-      # nixvim.enable = true;
-      # gamescope.enable = true;
     };
     services = {
       pipewire.enable = true;
