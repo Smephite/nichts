@@ -51,6 +51,10 @@ in {
             language-servers = ["dprint" "typescript-language-server"];
           }
           {
+            name = "java";
+            language-servers = ["jdtls"];
+          }
+          {
             name = "json";
             formatter = extraFormatter "json";
           }
