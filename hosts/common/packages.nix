@@ -26,7 +26,7 @@ in {
     unzip
     calc
     rsync
-    okular
+    evince
     wlr-randr
     wget
     gnumake
