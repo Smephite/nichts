@@ -48,7 +48,6 @@ in {
     # easyeffects currently throws an error
     nix-index
     # --------- optional
-    gnome.eog
     sherlock
     nautilus
     ranger
