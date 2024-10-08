@@ -1,11 +1,4 @@
-{
-  inputs,
-  outputs,
-  config,
-  pkgs,
-  profile-config,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [../../options/common/gpu/nvidia.nix];
 
   networking.hostId = "aefab460";
@@ -146,6 +139,7 @@
     };
     programs = {
       steam.enable = true;
+      steam.gamescope = true;
       firefox.enable = true;
       vesktop.enable = false;
       btop.enable = true;
@@ -166,6 +160,7 @@
       starship.enable = true;
       neovim-old.enable = true;
       # nixvim.enable = true;
+      # gamescope.enable = true;
     };
     services = {
       pipewire.enable = true;
