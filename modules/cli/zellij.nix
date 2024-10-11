@@ -16,7 +16,7 @@ in {
         settings = {
           #$ on_force_close = "quit";
           pane_frames = false;
-          # default_layout = "normal";
+          default_layout = "compact";
           ui = {
             pane_frames = {
               # hide_session_name = true;
