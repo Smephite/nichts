@@ -65,6 +65,11 @@ in {
         wl-clipboard
       ];
 
+      xdg.desktopEntries.hyprlock = {
+        name = "Hyprlock";
+        exec = "${getExe pkgs.hyprlock}";
+      };
+
       services.hypridle = {
         enable = true;
         settings.before_sleep_cmd = "${getExe pkgs.hyprlock}";
@@ -140,7 +145,7 @@ in {
           bind = [
             # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
             "SUPER, RETURN, exec, footclient"
-            "SUPER SHIFT, RETURN, exec, rofi -show drun"
+            "SUPER SHIFT, RETURN, exec, rofi -show drun -show-icons"
             "SUPER SHIFT, Q, killactive,"
             "SUPER, M, exit, "
             "SUPER, B, exec, footclient --title=bluetuith ${pkgs.bluetuith}/bin/bluetuith"
