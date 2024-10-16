@@ -19,14 +19,6 @@
   systemd.tmpfiles.rules = [
     "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
   ];
-  hardware.opengl.extraPackages = with pkgs; [
-    # VA-API and VDPAU
-    vaapiVdpau
-
-    # AMD ROCm OpenCL runtime
-    rocmPackages.clr
-    rocmPackages.clr.icd
-  ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/2aaba0f2-e8dc-4583-a81e-2d35cc238e79";
