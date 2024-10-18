@@ -18,11 +18,12 @@ in {
 
   config = mkIf cfg.enable {
     home-manager.users.${username} = {
+      # FIXME: move to theming
       xdg.configFile."zathura/catppuccin-mocha".source = "${catppuccin}/src/catppuccin-mocha";
       programs.zathura = {
         enable = true;
         extraConfig = ''
-          include catppuccin-mocha
+          include catppuccin-latte
         '';
         options = {
           selection-clipboard = "clipboard";
