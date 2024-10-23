@@ -14,6 +14,7 @@ in {
     (python3.withPackages python-packages)
     vim
     # nheko
+    calibre
     element-desktop
     neovim
     typst
