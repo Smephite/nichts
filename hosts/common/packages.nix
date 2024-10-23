@@ -71,7 +71,6 @@ in {
     parted
     gnufdisk
 
-    kdeconnect
     yazi
 
     # nix formatter
