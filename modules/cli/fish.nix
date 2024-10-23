@@ -63,6 +63,7 @@ in {
             ls = "eza --icons";
             la = "eza --icons -a";
             ll = "eza --icons -lha";
+            lg = "lazygit";
             ns = "nix repl --expr 'import <nixpkgs>{}'";
             nv = "nvim";
             gpl = "curl https://www.gnu.org/licenses/gpl-3.0.txt -o LICENSE";
