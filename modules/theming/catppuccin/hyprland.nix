@@ -60,6 +60,11 @@ with lib; let
       runHook postInstall
     '';
   };
+  # FIXME: use a better source for the image
+  catppuccin-icon = pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/logos/exports/1544x1544_circle.png";
+    hash = "sha256-A85wBdJ2StkgODmxtNGfbNq8PU3G3kqnBAwWvQXVtqo=";
+  };
 in {
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
@@ -70,6 +75,7 @@ in {
     # hyprland settings
     home-manager.users.${username} = {
       xdg.configFile."hypr/hyprlock.conf".source = "${hyprlock-catppuccin}/.config/hypr/hyprlock.conf";
+      xdg.desktopEntries.hyprlock.icon = "${catppuccin-icon}";
       # xdg.configFile."background".source = "${pkgs.catppuccin-wallpapers}/mandelbrot/mandelbrot_gap_pink.png";
       # xdg.configFile."hypr/${flavor}.conf".source = "${hyprlock-catppuccin}/.config/hypr/${flavor}.conf";
     };
