@@ -3,11 +3,11 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
   cfg = config.modules.WM.hyprland;
   username = config.modules.system.username;
   monitors = config.modules.system.monitors;
+  inherit (lib) mkEnableOption mkIf getExe;
 in {
   options.modules.WM.hyprland = {
     enable = mkEnableOption "hyprland";
@@ -31,7 +31,8 @@ in {
       libdrm
       dunst
       pciutils # lspci is needed by hyprland
-      sway-contrib.grimshot
+      grimblast
+      satty
     ];
 
     programs.xwayland.enable = true;
@@ -152,8 +153,8 @@ in {
             "SUPER, V, togglefloating, "
             "SUPER, P, pseudo, # dwindle"
             "SUPER, S, togglesplit, # dwindle"
-            "SUPER, C, exec, /home/vali/.config/wallpaper/colorscheme-setter"
-            ",PRINT, exec, mkdir -p ~/Pictures/Screenshots && ${pkgs.sway-contrib.grimshot}/bin/grimshot savecopy anything ~/Pictures/Screenshots/screenshot-$(date -Iminutes).png"
+            ",PRINT, exec, mkdir -p ~/Pictures/Screenshots && ${getExe pkgs.grimblast} copysave area ~/Pictures/Screenshots/screenshot-annotated-$(date -Iminutes).png"
+            "SHIFT,PRINT, exec, mkdir -p ~/Pictures/Screenshots && ${getExe pkgs.grimblast} copysave area - | ${getExe pkgs.satty} -f -o ~/Pictures/Screenshots/screenshot-annotated-$(date -Iminutes).png - "
 
             # Move focus with mainMod + arrow keys"
             "SUPER, h, movefocus, l"
