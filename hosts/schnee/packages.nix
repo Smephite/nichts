@@ -24,11 +24,9 @@
     ];
 in {
   environment.systemPackages = with pkgs; [
-    discord
     ani-cli
     # texliveFull
     # android-tools
-    betterdiscordctl
     signal-desktop
     nextcloud-client
     (python3.withPackages python-packages)
