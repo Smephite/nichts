@@ -72,8 +72,6 @@ in {
     parted
     gnufdisk
 
-    yazi
-
     # nix formatter
     alejandra
   ];
