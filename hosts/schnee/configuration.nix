@@ -141,7 +141,7 @@
       steam.enable = true;
       steam.gamescope = true;
       firefox.enable = true;
-      vesktop.enable = false;
+      vesktop.enable = true;
       btop.enable = true;
       mpv.enable = true;
       schizofox.enable = false;
