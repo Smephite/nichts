@@ -12,7 +12,7 @@ in {
     home-manager.users.${username} = {
       programs.zellij = {
         enable = true;
-        enableFishIntegration = true;
+        # enableFishIntegration = true;
         settings = {
           #$ on_force_close = "quit";
           pane_frames = false;
@@ -32,7 +32,7 @@ in {
         };
       };
       # TODO: move this somewhere else
-      programs.foot.settings.main.shell = "${pkgs.zellij}/bin/zellij";
+      # programs.foot.settings.main.shell = "${pkgs.zellij}/bin/zellij";
     };
   };
 }
