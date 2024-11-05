@@ -24,6 +24,7 @@ in {
 
   #TODO: MOVE this somewhere else
   users.users.${username}.uid = 1000;
+  programs.nix-ld.enable = true;
 
   modules = {
     programs = {
