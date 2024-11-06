@@ -2,8 +2,9 @@
   fonts.packages = with pkgs; [
     material-design-icons
     (nerdfonts.override {
-      fonts = ["JetBrainsMono"];
+      fonts = ["JetBrainsMono" "Iosevka"];
     })
+    iosevka
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-cjk-serif
