@@ -1,5 +1,4 @@
 {
-  inputs,
   config,
   pkgs,
   lib,
@@ -7,12 +6,6 @@
 }: let
   username = config.modules.system.username;
 in {
-  imports = [
-    ../../options/common/pin-registry.nix
-    ../../options/common/preserve-system.nix
-    ../../options/desktop/fonts.nix
-  ];
-
   home-manager.backupFileExtension = "bak";
   networking.dhcpcd.wait = "background";
   services.locate = {
@@ -27,6 +20,11 @@ in {
   programs.nix-ld.enable = true;
 
   modules = {
+    system = {
+      bluetooth.enable = true;
+      network.enable = true;
+      fonts.enable = true;
+    };
     programs = {
       foot.enable = lib.mkDefault true;
       foot.server = lib.mkDefault true;

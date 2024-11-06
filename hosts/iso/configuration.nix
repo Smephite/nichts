@@ -1,12 +1,10 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }: {
   imports = [
     ./hardware-configuration.nix #TODO: find a way to do this without being system specific
-    ../../options/desktop/monitors.nix
     ../common/default.nix
   ];
 

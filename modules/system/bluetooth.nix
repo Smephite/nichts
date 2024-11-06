@@ -4,7 +4,6 @@
   pkgs,
   ...
 }: let
-  username = config.modules.system.username;
   cfg = config.modules.system.bluetooth;
 in {
   options.modules.system.bluetooth.enable = lib.mkEnableOption "bluetooth";

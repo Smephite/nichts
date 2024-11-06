@@ -17,7 +17,6 @@
 
   services.logrotate.checkConfig = false;
 
-  networking.hostName = "flocke"; # Define your hostname.
   networking.hostId = "adf23c31";
   networking.interfaces.wlp1s0.useDHCP = true;
   networking.networkmanager.enable = true;
@@ -65,7 +64,7 @@
       session = "Hyprland";
     };
     system = rec {
-      hostname = "flocke";
+      network.hostname = "flocke";
       username = "dragyx";
       gitPath = "/home/${username}/repos/nichts";
       bluetooth.enable = true;

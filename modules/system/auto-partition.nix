@@ -1,13 +1,12 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }: let
   cfg = config.modules.system.disks;
   inherit (config.modules.system) username;
   inherit (config.users.users.${username}) uid;
-  inherit (lib) mkIf types mapAttrs mkOption mkEnableOption;
+  inherit (lib) mkIf types mkOption mkEnableOption;
 in {
   options.modules.system.disks = {
     auto-partition.enable = mkEnableOption "disko";
@@ -82,11 +81,6 @@ in {
           '';
         };
       };
-      # initrd.luks.devices = {
-      #   cryptroot = {
-      #     preLVM = true;
-      #   };
-      # };
     };
 
     # reference: https://haseebmajid.dev/posts/2024-07-30-how-i-setup-btrfs-and-luks-on-nixos-using-disko/
