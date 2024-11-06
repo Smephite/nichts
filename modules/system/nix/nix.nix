@@ -1,11 +1,4 @@
-{
-  inputs,
-  pkgs,
-  ...
-}: {
-  imports = [
-    inputs.lix-module.nixosModules.default
-  ];
+{pkgs, ...}: {
   # partly taken from github.com/bloxx12/nichts
 
   nix = {
