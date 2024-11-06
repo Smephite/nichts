@@ -33,6 +33,7 @@ in {
     gnumake
     zoxide
     python3
+    sioyek
     nodejs
     gcc
     gdb
