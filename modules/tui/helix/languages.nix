@@ -9,9 +9,14 @@
   inherit (lib) mkIf getExe;
 in {
   config = mkIf cfg.enable {
-    environment.systemPackages = [
-      pkgs.lldb # lldb debugger for C, C++, Rust etc.
-      pkgs.jdt-language-server # java language server
+    environment.systemPackages = with pkgs; [
+      lldb # lldb debugger for C, C++, Rust etc.tinymist
+      jdt-language-server # java language server
+      tinymist # typst lsp
+      nil # nix lsp
+      bash-language-server # Bash lsp
+      shellcheck
+      marksman # markdown
     ];
     home-manager.users.${username} = {
       programs.helix.languages = {
@@ -55,7 +60,7 @@ in {
           }
           {
             name = "java";
-            auto-format = true;
+            auto-format = false;
             language-servers = ["jdtls"];
           }
           {
