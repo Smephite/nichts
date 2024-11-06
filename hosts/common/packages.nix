@@ -13,8 +13,8 @@ in {
   environment.systemPackages = with pkgs; [
     (python3.withPackages python-packages)
     vim
+    bat
     # nheko
-    calibre
     element-desktop
     neovim
     typst
@@ -72,9 +72,9 @@ in {
     parted
     gnufdisk
 
-    yazi
-
     # nix formatter
     alejandra
+
+    radare2
   ];
 }
