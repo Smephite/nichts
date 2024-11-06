@@ -5,6 +5,7 @@ _: {
     ./gtk.nix
     ./qt.nix
     ./rofi.nix
+    ./waybar.nix
     ./WM
   ];
 }
