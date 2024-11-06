@@ -1,7 +1,10 @@
 _: {
   imports = [
-    ./bluetooth.nix
     ./auto-partition.nix
+    ./bluetooth.nix
+    ./home-manager.nix
     ./nix
+    ./system.nix
+    ./xdg.nix
   ];
 }
