@@ -1,7 +1,14 @@
 _: {
   imports = [
-    ./bluetooth.nix
     ./auto-partition.nix
+    ./bluetooth.nix
+    ./fonts.nix
+    ./gpu
+    ./home-manager.nix
+    ./monitors.nix
+    ./network.nix
     ./nix
+    ./preserve-system.nix
+    ./system.nix
   ];
 }

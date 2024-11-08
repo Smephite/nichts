@@ -1,6 +1,4 @@
 {pkgs, ...}: {
-  imports = [../../options/common/gpu/nvidia.nix];
-
   networking.hostId = "aefab460";
   networking.interfaces.enp7s0.useDHCP = true;
   systemd.services.zfs-mount.enable = true;
@@ -9,14 +7,7 @@
   environment.systemPackages = with pkgs; [networkmanager]; # cli tool for managing connections
 
   services.gnome.gnome-keyring.enable = true;
-  # security.pam.services.sddm.enableGnomeKeyring = true;
 
-  /*
-    services.xserver.displayManager = {
-    sddm.enable = true;
-    sessionPackages = [  ];
-  };
-  */
   boot = {
     kernelParams = [];
     loader = {
@@ -46,15 +37,6 @@
   security.polkit.enable = true;
   # services.xserver.displayManager.sessionPackages = [ pkgs.hyprland pkgs.sway ];
 
-  # Important for gnome to recognise the monitors.xml that is written below
-  # services.xserver.displayManager.gdm.wayland = true;
-
-  # monitor config for gdm (wayland)
-
-  # systemd.tmpfiles.rules = [
-  #   "L+ /run/gdm/.config/monitors.xml - - - - ${pkgs.writeText "gdm-monitors.xml" (builtins.readFile ./monitors.xml)}"
-  # ];
-
   #TODO: Add to  modules.system.monitors as option
   home-manager.users."dragyx".wayland.windowManager.hyprland.settings = {
     workspace = [
@@ -74,7 +56,7 @@
       hostname = "schnee";
       username = "dragyx";
       gitPath = "/home/${username}/repos/nichts";
-      bluetooth.enable = true;
+      nvidia.enable = true;
       monitors = [
         {
           name = "Main";

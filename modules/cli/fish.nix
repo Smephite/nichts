@@ -4,11 +4,11 @@
   lib,
   pkgs,
   ...
-}:
-with lib; let
+}: let
   cfg = config.modules.programs.fish;
   username = config.modules.system.username;
   gitPath = config.modules.system.gitPath;
+  inherit (lib) mkIf mkEnableOption mkOption types mkForce mkMerge getExe;
 in {
   options.modules.programs.fish = {
     enable = mkEnableOption "fish";
@@ -27,7 +27,7 @@ in {
       enable = true;
       enableFishIntegration = true;
     };
-    programs.command-not-found.enable = lib.mkForce false;
+    programs.command-not-found.enable = mkForce false;
     users.users.${username}.shell = pkgs.fish;
 
     environment = {
@@ -53,16 +53,18 @@ in {
             inherit (pkgs.fishPlugins.puffer) src;
           }
         ];
-        shellAbbrs = lib.mkMerge [
+        shellAbbrs = mkMerge [
           {
             rebuild = "nh os switch";
             update = "nh os switch --update";
+            cat = "bat --plain";
             cl = "clear";
             cp = "cp -ivr";
             mv = "mv -iv";
             ls = "eza --icons";
             la = "eza --icons -a";
             ll = "eza --icons -lha";
+            zj = "zellij";
             lg = "lazygit";
             ns = "nix repl --expr 'import <nixpkgs>{}'";
             nv = "nvim";

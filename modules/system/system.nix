@@ -7,11 +7,6 @@ with lib; let
   cfg = config.modules.system;
 in {
   options.modules.system = {
-    hostname = mkOption {
-      description = "hostname for this system";
-      type = types.str;
-    };
-
     username = mkOption {
       description = "username for this system";
       type = types.str;
@@ -24,8 +19,6 @@ in {
   };
 
   config = {
-    networking.hostName = cfg.hostname;
-
     users.users.${cfg.username} = {
       isNormalUser = true;
       extraGroups = ["wheel" "adbusers"];

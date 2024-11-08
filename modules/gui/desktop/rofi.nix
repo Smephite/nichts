@@ -21,7 +21,7 @@ in {
   }; #FIXME: move this to the (hopefully then) refactored options directory
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
+    environment.systemPackages = [
       rofi-pkg
     ];
     home-manager.users.${username} = {

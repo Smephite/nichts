@@ -13,6 +13,7 @@ in {
   environment.systemPackages = with pkgs; [
     (python3.withPackages python-packages)
     vim
+    bat
     # nheko
     calibre
     element-desktop
@@ -33,6 +34,7 @@ in {
     gnumake
     zoxide
     python3
+    sioyek
     nodejs
     gcc
     gdb
@@ -74,5 +76,7 @@ in {
 
     # nix formatter
     alejandra
+
+    radare2
   ];
 }

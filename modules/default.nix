@@ -3,7 +3,6 @@ _: {
     ./cli
     ./gui
     ./tui
-    ./other
     ./services
     ./theming
     ./system

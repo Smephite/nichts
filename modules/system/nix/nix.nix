@@ -1,16 +1,15 @@
 {
   inputs,
+  lib,
   pkgs,
   ...
 }: {
-  imports = [
-    inputs.lix-module.nixosModules.default
-  ];
   # partly taken from github.com/bloxx12/nichts
 
   nix = {
     package = pkgs.lix;
 
+    registry = lib.mapAttrs (_: v: {flake = v;}) inputs;
     settings = {
       extra-experimental-features = [
         "flakes" # flakes
@@ -20,6 +19,7 @@
       substituters = [
         "https://helix.cachix.org" # a cache for helix
       ];
+      warn-dirty = false;
       trusted-public-keys = [
         "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
       ];

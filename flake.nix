@@ -1,5 +1,5 @@
 {
-  description = "lololo";
+  description = "My personal NixOS configuration";
   outputs = inputs @ {
     self,
     nixpkgs,
@@ -12,11 +12,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     # nixpkgs-small receives pull requests faster
     nixpkgs-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
-
-    lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
