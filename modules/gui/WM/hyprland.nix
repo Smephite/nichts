@@ -93,7 +93,7 @@ in {
             ];
           monitor =
             map (
-              m: "${m.device},${builtins.toString m.resolution.x}x${builtins.toString m.resolution.y}@${builtins.toString m.refresh_rate},${builtins.toString m.position.x}x${builtins.toString m.position.y},${builtins.toString m.scale},transform,${builtins.toString m.transform}"
+              m: "${m.device},${toString m.resolution.x}x${toString m.resolution.y}@${toString m.refresh_rate},${toString m.position.x}x${toString m.position.y},${toString m.scale},transform,${toString m.transform}"
             )
             monitors; #TODO: default value
           input = {
