@@ -4,9 +4,6 @@ My personal collection of NixOS configuration files
 
 ## TODO
 
-- [ ] remove the options directory and move configuration to a new
-      modules/hardware (or something along the lines)
-
 ## Project Structure
 
 ```
