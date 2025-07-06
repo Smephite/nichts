@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }: {
@@ -46,8 +47,7 @@
     layout = "de";
     variant = "";
   };
-
-  # Configure console keymap
+    # Configure console keymap
   console.keyMap = "de";
 
   # Enable CUPS to print documents.
@@ -63,6 +63,53 @@
       username = "kai";
       gitPath = "/home/${username}/repos/nichts";
       bluetooth.enable = true;
+
+      monitors = [
+        {
+          name = "Gigabyte";
+          device = "DP-1";
+          resolution = {
+            x = 3440;
+            y = 1440;
+          };
+          scale = 1.3;
+          refresh_rate = 144.0;
+          position = {
+            x = 0;
+            y = 0;
+          };
+        }
+        {
+          name = "BenQ";
+          device = "DP-2";
+          resolution = {
+            x = 1920;
+            y = 1080;
+          };
+          scale = 1.0;
+          refresh_rate = 60.0;
+          position = {
+            x = 3440;
+            y = 0;
+          };
+          transform = 3;
+        }
+        {
+          name = "Dell";
+          device = "DP-3";
+          resolution = {
+            x = 2560;
+            y = 1440;
+          };
+          scale = 1.0;
+          refresh_rate = 60.0;
+          position = {
+            x = -2560;
+            y = 0;
+          };
+        }
+      ];
+
       # wayland = true;
     };
     other.home-manager = {
@@ -90,6 +137,32 @@
       };
     };
   };
+
+    ## TODO Move somewhere else
+  services.xserver.displayManager = {
+    setupCommands =
+      lib.strings.concatMapStrings (
+        m: ''            xrandr --output "${m.device}" \
+                    --mode "${builtins.toString m.resolution.x}x${builtins.toString m.resolution.x}" \
+                    --rate "${builtins.toString m.refresh_rate}" \
+                    --pos  "${builtins.toString m.position.x}x${builtins.toString m.position.x}" \
+                    --pos  "${builtins.toString m.position.x}x${builtins.toString m.position.x}" \
+                    --rotate "${
+            if m.transform == 0
+            then "normal"
+            else if m.transform == 1
+            then "left"
+            else if m.transform == 2
+            then "inverted"
+            else if m.transform == 3
+            then "right"
+            else "normal"
+          }\n"
+        ''
+      )
+      config.modules.system.monitors;
+  };
+
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
