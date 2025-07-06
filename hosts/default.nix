@@ -10,24 +10,13 @@
     ../modules
   ];
 in {
-  iso = lib.nixosSystem {
-    inherit system specialArgs;
-    modules =
-      baseModules ++ [./iso];
-  };
-  flocke = lib.nixosSystem {
+  silverwind = lib.nixosSystem {
     inherit system specialArgs;
     modules =
       baseModules
       ++ [
-        ./flocke
+        ./silverwind
         inputs.nixos-hardware.nixosModules.framework-13-7040-amd
       ];
-  };
-  schnee = lib.nixosSystem {
-    inherit system;
-    specialArgs = {inherit lib inputs self;};
-    modules =
-      baseModules ++ [./schnee];
   };
 }
