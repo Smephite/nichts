@@ -19,4 +19,12 @@ in {
         inputs.nixos-hardware.nixosModules.framework-13-7040-amd
       ];
   };
+  heartofgold = lib.nixosSystem {
+    inherit system specialArgs;
+    modules =
+      baseModules
+      ++ [
+        ./heartofgold
+      ];
+  };
 }
