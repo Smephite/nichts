@@ -45,7 +45,7 @@ in {
         "refined-github-" = "1765a9e7-77f8-4167-bf5b-939736b23862";
       };
     };
-    theming.theme = "catppuccin";
+#    theming.theme = "catppuccin";
   };
 
   time.timeZone = "Europe/Zurich";

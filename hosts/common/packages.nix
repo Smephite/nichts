@@ -16,11 +16,11 @@ in {
     vim
     bat
     # nheko
-    calibre
-    element-desktop
-    neovim
+#    calibre
+#    element-desktop
+#    neovim
     typst
-    prismlauncher
+#    prismlauncher
     cm_unicode
     eza # exa is unmaintained
     hwinfo
@@ -30,7 +30,7 @@ in {
     calc
     rsync
     evince
-    wlr-randr
+#    wlr-randr
     wget
     gnumake
     zoxide
@@ -52,7 +52,7 @@ in {
     # easyeffects currently throws an error
     nix-index
     # --------- optional
-    sherlock
+    #sherlock
     nautilus
     ranger
     nitch
@@ -65,8 +65,8 @@ in {
     gimp
     imagemagick
 
-    telegram-desktop
-    tg
+#    telegram-desktop
+#    tg
 
     calc
     tldr
