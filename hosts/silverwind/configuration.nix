@@ -20,6 +20,7 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  time.hardwareClockInLocalTime = true; # Fix system time in dualboot
 
   networking.hostName = "silverwind"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
