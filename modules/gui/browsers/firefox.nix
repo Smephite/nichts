@@ -33,7 +33,7 @@ in {
           main = {
             id = 0;
             isDefault = true;
-            search.default = "DuckDuckGo";
+            search.default = "ddg";
             userChrome = ''
               @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); /* set default namespace to XUL */
 
