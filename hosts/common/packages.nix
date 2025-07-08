@@ -80,6 +80,9 @@ in {
 
     radare2
 
+    # Yubikey
+    yubioath-flutter
+    # lsusb / lspci
     usbutils
     pciutils
   ];

@@ -15,6 +15,13 @@ in {
     localuser = null;
   };
 
+  services.udev.packages = [ pkgs.yubikey-personalization ];
+  programs.gnupg.agent = {
+  enable = true;
+  enableSSHSupport = true;
+};
+services.pcscd.enable = true;
+
   #TODO: MOVE this somewhere else
   users.users.${username}.uid = 1000;
   programs.nix-ld.enable = true;
