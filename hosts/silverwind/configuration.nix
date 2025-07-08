@@ -28,7 +28,15 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  environment.systemPackages = with pkgs; [networkmanager]; # cli tool for managing connections
+  environment.systemPackages = with pkgs; [
+    networkmanager # cli tool for managing connections
+    fprintd        # Fingerprint sensor
+    ]; 
+
+  services.fprintd.enable = true;
+  services.fprintd.tod.enable = true;
+  #services.fprintd.tod.driver = pkgs.libfprint-2-tod1-vfs0090;
+  services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix;
 
   # be nice to your ssds
   services.fstrim.enable = true;
