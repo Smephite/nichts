@@ -79,5 +79,7 @@ in {
     alejandra
 
     radare2
+
+    usbutils
   ];
 }
