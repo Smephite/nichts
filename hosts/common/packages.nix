@@ -81,5 +81,6 @@ in {
     radare2
 
     usbutils
+    pciutils
   ];
 }
