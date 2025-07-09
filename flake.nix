@@ -36,5 +36,10 @@
       url = "github:Dragyx/satpaper";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    bender = {
+      url = "github:pulp-platform/bender";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 }

@@ -39,6 +39,7 @@ services.pcscd.enable = true;
       atuin.enable = lib.mkDefault true;
       zellij.enable = lib.mkDefault true;
       editors.helix.enable = lib.mkDefault false;
+      bender.enable = lib.mkDefault true;
 
       firefox.extensions = {
         "bitwarden-password-manager" = "{446900e4-71c2-419f-a6a7-df9c091e268b}";
