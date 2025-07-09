@@ -15,6 +15,8 @@ in {
     vscodium
 
     bash
+    
+    bender
 
     vim
     bat

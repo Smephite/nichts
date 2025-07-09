@@ -9,6 +9,5 @@ _: {
     ./nh.nix
     ./atuin.nix
     ./zellij.nix
-    ./bender.nix
   ];
 }
