@@ -19,7 +19,9 @@ in {
   enable = true;
   enableSSHSupport = true;
 };
-services.pcscd.enable = true;
+  
+  services.pcscd.enable = true;
+  services.envfs.enable = true;
 
   #TODO: MOVE this somewhere else
   users.users.${username}.uid = 1000;
