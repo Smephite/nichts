@@ -12,6 +12,7 @@
 #    baobab
     amdvlk
     signal-desktop
+    wasistlos # whatsapp
     nextcloud-client
     # etcher
     vlc

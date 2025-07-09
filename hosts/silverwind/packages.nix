@@ -12,6 +12,7 @@
 #    baobab
     amdvlk
     signal-desktop
+    wasistlos # whatsapp
     nextcloud-client
     # etcher
     vlc
@@ -25,6 +26,7 @@
     spotify
     slack
     mattermost-desktop
+
 #    flameshot
 #    feh
   ];
