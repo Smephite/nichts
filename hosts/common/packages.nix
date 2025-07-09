@@ -13,6 +13,9 @@ in {
   environment.systemPackages = with pkgs; [
     (python3.withPackages python-packages)
     vscodium
+
+    bash
+
     vim
     bat
     # nheko
