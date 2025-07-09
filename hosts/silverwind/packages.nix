@@ -27,6 +27,7 @@
     slack
     mattermost-desktop
 
+    quartus-prime-lite
 #    flameshot
 #    feh
   ];
