@@ -23,6 +23,8 @@
     libreoffice
     gimp
     spotify
+    slack
+    mattermost-desktop
 #    flameshot
 #    feh
   ];
