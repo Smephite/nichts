@@ -19,6 +19,7 @@
     thunderbird
     openjdk
     # pkgs.nordvpn # nur.repos.LuisChDev.nordvpn
+    openconnect
     material-icons
     material-design-icons
     libreoffice
