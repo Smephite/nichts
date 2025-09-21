@@ -36,7 +36,7 @@ in {
     };
   };
   
-    users.users.${username}.openssh.authorizedKeys.keys = mkIf cfg.populateDefault cfg.default;
-    users.users.root.openssh.authorizedKeys.keys = mkIf cfg.populateDefault cfg.default;
+    config.users.users.${username}.openssh.authorizedKeys.keys = mkIf cfg.populateDefault cfg.default;
+    config.users.users.root.openssh.authorizedKeys.keys = mkIf cfg.populateDefault cfg.default;
   
 }
