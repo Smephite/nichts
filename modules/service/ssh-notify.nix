@@ -1,0 +1,28 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.modules.service.ssh-notify;
+  username = config.modules.system.username;
+in {
+
+  options.modules.service.ssh-notify = {
+    enable = mkEnableOption "Notify on SSH login";
+  };
+
+
+ config = mkIf cfg.enable {
+  security.pam.services.sshd.rules.session = {
+          name = "login_msg";
+          enable = true;
+          control = "optional";
+          order = 10201; # config.security.pam.services.sshd.rules.session.systemd.order + 1;
+          modulePath = "${pkgs.pam.outPath}/lib/security/pam_exec.so";
+          args = [];
+    };
+  };
+
+}

@@ -1,6 +1,7 @@
 {
   imports = [
     ./cli
+    ./service
     ./system
   ];
 }
