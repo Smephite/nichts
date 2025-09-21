@@ -9,6 +9,8 @@ in {
   # Run unpatched dynamic binaries on NixOS.
   programs.nix-ld.enable = true;
   
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
   nixpkgs.config.allowUnfree = true;
 
   # See ../../modules
