@@ -10,9 +10,16 @@
   };
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-        home-manager = {
+    
+    home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  
   };
 }

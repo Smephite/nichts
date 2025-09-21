@@ -5,6 +5,7 @@
   specialArgs = {inherit lib inputs self;};
   baseModules = [
     inputs.home-manager.nixosModules.home-manager
+    inputs.agenix.nixosModules.default
     ../modules
   ];
 in {

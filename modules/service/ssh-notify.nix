@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }:
 with lib; let
@@ -11,17 +12,14 @@ with lib; let
     name = "ssh-login-notify";
     bashOptions = [];
     runtimeInputs = [ pkgs.curl pkgs.gawk pkgs.jq ];
-    runtimeEnv = {
-      TELEGRAM_CHAT_ID = cfg.telegramChatId;
-      TELEGRAM_BOT_TOKEN = cfg.telegramBotToken;
-    };
     text = ''
 #!/bin/bash
 
 LOGGED_USER=$PAM_USER
 LOGGED_HOST="$(hostname -f)"
 HOST_IP=$(hostname -I | awk '{print $1}')
-
+# shellcheck disable=SC1091
+source ${config.age.secrets.telegram.path}
 LOGGED_IP=$PAM_RHOST
 NOW="$(date)"
 
@@ -49,19 +47,17 @@ in {
 
   options.modules.service.ssh-notify = {
     enable = mkEnableOption "Notify on SSH login";
-    telegramChatId = mkOption {
+    telegramSecrets = mkOption {
       type = types.str;
-      description = "Telegram chat ID to send notifications to.";
-    };
-
-    telegramBotToken = mkOption {
-      type = types.str;
-      description = "Telegram bot token to use for sending notifications.";
+      default = (self + "/secrets/telegram.age");
+      description = "The secret store to use for telegram bot credentials. Must contain two lines with TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID";
     };
   };
 
 
  config = mkIf cfg.enable {
+  age.secrets.telegram.file = cfg.telegramSecrets;
+
   security.pam.services.sshd.rules.session.login_msg = {
           enable = true;
           control = "optional";

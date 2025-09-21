@@ -16,6 +16,8 @@ in {
     };
   };
 
+  age.identityPaths = [ "/srv/host_keys/id_ed25519" ];
+
   services.fail2ban.enable = true;
 
   # See ../../modules
@@ -28,7 +30,7 @@ in {
     };
     service = {
       ssh-notify = {
-        enable = lib.mkDefault false;
+        enable = lib.mkDefault true;
       };
     };
     other.home-manager = {
