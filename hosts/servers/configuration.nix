@@ -29,6 +29,6 @@ in {
     };
     other.home-manager = {
       enable = false;
-    }
-  }
+    };
+  };
 }
