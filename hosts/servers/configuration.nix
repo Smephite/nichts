@@ -27,7 +27,9 @@ in {
       gitPath = lib.mkDefault "/srv/nichts-server";
     };
     service = {
-      ssh-notify.enable = true;
+      ssh-notify = {
+        enable = lib.mkDefault false;
+      };
     };
     other.home-manager = {
       enable = lib.mkDefault false;
