@@ -21,7 +21,7 @@ in {
 
     default = mkOption {
       type = types.listOf types.str;
-      default = with config.authorizedKeys.host; [
+      default = with cfg.host; [
         heartofgold
         heartofgold-nix
         silverwind
