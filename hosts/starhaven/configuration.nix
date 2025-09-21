@@ -11,6 +11,8 @@
 
   services.logrotate.checkConfig = false;
 
+  modules.other.home-manager.enable = true;
+
 
   networking = {
     hostName = "starhaven";
