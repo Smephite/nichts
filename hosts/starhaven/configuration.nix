@@ -2,17 +2,18 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }: {
   imports = [
     ../servers/default.nix
     ./packages.nix
+    ./wireguard.nix
   ];
 
   services.logrotate.checkConfig = false;
 
   modules.other.home-manager.enable = true;
-
 
   networking = {
     hostName = "starhaven";
