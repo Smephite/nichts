@@ -10,5 +10,5 @@
   ];
 
    services.openssh.enable = true;
-   users.users.root.openssh.authorizedKeys.keys = authorizedKeys.default;
+   users.users.root.openssh.authorizedKeys.keys = config.authorizedKeys.default;
 }

@@ -1,4 +1,5 @@
-{ lib, ... }:
+{ lib, options, config, ... }: let 
+  in 
 {
 
   options.authorizedKeys.host = {
@@ -14,7 +15,7 @@
 
   options.authorizedKeys.default = lib.mkOption {
     type = lib.types.listOf lib.types.str;
-    default = [
+    default = with config.authorizedKeys.host; [
       heartofgold
       heartofgold-nix
       silverwind
