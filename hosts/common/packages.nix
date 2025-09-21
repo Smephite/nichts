@@ -15,5 +15,6 @@ inputs,
     plocate
     inputs.agenix.packages.${system}.default
     autorestic
+    wireguard-tools
   ];
 }

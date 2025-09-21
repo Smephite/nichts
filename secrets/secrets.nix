@@ -12,5 +12,9 @@ let
     publicKeys = [ keys.starhaven ] ++ masterKeys;
     armor = false;
   };
+  "wg.starhaven.age" = {
+    publicKeys = [ keys.starhaven ] ++ masterKeys;
+    armor = false;
+  };
 
 }
