@@ -1,0 +1,5 @@
+{
+  imports = [
+    ./ssh-notify.nix
+  ];
+}
