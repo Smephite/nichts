@@ -19,12 +19,13 @@ in {
       clean.extraArgs = "--keep-since 4d --keep 3";
       flake = "/etc/${etcPath}";
     };
+
+    environment.etc."nixconf" = {
+      source = gitPath;
+      target = etcPath;
+      user = username;
+      enable = true;
+    };
   };
 
-  environment.etc."nixconf" = mkIf cfg.enable {
-    source = gitPath;
-    target = etcPath;
-    user = username;
-    enable = true;
-  };
 }
