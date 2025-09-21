@@ -11,7 +11,7 @@ with lib; let
     name = "ssh-login-notify";
     bashOptions = [];
     runtimeInputs = [ pkgs.curl pkgs.gawk pkgs.jq ];
-    runtimeEnv = mkIf cfg.enable {
+    runtimeEnv = {
       TELEGRAM_CHAT_ID = cfg.telegramChatId;
       TELEGRAM_BOT_TOKEN = cfg.telegramBotToken;
     };
