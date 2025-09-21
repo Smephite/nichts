@@ -1,5 +1,6 @@
 {
   options,
+  config,
   lib,
   ...
 }:
