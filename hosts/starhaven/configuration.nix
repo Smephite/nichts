@@ -9,8 +9,6 @@
     ./packages.nix
   ];
 
-  nixpkgs.config.allowUnfree = true;
-
   services.logrotate.checkConfig = false;
 
 
