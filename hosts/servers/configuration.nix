@@ -27,7 +27,7 @@ in {
       gitPath = lib.mkDefault "/srv/nichts-server";
     };
     other.home-manager = {
-      enable = false;
+      enable = lib.mkDefault false;
     };
   };
 }

@@ -15,7 +15,7 @@ in {
 #            control = "optional";
 #            order = 10201; # config.security.pam.services.sshd.rules.session.systemd.order + 1;
 #            modulePath = "${pkgs.pam.outPath}/lib/security/pam_exec.so";
-#            args = ["echo" "Welcome to Nichts-Server!"];
+#            args = [];
 #    };
 
 }
