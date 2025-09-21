@@ -17,14 +17,7 @@ in {
       enable = true;
       clean.enable = true;
       clean.extraArgs = "--keep-since 4d --keep 3";
-      flake = "/etc/${etcPath}";
-    };
-
-    environment.etc."nixconf" = {
-      source = gitPath;
-      target = etcPath;
-      user = username;
-      enable = true;
+      flake = gitPath;
     };
   };
 
