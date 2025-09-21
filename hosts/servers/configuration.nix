@@ -20,11 +20,11 @@ in {
 
   # See ../../modules
   modules = {
-    system = {
+    system = rec {
       # Automatically populate authorized_keys for root and ${username} with default keys
       authorizedKeys.enable = true;
       username = "kai";
-      gitPath = lib.mkDefault "/etc/nixos/nichts-server";
+      gitPath = lib.mkDefault "/home/${username}/nichts-server";
     };
     other.home-manager = {
       enable = false;
