@@ -10,7 +10,5 @@
   };
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # nixpkgs-small receives pull requests faster
-    nixpkgs-small.url = "github:NixOS/nixpkgs/nixos-unstable-small";
   };
 }
