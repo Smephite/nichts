@@ -6,15 +6,14 @@
 }: let
   username = config.modules.system.username;
 in {
-  # If set, the calling user’s SSH agent is used to authenticate against the keys in the calling user’s ~/.ssh/authorized_keys
-  security.pam.services.sshd.sshAgentAuth = true;
+  security.sudo.wheelNeedsPassword = false;
 
   # Allow ssh connections
   services.openssh = {
-  enable = true;
-  settings = {
-    PermitRootLogin = "prohibit-password";
-  };
+    enable = true;
+    settings = {
+      PermitRootLogin = "prohibit-password";
+    };
   };
 
   services.fail2ban.enable = true;
