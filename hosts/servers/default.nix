@@ -6,6 +6,7 @@
 }: {
   imports = [
     ../common/default.nix
+    ./configuration.nix
     ./packages.nix
   ];
 
@@ -15,15 +16,6 @@
       PermitRootLogin = "prohibit-password";
     };
    };
-
-#   security.pam.services.sshd.rules.session = {
-#            name = "login_msg";
-#            enable = true;
-#            control = "optional";
-#            order = 1;
-#            modulePath = "${pkgs.pam.outPath}/lib/security/pam_exec.so";
-#            args = ["echo" "Welcome to Nichts-Server!"];
-#    };
 
    services.fail2ban.enable = true;
 
