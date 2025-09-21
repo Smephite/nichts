@@ -11,6 +11,8 @@ in {
   
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  time.timeZone = lib.mkDefault "Europe/Zurich";
+
   nixpkgs.config.allowUnfree = true;
 
   # See ../../modules
