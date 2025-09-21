@@ -7,6 +7,8 @@
 with lib; let
   cfg = config.modules.programs.nh;
   gitPath = config.modules.system.gitPath;
+  username = config.modules.system.username;
+  etcPath = "nixconf";
 in {
   options.modules.programs.nh.enable = mkEnableOption "nh";
 
@@ -15,7 +17,14 @@ in {
       enable = true;
       clean.enable = true;
       clean.extraArgs = "--keep-since 4d --keep 3";
-      flake = gitPath;
+      flake = "/etc/${etcPath}";
     };
   };
+
+  environment.etc."nixconf" = mkIf cfg.enable {
+    source = gitPath;
+    target = etcPath;
+    user = username;
+    enable = true;
+  }
 }
