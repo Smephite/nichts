@@ -16,6 +16,8 @@ in {
 
   nixpkgs.config.allowUnfree = true;
 
+  programs.ssh.startAgent = true;
+
   # See ../../modules
   modules = {
     system = {
