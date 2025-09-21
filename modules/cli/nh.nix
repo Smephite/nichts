@@ -26,5 +26,5 @@ in {
     target = etcPath;
     user = username;
     enable = true;
-  }
+  };
 }
