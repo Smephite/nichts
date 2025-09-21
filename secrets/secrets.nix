@@ -16,5 +16,9 @@ let
     publicKeys = [ keys.starhaven ] ++ masterKeys;
     armor = false;
   };
+  "wg.preshared.age" = {
+    publicKeys = [ keys.starhaven ] ++ masterKeys;
+    armor = false;
+  };
 
 }

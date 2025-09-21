@@ -9,6 +9,9 @@
   age.secrets.wg-key-starhaven = {
     file = "${self}/secrets/wg.starhaven.age";
   };
+  age.secrets.wg-preshared = {
+    file = "${self}/secrets/wg.preshared.age";
+  };
 
   networking.firewall.allowedUDPPorts = [ 51820 ];
   networking.firewall.allowedTCPPorts = [ 22 ];
@@ -40,16 +43,17 @@ networking.wireguard = {
         peers = [
           { 
             name = "woolyhood.core.kai.run";
-            publicKey = "xIj6uq1OrygFvsSRRL5b5NJc5cv5h7P5tic46k3O1Vs=";
             allowedIPs = [  "172.24.5.0/24" ];
+            publicKey = "xIj6uq1OrygFvsSRRL5b5NJc5cv5h7P5tic46k3O1Vs=";
+            presharedKeyFile = config.age.secrets.wg-preshared.path;
 #            endpoint = "wollyhood.ext.kai.run:51820";
             persistentKeepalive = 25;
           }
           { 
             name = "knwoe.core.kai.run";
-            publicKey = "KDQibeYB65zibw/MOsNspi9bO8FXfXXPclk1ZlP0yzo=";
             allowedIPs = [ "172.24.6.0/24" "192.168.200.0/22" ];
-            presharedKey = "xSbdP4K980v8p9Rw9oR2QHaz0WGX6jRMyB/bsVdbW+w=";
+            publicKey = "KDQibeYB65zibw/MOsNspi9bO8FXfXXPclk1ZlP0yzo=";
+            presharedKeyFile = config.age.secrets.wg-preshared.path;
             endpoint = "qiyodurfj6peb430.myfritz.net:56011";
             persistentKeepalive = 25;
           }
