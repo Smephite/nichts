@@ -1,4 +1,6 @@
-{pkgs, ...}:
+{pkgs, 
+inputs,
+...}:
 {
   environment.systemPackages = with pkgs; [
     git
@@ -11,6 +13,7 @@
     vim
     nitch
     plocate
+    inputs.agenix.packages.${system}.default
 
   ];
 }
