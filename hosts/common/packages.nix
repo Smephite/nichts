@@ -14,6 +14,6 @@ inputs,
     nitch
     plocate
     inputs.agenix.packages.${system}.default
-
+    autorestic
   ];
 }
