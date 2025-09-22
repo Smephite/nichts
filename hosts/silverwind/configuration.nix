@@ -85,8 +85,8 @@
       firefox.enable = true;
       git = {
         enable = true;
-        userName = "Smephite";
-        userEmail = "";
+        userName = "Kai Berszin";
+        userEmail = "mail@kaibersz.in";
         defaultBranch = "main";
       };
     };

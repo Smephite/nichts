@@ -5,7 +5,8 @@
   environment.systemPackages = with pkgs; [
     # inputs.vivado2019flake.vivado-2019_2
 
-#    obsidian
+    obsidian
+    zotero
 
     # security audits
 #    lynis
