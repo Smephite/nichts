@@ -1,5 +1,7 @@
 # which default packages to use for the system
-{pkgs, ...}: {
+{pkgs, 
+inputs,
+...}: {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -28,8 +30,13 @@
     spotify
     slack
     mattermost-desktop
+    comma
+    calc
 
     quartus-prime-lite
+    zoom-us
+
+
 #    flameshot
 #    feh
   ];
