@@ -2,7 +2,8 @@
   inherit (inputs) self;
   inherit (self) lib;
   system = "x86_64-linux";
-  specialArgs = {inherit lib inputs self;};
+  pkgs-unstable = inputs.nixpkgs-unstable.legacyPackages.${system};
+  specialArgs = {inherit pkgs-unstable lib inputs self;};
   baseModules = [
     inputs.home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko

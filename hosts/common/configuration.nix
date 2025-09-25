@@ -24,8 +24,10 @@ in {
   services.envfs.enable = true;
 
   #TODO: MOVE this somewhere else
-  users.users.${username}.uid = 1000;
-  programs.nix-ld.enable = true;
+  users.users.${username} = {
+    uid = 1000;
+    extraGroups = [ "networkmanager" ];
+  };
 
   modules = {
     system = {

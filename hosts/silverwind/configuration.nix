@@ -1,11 +1,13 @@
 {
   config,
   pkgs,
+  inputs,
   ...
 }: {
   imports = [
     ../common/default.nix
     ./packages.nix
+    inputs.noctalia.nixosModules.default
   ];
 
   # framework specific for BIOS updates
@@ -26,7 +28,10 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    plugins = [ pkgs.networkmanager-openconnect ];
+    enable = true;
+    };
 
   environment.systemPackages = with pkgs; [
     networkmanager # cli tool for managing connections
@@ -48,19 +53,26 @@
 
   # Enable the GNOME Desktop Environment.
   services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-  # COSMIC Desktop Environment
+  #services.displayManager.cosmic.enable = true;
   #services.displayManager.cosmic-greeter.enable = true;
+  
+  services.desktopManager.gnome.enable = true;
+  services.desktopManager.cosmic.enable = true;
+  programs.niri.enable = true;
+  
+  services.noctalia-shell.enable = true;
+
+  # COSMIC Desktop Environment
   #services.desktopManager.cosmic.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
-    layout = "de";
+    layout = "us";
     variant = "";
   };
 
   # Configure console keymap
-  console.keyMap = "de";
+  console.keyMap = "us";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
