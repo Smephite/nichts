@@ -11,6 +11,34 @@
     ./wireguard.nix
   ];
 
+
+  modules.service.nylon = {
+    enable = true;
+  };
+
+
+  virtualisation.docker = {
+    enable = true;
+    package = pkgs.docker_28;
+    daemon.settings = {
+      live-restore = false;
+      data-root = "/srv/docker/daemon/";
+      default-address-pools = [
+        {
+          base = "172.30.0.0/16";
+          size = 23;
+        }
+      ];
+    };
+    
+    storageDriver = "overlay2";
+
+    autoPrune = {
+      enable = true;
+      dates = "weekly";
+    };
+  };
+
   services.logrotate.checkConfig = false;
 
   modules.other.home-manager.enable = true;
@@ -18,6 +46,13 @@
   networking = {
     hostName = "starhaven";
     domain = "core.kai.run";
+
+    firewall = {
+        allowedUDPPorts = [
+           57175 # nylon
+          ];  
+        trustedInterfaces = [ "nylon" ];
+    };
     # Interfaces
     interfaces.eth0 = {
       macAddress = "00:50:56:5d:24:92";
