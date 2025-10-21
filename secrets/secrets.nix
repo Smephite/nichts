@@ -21,4 +21,19 @@ let
     armor = false;
   };
 
+  "nylon.central.age" = {
+    publicKeys = [ keys.starhaven ] ++ masterKeys;
+    armor = false;
+  };
+
+  "nylon.starhaven.age" = {
+    publicKeys = [ keys.starhaven ] ++ masterKeys;
+    armor = false;
+  };
+
+  "nylon.central.key.age" = {
+    publicKeys = [ keys.starhaven ] ++ masterKeys;
+    armor = false;
+  };
+
 }
