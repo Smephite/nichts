@@ -11,4 +11,5 @@
 
   fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
   fileSystems."/boot" = { device = "/dev/disk/by-uuid/0683-2D32"; fsType = "vfat"; };
+  fileSystems."/srv/docker" = { device = "localhost:/gv0"; fsType = "glusterfs"; options = [ "nofail" ]; };
 }
