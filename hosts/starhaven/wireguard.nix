@@ -31,7 +31,7 @@
 #    internalInterfaces = [ "wg0" ];
 #  };
 networking.wireguard = {
-    enable = true;
+    enable = false;
     interfaces = {
       wg0 = {
         # the IP address and subnet of this peer

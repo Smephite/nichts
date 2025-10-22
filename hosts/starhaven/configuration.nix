@@ -22,7 +22,7 @@
     package = pkgs.docker_28;
     daemon.settings = {
       live-restore = false;
-      data-root = "/srv/docker/daemon/";
+      data-root = "/var/lib/docker";
       default-address-pools = [
         {
           base = "172.30.0.0/16";
@@ -39,7 +39,12 @@
     };
   };
 
-  services.logrotate.checkConfig = false;
+  services = {
+    logrotate.checkConfig = false;
+    glusterfs = {
+      enable = true;
+    };
+  };
 
   modules.other.home-manager.enable = true;
 
