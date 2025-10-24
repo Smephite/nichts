@@ -101,6 +101,7 @@
         userEmail = "mail@kaibersz.in";
         defaultBranch = "main";
       };
+    microchip.enable = true;
     };
     services = {
       pipewire.enable = true;

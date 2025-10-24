@@ -10,7 +10,7 @@
     # security audits
 #    lynis
 #    baobab
-    amdvlk
+#    amdvlk
     signal-desktop
     wasistlos # whatsapp
     nextcloud-client
@@ -18,6 +18,7 @@
     vlc
     thunderbird
     openjdk
+    yubikey-manager
     # pkgs.nordvpn # nur.repos.LuisChDev.nordvpn
     material-icons
     material-design-icons

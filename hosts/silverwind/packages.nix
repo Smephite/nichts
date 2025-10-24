@@ -16,7 +16,7 @@
     # security audits
 #    lynis
 #    baobab
-    amdvlk
+#    amdvlk
     wasistlos # whatsapp
     nextcloud-client
     # etcher
@@ -34,21 +34,24 @@
     comma
     calc
 
-    quartus-prime-lite
+    #quartus-prime-lite
     zoom-us
 
-    inputs.noctalia.packages.${system}.default
+    #inputs.noctalia.packages.${system}.default
     discord
     # VPN
 
     openconnect
     networkmanager-openconnect
-
+    teams-for-linux
+    age-plugin-yubikey
+    age
 #    flameshot
 #    feh
   ])
    ++
   (with pkgs-unstable; [
     signal-desktop
+    yubioath-flutter
   ]);
 }
