@@ -8,6 +8,7 @@ inputs,
     wget
     htop
     hwinfo
+    comma
     nix-index
     nano
     vim

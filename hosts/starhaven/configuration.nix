@@ -12,9 +12,8 @@
   ];
 
 
-  modules.service.nylon = {
-    enable = true;
-  };
+    age.secrets.nylon_central.file = (self + "/secrets/nylon.central.age");
+    age.secrets.nylon_key.file = (self + "/secrets/nylon."+config.networking.hostName+".age");
 
 
   virtualisation.docker = {
@@ -43,6 +42,15 @@
     logrotate.checkConfig = false;
     glusterfs = {
       enable = true;
+    };
+    nylon-wg = {
+      enable = true;
+      centralConfig = config.age.secrets.nylon_central.path;
+      node = {
+        id = config.networking.hostName + "." + config.networking.domain;
+        key = config.age.secrets.nylon_key.path; 
+      };
+      openFirewall = true;
     };
   };
 
