@@ -1,20 +1,16 @@
 {
   config,
-  lib,
   pkgs,
   self,
   ...
 }: {
   imports = [
-    ../servers/default.nix
     ./packages.nix
     ./wireguard.nix
   ];
 
-
-    age.secrets.nylon_central.file = (self + "/secrets/nylon.central.age");
-    age.secrets.nylon_key.file = (self + "/secrets/nylon."+config.networking.hostName+".age");
-
+  age.secrets.nylon_central.file = self + "/secrets/nylon.central.age";
+  age.secrets.nylon_key.file = self + "/secrets/nylon." + config.networking.hostName + ".age";
 
   virtualisation.docker = {
     enable = true;
@@ -29,7 +25,7 @@
         }
       ];
     };
-    
+
     storageDriver = "overlay2";
 
     autoPrune = {
@@ -48,7 +44,7 @@
       centralConfig = config.age.secrets.nylon_central.path;
       node = {
         id = config.networking.hostName + "." + config.networking.domain;
-        key = config.age.secrets.nylon_key.path; 
+        key = config.age.secrets.nylon_key.path;
       };
       openFirewall = true;
     };
@@ -61,22 +57,26 @@
     domain = "core.kai.run";
 
     firewall = {
-        allowedUDPPorts = [
-           57175 # nylon
-          ];  
-        trustedInterfaces = [ "nylon" ];
+      allowedUDPPorts = [
+        57175 # nylon
+      ];
+      trustedInterfaces = ["nylon"];
     };
     # Interfaces
     interfaces.eth0 = {
       macAddress = "00:50:56:5d:24:92";
-      ipv6.addresses = [{
-        address = "2a02:c207:3018:0000:0000:0000:0000:0001";
-        prefixLength = 64;
-      }];
-      ipv4.addresses = [{
-        address = "109.123.248.65";
-        prefixLength = 20;
-      }];
+      ipv6.addresses = [
+        {
+          address = "2a02:c207:3018:0000:0000:0000:0000:0001";
+          prefixLength = 64;
+        }
+      ];
+      ipv4.addresses = [
+        {
+          address = "109.123.248.65";
+          prefixLength = 20;
+        }
+      ];
     };
 
     defaultGateway = {
@@ -87,9 +87,8 @@
       address = "fe80::1";
       interface = "eth0";
     };
-    nameservers = [ "213.136.95.10" "213.136.95.11" "2a02:c207::1:53"];
+    nameservers = ["213.136.95.10" "213.136.95.11" "2a02:c207::1:53"];
   };
-
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

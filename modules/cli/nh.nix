@@ -20,5 +20,4 @@ in {
       flake = gitPath;
     };
   };
-
 }

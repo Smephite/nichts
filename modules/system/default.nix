@@ -1,7 +1,8 @@
 {
   imports = [
     ./authorized_keys.nix
-    ./home-manager.nix
+    ./monitors.nix
+    ./network.nix
     ./nix.nix
     ./system.nix
   ];

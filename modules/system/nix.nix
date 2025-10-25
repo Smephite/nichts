@@ -7,7 +7,6 @@
   # partly taken from github.com/bloxx12/nichts
 
   nix = {
-
     settings = {
       extra-experimental-features = [
         "flakes" # flakes

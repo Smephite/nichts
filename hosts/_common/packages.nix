@@ -1,21 +1,25 @@
-{pkgs, 
-inputs,
-...}:
 {
+  pkgs,
+  inputs,
+  ...
+}: {
   environment.systemPackages = with pkgs; [
     git
+    bash
     rsync
     wget
     htop
+    btop
     hwinfo
     comma
     nix-index
+    unzip
     nano
     vim
     nitch
-    plocate
     inputs.agenix.packages.${system}.default
     autorestic
-    wireguard-tools
+    smartmontools
+    parted
   ];
 }

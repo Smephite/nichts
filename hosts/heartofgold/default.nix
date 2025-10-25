@@ -1,7 +1,8 @@
 {
   imports = [
-    ../_servers
+    ../_workstations
     ./configuration.nix
     ./hardware-configuration.nix
+    ./packages.nix
   ];
 }

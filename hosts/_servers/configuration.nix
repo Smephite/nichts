@@ -1,11 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
-  username = config.modules.system.username;
-in {
+{lib, ...}: {
   security.sudo.wheelNeedsPassword = false;
 
   # Allow ssh connections
@@ -16,25 +9,24 @@ in {
     };
   };
 
-  age.identityPaths = [ "/srv/host_keys/id_ed25519" ];
+  age.identityPaths = ["/srv/host_keys/id_ed25519"];
 
+  programs.ssh.startAgent = true;
   services.fail2ban.enable = true;
 
   # See ../../modules
   modules = {
-    system = rec {
+    system = {
       # Automatically populate authorized_keys for root and ${username} with default keys
-      authorizedKeys.enable = true;
-      username = "kai";
+      authorizedKeys.enable = lib.mkDefault true;
+      username = lib.mkDefault "kai";
       gitPath = lib.mkDefault "/srv/nichts-server";
     };
-    service = {
-      ssh-notify = {
-        enable = lib.mkDefault true;
-      };
+
+    services = {
+      ssh-notify.enable = lib.mkDefault true;
     };
-    other.home-manager = {
-      enable = lib.mkDefault false;
-    };
+
+    other.home-manager.enable = lib.mkDefault false;
   };
 }
