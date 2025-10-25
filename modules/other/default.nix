@@ -1,5 +1,5 @@
 {
   imports = [
-    ./ssh-notify.nix
+    ./home-manager.nix
   ];
 }

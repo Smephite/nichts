@@ -1,11 +1,6 @@
 {
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
   imports = [
-    ../common/default.nix
+    ../_common/default.nix
     ./configuration.nix
     ./packages.nix
   ];

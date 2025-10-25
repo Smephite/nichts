@@ -1,33 +1,30 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: let
-  username = config.modules.system.username;
-in {
+{lib, ...}: {
   # Run unpatched dynamic binaries on NixOS.
   programs.nix-ld.enable = true;
-  
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   time.timeZone = lib.mkDefault "Europe/Zurich";
   i18n.defaultLocale = lib.mkDefault "en_GB.UTF-8";
 
-  nixpkgs.config.allowUnfree = true;
+  # Configure keymap in X11
+  services.xserver.xkb = {
+    layout = lib.mkDefault "us";
+    variant = lib.mkDefault "";
+  };
+  # Configure console keymap
+  console.keyMap = lib.mkDefault "us";
 
-  programs.ssh.startAgent = true;
+  nixpkgs.config.allowUnfree = lib.mkDefault true;
 
   # See ../../modules
   modules = {
-    system = {
-      authorizedKeys.enable = lib.mkDefault false;
-    };
     programs = {
       git = {
         enable = lib.mkDefault true;
         userName = lib.mkDefault "Kai Berszin";
         userEmail = lib.mkDefault "mail@kaibersz.in";
+        defaultBranch = lib.mkDefault "main";
       };
 
       nh.enable = lib.mkDefault true;
