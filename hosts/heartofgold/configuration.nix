@@ -19,8 +19,17 @@
   services.logrotate.checkConfig = false;
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  # Secure boot
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+
+  boot.lanzaboote = {
+    enable = true;
+    pkiBundle = "/persist/sbctl";
+  };
+
+
   time.hardwareClockInLocalTime = true; # Fix system time in dualboot
 
   networking.hostName = "heartofgold"; # Define your hostname.

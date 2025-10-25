@@ -7,6 +7,7 @@
   baseModules = [
     inputs.home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
+    inputs.lanzaboote.nixosModules.lanzaboote
     ../overlay.nix
     ../modules
   ];

@@ -24,6 +24,9 @@
     libreoffice
     gimp
     spotify
+    sbctl
+    comma
+    nixd
 #    flameshot
 #    feh
   ];

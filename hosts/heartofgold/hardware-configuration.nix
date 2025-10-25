@@ -41,7 +41,7 @@
       options = [ "subvol=home" "compress=zstd" "noatime" ];
     };
 
-  fileSystems."/persit" =
+  fileSystems."/persist" =
     { device = "/dev/disk/by-uuid/604b1246-b39d-47b1-86f5-83cf0675aee3";
       fsType = "btrfs";
       options = [ "subvol=persist" "compress=zstd" "noatime" ];
