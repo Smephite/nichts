@@ -30,6 +30,7 @@ in {
   modules = {
     programs = {
       fish.enable = lib.mkDefault true;
+      atuin.enable = lib.mkDefault true;
     };
 
     system = {
