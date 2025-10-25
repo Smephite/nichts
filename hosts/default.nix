@@ -7,6 +7,8 @@
     inputs.home-manager.nixosModules.home-manager
     inputs.agenix.nixosModules.default
     ../modules
+    ../overlay.nix
+    "${inputs.nixpkgs-nylon-wg}/nixos/modules/services/networking/nylon-wg.nix"
   ];
 in {
   starhaven = lib.nixosSystem {
