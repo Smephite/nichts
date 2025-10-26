@@ -41,7 +41,8 @@ in {
       enable = true;
     };
 
-    programs.xwayland.enable = lib.mkDefault (gnomeCfg.wayland && gnomeCfg.xWayland);
+    programs.xwayland.enable = lib.mkDefault (gnomeCfg.wayland && gnomeCfg.xWayland);   
+    services.xserver.enable = true;
 
     services.xserver.displayManager = lib.mkIf (!gnomeCfg.wayland && gnomeCfg.configureMonitors) {
       setupCommands =
