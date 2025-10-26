@@ -16,12 +16,6 @@
   services.fstrim.enable = true;
   # Fingerprint
   services.fprintd.enable = true;
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
 
   age.identityPaths = ["/home/${config.modules.system.username}/.ssh/id_ed25519"];
 

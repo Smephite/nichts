@@ -17,11 +17,6 @@
   # be nice to your ssds
   services.fstrim.enable = true;
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-
   age.identityPaths = ["/home/${config.modules.system.username}/.ssh/id_ed25519"];
 
   # See ../../modules
