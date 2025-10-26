@@ -11,6 +11,8 @@
 
   age.secrets.nylon_key.file = self + "/secrets/nylon." + config.networking.hostName + ".age";
 
+  age.secrets.radicle_secret.file = self + "/secrets/radicale.${config.networking.hostName}.age";
+
   virtualisation.docker = {
     enable = true;
     package = pkgs.docker_28;
@@ -38,7 +40,32 @@
     glusterfs = {
       enable = true;
     };
+    radicle = {
+      enable = true;
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDj2PdPzTSfMumaS+6eFvPkEi3+rRr+727EsPt9adxx1 radicle";
+      privateKeyFile = config.age.secrets.radicle_secret.path;
+
+      settings = {
+        externalAddresses = [ "starhaven.ext.kai.run:${config.services.radicle.node.listenPort}" ];
+        seedingPolicy = { default = "block"; };
+      };
+
+      node = {
+        openFirewall = true;
+        listenPort = 8776;
+      };
+
+      httpd = {
+        enable = true;
+        listenAddress = "0.0.0.0"; # for now...
+        listenPort = 8081;
+      };
+    };
   };
+
+    networking.firewall = {
+      allowedTCPPorts = [ 8081 ];
+    };
 
   modules = {
     system.network.nylon-wg = {

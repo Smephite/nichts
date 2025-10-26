@@ -35,4 +35,9 @@ in {
     publicKeys = [keys.starhaven] ++ masterKeys;
     armor = false;
   };
+
+  "radicle.starhaven.age" = {
+    publicKeys = [keys.starhaven] ++ masterKeys;
+    armor = false;
+  };
 }
