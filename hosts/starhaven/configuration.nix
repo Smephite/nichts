@@ -46,8 +46,10 @@
       privateKeyFile = config.age.secrets.radicle_secret.path;
 
       settings = {
-        externalAddresses = [ "starhaven.ext.kai.run:${config.services.radicle.node.listenPort}" ];
-        seedingPolicy = { default = "block"; };
+        node = {
+          externalAddresses = [ "starhaven.ext.kai.run:${config.services.radicle.node.listenPort}" ];
+          seedingPolicy = { default = "block"; };
+        };
       };
 
       node = {
