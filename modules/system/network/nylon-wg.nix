@@ -12,13 +12,15 @@ in {
     enable = mkEnableOption "nylon";
     
     centralConfig = lib.mkOption {
-        type = with lib.types; path;
+        type = with lib.types; nullOr path;
+        default = null;
         description = "Path to nylon central config.";
       };
 
       node = {
         key = lib.mkOption {
-          type = with lib.types; either path str;
+          type = with lib.types; nullOr (either path str);
+          default = null;
           description = ''
             Node key as string or path to node key
             A path is preferred as else the key will be commited to the nix-store.
@@ -35,7 +37,8 @@ in {
           description = "Interface for nylon to listen on.";
         };
         id = lib.mkOption {
-          type = with lib.types; str;
+          type = with lib.types; nullOr str;
+          default = null;
           description = "Nylon node id";
         };
         logPath = lib.mkOption {
@@ -69,15 +72,17 @@ in {
 
   config = mkIf cfg.enable {
 
+
     age.secrets.nylon_central.file = self + "/secrets/nylon.central.age";
+    age.secrets.nylon_key.file = self + "/secrets/nylon.${config.networking.hostName}.age";
     
     services.nylon-wg = {
       enable = true;
-      centralConfig = cfg.centralConfig or config.age.secrets.nylon_central.path;
+      centralConfig = if cfg.centralConfig != null then cfg.centralConfig else config.age.secrets.nylon_central.path;
       node = {
         inherit (cfg.node) port interface disableRouting useSystemRouting noNetConfigure logPath;
-        id = cfg.node.id or (config.networking.hostName + "." + config.networking.domain);
-        key = cfg.node.key;
+        id = if cfg.node.id != null then cfg.node.id else (config.networking.hostName + "." + config.networking.domain);
+        key = if cfg.node.key != null then cfg.node.key else config.age.secrets.nylon_key.path;
       };
       openFirewall = true;
     };
