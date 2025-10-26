@@ -13,7 +13,7 @@ in {
 
   networking.dhcpcd.wait = "background";
   networking.networkmanager = {
-    plugins = [ pkgs.networkmanager-openconnect ];
+    plugins = [pkgs.networkmanager-openconnect];
   };
 
   home-manager.backupFileExtension = "bak";

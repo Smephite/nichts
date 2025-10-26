@@ -4,7 +4,6 @@
   pkgs,
   ...
 }: {
-
   # framework specific for BIOS updates
   services.fwupd.enable = true;
 
