@@ -22,6 +22,13 @@ in {
         Automatically configure monitors.
       '';
     };
+    xWayland = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = ''
+        Enable xWayland
+      '';
+    };
   };
   config = lib.mkIf gnomeCfg.enable {
     # TODO: Split display and desktopmanager
@@ -33,6 +40,8 @@ in {
     services.desktopManager.gnome = {
       enable = true;
     };
+
+    programs.xwayland.enable = lib.mkDefault (gnomeCfg.wayland && gnomeCfg.xWayland);
 
     services.xserver.displayManager = lib.mkIf (!gnomeCfg.wayland && gnomeCfg.configureMonitors) {
       setupCommands =
