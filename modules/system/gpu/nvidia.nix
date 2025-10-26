@@ -3,14 +3,16 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.modules.system.nvidia;
   inherit (lib) mkIf mkEnableOption;
-in {
+in
+{
   options.modules.system.nvidia.enable = mkEnableOption "nvidia";
   config = mkIf cfg.enable {
     # taken (mostly) from https://github.com/bloxx12/nichts/blob/main/options/common/gpu/nvidia.nix
-    services.xserver.videoDrivers = ["nvidia"];
+    services.xserver.videoDrivers = [ "nvidia" ];
     hardware.graphics = {
       enable = true;
       enable32Bit = true;

@@ -3,10 +3,12 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.yazi;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.yazi = {
     enable = mkEnableOption "yazi";
   };

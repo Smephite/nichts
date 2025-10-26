@@ -3,9 +3,11 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.system;
-in {
+in
+{
   options.modules.system = {
     username = mkOption {
       description = "username for this system";
@@ -21,7 +23,10 @@ in {
   config = {
     users.users.${cfg.username} = {
       isNormalUser = true;
-      extraGroups = ["wheel" "adbusers"];
+      extraGroups = [
+        "wheel"
+        "adbusers"
+      ];
     };
   };
 }

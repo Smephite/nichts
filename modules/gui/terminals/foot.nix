@@ -5,10 +5,12 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.foot;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.foot = {
     enable = mkEnableOption "foot";
     server = mkEnableOption "foot server mode";

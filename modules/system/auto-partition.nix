@@ -2,12 +2,19 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.modules.system.disks;
   inherit (config.modules.system) username;
   inherit (config.users.users.${username}) uid;
-  inherit (lib) mkIf types mkOption mkEnableOption;
-in {
+  inherit (lib)
+    mkIf
+    types
+    mkOption
+    mkEnableOption
+    ;
+in
+{
   options.modules.system.disks = {
     auto-partition.enable = mkEnableOption "disko";
     main-disk = mkOption {
@@ -33,12 +40,15 @@ in {
     storage-disks = mkOption {
       type = types.attrsOf types.str;
       description = "Declare additional storage disks (The whole disk will be a btrfs volume)";
-      default = {};
-      example = {"extra" = "/dev/sda";};
+      default = { };
+      example = {
+        "extra" = "/dev/sda";
+      };
     };
     name-suffix = mkOption {
       type = types.str;
-      description = ''        Will rename partitions and cryptvolumes.
+      description = ''
+        Will rename partitions and cryptvolumes.
                 MUST BE USED WHEN USING THIS CONFIGURATION AS INSTALLER FOR OTHER DEVICES.
                 Otherwise disko can mess up existing partitions since they are called the same
       '';
@@ -50,7 +60,7 @@ in {
   config = mkIf cfg.auto-partition.enable {
     assertions = [
       {
-        assertion = !((uid == null) && (cfg.storage-disks == {}));
+        assertion = !((uid == null) && (cfg.storage-disks == { }));
         message = "To mount storage disks, the uid (users.users.<name>.uid) must be set!";
       }
     ];
@@ -58,11 +68,11 @@ in {
     services.btrfs.autoScrub = {
       enable = true;
       interval = "weekly";
-      fileSystems = ["/"];
+      fileSystems = [ "/" ];
     };
     boot = {
-      initrd.supportedFilesystems = ["btrfs"];
-      supportedFilesystems = ["btrfs"];
+      initrd.supportedFilesystems = [ "btrfs" ];
+      supportedFilesystems = [ "btrfs" ];
       loader = {
         efi.efiSysMountPoint = "/boot";
         efi.canTouchEfiVariables = true;
@@ -85,55 +95,73 @@ in {
 
     # reference: https://haseebmajid.dev/posts/2024-07-30-how-i-setup-btrfs-and-luks-on-nixos-using-disko/
     disko.devices = {
-      disk =
-        {
-          main = {
-            type = "disk";
-            device = cfg.main-disk;
-            content = {
-              type = "gpt";
-              partitions = {
-                ESP = {
-                  label = "boot" + cfg.name-suffix;
-                  size = cfg.esp-size;
-                  type = "EF00";
-                  content = {
-                    type = "filesystem";
-                    format = "vfat";
-                    mountpoint = "/boot";
-                    mountOptions = ["defaults"];
-                  };
+      disk = {
+        main = {
+          type = "disk";
+          device = cfg.main-disk;
+          content = {
+            type = "gpt";
+            partitions = {
+              ESP = {
+                label = "boot" + cfg.name-suffix;
+                size = cfg.esp-size;
+                type = "EF00";
+                content = {
+                  type = "filesystem";
+                  format = "vfat";
+                  mountpoint = "/boot";
+                  mountOptions = [ "defaults" ];
                 };
-                root = {
-                  size = "100%";
-                  label = "luks" + cfg.name-suffix;
+              };
+              root = {
+                size = "100%";
+                label = "luks" + cfg.name-suffix;
+                content = {
+                  type = "luks";
+                  name = "cryptroot" + cfg.name-suffix;
                   content = {
-                    type = "luks";
-                    name = "cryptroot" + cfg.name-suffix;
-                    content = {
-                      type = "btrfs";
-                      extraArgs = ["-L" "nixos${cfg.name-suffix}" "-f"];
-                      subvolumes = {
-                        "/root" = {
-                          mountpoint = "/";
-                          mountOptions = ["subvol=root" "compress=zstd" "noatime"];
-                        };
-                        "/home" = {
-                          mountpoint = "/home";
-                          mountOptions = ["subvol=home" "compress=zstd" "noatime"];
-                        };
-                        "/nix" = {
-                          mountpoint = "/nix";
-                          mountOptions = ["subvol=nix" "compress=zstd" "noatime"];
-                        };
-                        "/log" = {
-                          mountpoint = "/var/log";
-                          mountOptions = ["subvol=log" "compress=zstd" "noatime"];
-                        };
-                        "/swap" = mkIf (cfg.swap-size != null) {
-                          mountpoint = "/swap";
-                          swap.swapfile.size = cfg.swap-size;
-                        };
+                    type = "btrfs";
+                    extraArgs = [
+                      "-L"
+                      "nixos${cfg.name-suffix}"
+                      "-f"
+                    ];
+                    subvolumes = {
+                      "/root" = {
+                        mountpoint = "/";
+                        mountOptions = [
+                          "subvol=root"
+                          "compress=zstd"
+                          "noatime"
+                        ];
+                      };
+                      "/home" = {
+                        mountpoint = "/home";
+                        mountOptions = [
+                          "subvol=home"
+                          "compress=zstd"
+                          "noatime"
+                        ];
+                      };
+                      "/nix" = {
+                        mountpoint = "/nix";
+                        mountOptions = [
+                          "subvol=nix"
+                          "compress=zstd"
+                          "noatime"
+                        ];
+                      };
+                      "/log" = {
+                        mountpoint = "/var/log";
+                        mountOptions = [
+                          "subvol=log"
+                          "compress=zstd"
+                          "noatime"
+                        ];
+                      };
+                      "/swap" = mkIf (cfg.swap-size != null) {
+                        mountpoint = "/swap";
+                        swap.swapfile.size = cfg.swap-size;
                       };
                     };
                   };
@@ -141,38 +169,44 @@ in {
               };
             };
           };
-        }
-        // lib.mapAttrs (
-          name: device: {
-            type = "disk";
-            device = device;
-            content = {
-              type = "gpt";
-              partitions = {
-                "${name}${cfg.name-suffix}" = {
-                  size = "100%";
-                  label = "luks-${name}${cfg.name-suffix}";
-                  content = {
-                    type = "luks";
-                    name = "crypt-${name}${cfg.name-suffix}";
-                    content = {
-                      type = "btrfs";
-                      extraArgs = ["-L" "${name}${cfg.name-suffix}" "-f"];
-                      subvolumes = {
-                        "/${name}" = {
-                          mountpoint = "/disk-${name}";
-                          # make accessible for user
-                          mountOptions = ["subvol=${name}" "compress=zstd" "noatime"];
-                        };
-                      };
+        };
+      }
+      // lib.mapAttrs (name: device: {
+        type = "disk";
+        device = device;
+        content = {
+          type = "gpt";
+          partitions = {
+            "${name}${cfg.name-suffix}" = {
+              size = "100%";
+              label = "luks-${name}${cfg.name-suffix}";
+              content = {
+                type = "luks";
+                name = "crypt-${name}${cfg.name-suffix}";
+                content = {
+                  type = "btrfs";
+                  extraArgs = [
+                    "-L"
+                    "${name}${cfg.name-suffix}"
+                    "-f"
+                  ];
+                  subvolumes = {
+                    "/${name}" = {
+                      mountpoint = "/disk-${name}";
+                      # make accessible for user
+                      mountOptions = [
+                        "subvol=${name}"
+                        "compress=zstd"
+                        "noatime"
+                      ];
                     };
                   };
                 };
               };
             };
-          }
-        )
-        cfg.storage-disks;
+          };
+        };
+      }) cfg.storage-disks;
     };
     fileSystems."/var/log".neededForBoot = true;
     # needed so that the non-boot disks are also decrypted

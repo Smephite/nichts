@@ -4,11 +4,13 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   username = config.modules.system.username;
   cfg = config.modules.theming.themes.catppuccin;
   inherit (lib) mkIf mkOption types;
-in {
+in
+{
   imports = [
     inputs.catppuccin.nixosModules.catppuccin
     # TODO: maybe write a nice function for less boilerplate
@@ -21,10 +23,10 @@ in {
       inherit config lib pkgs;
     })
     /*
-    (import ./firefox.nix {
-      enabled = cfg.enable;
-      inherit config lib pkgs;
-    })
+      (import ./firefox.nix {
+        enabled = cfg.enable;
+        inherit config lib pkgs;
+      })
     */
 
     ./hyprland.nix
@@ -48,12 +50,16 @@ in {
   options = {
     modules.theming.themes.catppuccin = {
       flavor = mkOption {
-        type =
-          types.enum ["latte" "frappe" "macchiate" "mocha"];
+        type = types.enum [
+          "latte"
+          "frappe"
+          "macchiate"
+          "mocha"
+        ];
         default = "mocha";
         example = "latte";
         description = "Select which catppuccin flavor to use";
-      }; #TODO: add accents
+      }; # TODO: add accents
       accent = mkOption {
         type = types.enum [
           "rosewater"

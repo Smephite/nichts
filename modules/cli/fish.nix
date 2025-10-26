@@ -4,25 +4,35 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.modules.programs.fish;
   username = config.modules.system.username;
   gitPath = config.modules.system.gitPath;
-  inherit (lib) mkIf mkEnableOption mkOption types mkForce mkMerge getExe;
-in {
+  inherit (lib)
+    mkIf
+    mkEnableOption
+    mkOption
+    types
+    mkForce
+    mkMerge
+    getExe
+    ;
+in
+{
   options.modules.programs.fish = {
     enable = mkEnableOption "fish";
     extraAliases = mkOption {
       type = types.attrs;
       description = "extra shell aliases";
-      default = {};
+      default = { };
     };
   };
 
   config = mkIf cfg.enable {
     programs.fish.enable = true;
 
-    nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
+    nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     programs.nix-index = {
       enable = true;
       enableFishIntegration = true;
@@ -31,8 +41,8 @@ in {
     users.users.${username}.shell = pkgs.fish;
 
     environment = {
-      shells = [pkgs.fish];
-      pathsToLink = ["/share/fish"];
+      shells = [ pkgs.fish ];
+      pathsToLink = [ "/share/fish" ];
     };
 
     home-manager.users.${username} = {

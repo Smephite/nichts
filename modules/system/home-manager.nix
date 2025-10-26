@@ -5,10 +5,12 @@
   self,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.other.home-manager;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.other.home-manager = {
     enable = mkEnableOption "home-manager";
     enableDirenv = mkEnableOption "direnv";
@@ -18,7 +20,7 @@ in {
     home-manager = {
       useUserPackages = true;
       useGlobalPkgs = true;
-      extraSpecialArgs = {inherit inputs self;};
+      extraSpecialArgs = { inherit inputs self; };
       users.${username} = {
         programs = {
           home-manager.enable = true;

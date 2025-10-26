@@ -4,8 +4,16 @@
   inputs,
   pkgs,
   ...
-}: let
-  inherit (lib) mkIf mkOption mkEnableOption types attrsToList mkMerge;
+}:
+let
+  inherit (lib)
+    mkIf
+    mkOption
+    mkEnableOption
+    types
+    attrsToList
+    mkMerge
+    ;
   username = config.modules.system.username;
   cfg = config.modules.programs.firefox;
   mkFirefoxExtension = name: id: {
@@ -15,13 +23,14 @@
       installation_mode = "force_installed";
     };
   };
-in {
+in
+{
   options.modules.programs.firefox = {
     enable = mkEnableOption "firefox";
     extensions = mkOption {
       description = "firefox extensions (formatted as { name = id; } attrset)";
       type = types.attrs;
-      default = {};
+      default = { };
     };
   };
 

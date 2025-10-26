@@ -3,9 +3,11 @@
   lib,
   enabled,
   ...
-}: let
+}:
+let
   inherit (config.modules.system) username;
-in {
+in
+{
   config = lib.mkIf enabled {
     modules.programs.firefox.extensions = [
     ];

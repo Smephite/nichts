@@ -3,9 +3,11 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   username = config.modules.system.username;
-in {
+in
+{
   home-manager.backupFileExtension = "bak";
   networking.dhcpcd.wait = "background";
   services.locate = {
@@ -16,10 +18,10 @@ in {
 
   services.udev.packages = [ pkgs.yubikey-personalization ];
   programs.gnupg.agent = {
-  enable = true;
-  enableSSHSupport = true;
-};
-  
+    enable = true;
+    enableSSHSupport = true;
+  };
+
   services.pcscd.enable = true;
   services.envfs.enable = true;
 
@@ -55,7 +57,7 @@ in {
         "refined-github-" = "1765a9e7-77f8-4167-bf5b-939736b23862";
       };
     };
-#    theming.theme = "catppuccin";
+    #    theming.theme = "catppuccin";
   };
 
   time.timeZone = "Europe/Zurich";

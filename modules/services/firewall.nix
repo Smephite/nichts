@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   # TODO: Move this under system options
   # TODO: Make option to enable / disable restrictive port ranges
   networking.firewall = {

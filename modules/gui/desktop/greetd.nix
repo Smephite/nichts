@@ -4,10 +4,12 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.login.greetd;
   session = config.modules.login.session;
-in {
+in
+{
   options.modules.login.greetd.enable = mkEnableOption "greetd";
   #TODO: move somewhere else
   options.modules.login.session = mkOption {

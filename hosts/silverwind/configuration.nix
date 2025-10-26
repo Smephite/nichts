@@ -2,8 +2,10 @@
   config,
   pkgs,
   inputs,
+  self,
   ...
-}: {
+}:
+{
   imports = [
     ../common/default.nix
     ./packages.nix
@@ -15,7 +17,7 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  security.sudo.package = pkgs.sudo.override {withInsults = true;};
+  security.sudo.package = pkgs.sudo.override { withInsults = true; };
 
   services.logrotate.checkConfig = false;
 
@@ -31,12 +33,12 @@
   networking.networkmanager = {
     plugins = [ pkgs.networkmanager-openconnect ];
     enable = true;
-    };
+  };
 
   environment.systemPackages = with pkgs; [
     networkmanager # cli tool for managing connections
-    fprintd        # Fingerprint sensor
-    ]; 
+    fprintd # Fingerprint sensor
+  ];
 
   services.fprintd.enable = true;
   #services.fprintd.tod.enable = true;
@@ -55,12 +57,23 @@
   services.displayManager.gdm.enable = true;
   #services.displayManager.cosmic.enable = true;
   #services.displayManager.cosmic-greeter.enable = true;
-  
+
   services.desktopManager.gnome.enable = true;
   services.desktopManager.cosmic.enable = true;
   programs.niri.enable = true;
-  
+
   services.noctalia-shell.enable = true;
+
+  services.tailscale.enable = true;
+
+  services.nylon-wg = {
+    enable = true;
+    centralConfig = (self + "/secrets/central.yaml");
+    node = {
+      key = (self + "/secrets/priv.txt");
+      id = "silverwind.core.kai.run";
+    };
+  };
 
   # COSMIC Desktop Environment
   #services.desktopManager.cosmic.enable = true;
@@ -101,7 +114,7 @@
         userEmail = "mail@kaibersz.in";
         defaultBranch = "main";
       };
-    microchip.enable = true;
+      microchip.enable = true;
     };
     services = {
       pipewire.enable = true;

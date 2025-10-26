@@ -4,10 +4,12 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.mpv;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.mpv.enable = mkEnableOption "mpv";
 
   config = mkIf cfg.enable {

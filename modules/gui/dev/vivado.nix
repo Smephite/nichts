@@ -4,7 +4,8 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   vivado_pkg = pkgs.nur.repos.Nick1296.vivado-2019-2;
   vivado-desktop-symbol = pkgs.makeDesktopItem {
     name = "vivado-2019-2";
@@ -13,7 +14,8 @@ with lib; let
   };
   cfg = config.modules.programs.vivado;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.vivado.enable = mkEnableOption "vivado";
 
   config = mkIf cfg.enable {

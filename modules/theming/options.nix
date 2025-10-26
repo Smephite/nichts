@@ -3,20 +3,19 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   username = config.modules.system.username;
   cfg = config.modules.theming;
-in {
+in
+{
   config = {
     modules.theming.themes.catppuccin.enable = cfg.theme == "catppuccin";
   };
   options = {
     modules.theming = {
       theme = mkOption {
-        type = with types;
-          nullOr (
-            enum ["catppuccin"]
-          );
+        type = with types; nullOr (enum [ "catppuccin" ]);
         default = null;
         example = "catppuccin";
         description = "Select which system wide theme to use";

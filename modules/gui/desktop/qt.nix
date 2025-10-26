@@ -4,10 +4,12 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.themes.qt;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.themes.qt = {
     enable = mkEnableOption "qt theming";
     name = mkOption {
@@ -41,8 +43,8 @@ in {
         style = {
           inherit (cfg) name;
           package = cfg.package.override {
-            flavour = [cfg.variant];
-            accents = [cfg.accentColour];
+            flavour = [ cfg.variant ];
+            accents = [ cfg.accentColour ];
           };
         };
       };

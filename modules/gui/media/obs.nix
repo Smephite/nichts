@@ -4,10 +4,12 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.obs;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.obs.enable = mkEnableOption "obs";
 
   config = mkIf cfg.enable {

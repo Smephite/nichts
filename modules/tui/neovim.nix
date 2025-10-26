@@ -5,15 +5,17 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.neovim;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.neovim.enable = mkEnableOption "neovim";
 
   config = mkIf cfg.enable {
     home-manager.users.${username} = {
-      imports = [inputs.nixvim.homeManagerModules.nixvim];
+      imports = [ inputs.nixvim.homeManagerModules.nixvim ];
       programs.nixvim = {
         enable = true;
         enableMan = true;
@@ -127,7 +129,10 @@ in {
           rust-tools = {
             enable = true;
             crateGraph = {
-              enabledGraphvizBackends = ["png" "svg"];
+              enabledGraphvizBackends = [
+                "png"
+                "svg"
+              ];
               backend = "x11";
             };
             inlayHints = {

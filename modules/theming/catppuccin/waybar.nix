@@ -3,9 +3,11 @@
   enabled,
   lib,
   ...
-}: let
+}:
+let
   inherit (config.modules.system) username;
-in {
+in
+{
   config = lib.mkIf enabled {
     home-manager.users.${username} = {
       # read as file so that catppuccin theme can modify the string

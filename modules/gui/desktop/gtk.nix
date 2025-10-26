@@ -3,11 +3,13 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.themes.gtk;
   username = config.modules.system.username;
   hmCfg = config.home-manager.users.${username};
-in {
+in
+{
   options.modules.themes.gtk = {
     enable = mkEnableOption "gtk theming";
     name = mkOption {
@@ -28,7 +30,8 @@ in {
     };
     iconTheme = mkOption {
       description = "gtk icon theme";
-      type = with types;
+      type =
+        with types;
         submodule {
           options = {
             name = mkOption {
@@ -52,9 +55,9 @@ in {
           inherit (cfg) name;
           package = cfg.package.override {
             size = "standard";
-            accents = [cfg.accentColour];
+            accents = [ cfg.accentColour ];
             inherit (cfg) variant;
-            tweaks = ["normal"];
+            tweaks = [ "normal" ];
           };
         };
         iconTheme = {

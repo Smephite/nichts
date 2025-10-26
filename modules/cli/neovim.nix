@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   lazyvim-config = pkgs.fetchFromGitHub {
     owner = "Dragyx";
     repo = "lazyvim-config";
@@ -12,12 +13,20 @@
   };
   cfg = config.modules.programs.neovim-old;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.neovim-old.enable = lib.mkEnableOption "neovim-old";
 
   config = lib.mkIf cfg.enable {
     home-manager.users.${username} = {
-      home.packages = with pkgs; [lazygit ripgrep fd gcc xclip rust-analyzer];
+      home.packages = with pkgs; [
+        lazygit
+        ripgrep
+        fd
+        gcc
+        xclip
+        rust-analyzer
+      ];
       programs.neovim = {
         enable = true;
         viAlias = true;

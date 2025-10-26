@@ -4,10 +4,12 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.ssh;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.ssh.enable = mkEnableOption "ssh";
 
   config = mkIf cfg.enable {

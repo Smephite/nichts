@@ -3,12 +3,14 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.modules.WM.hyprland;
   username = config.modules.system.username;
   monitors = config.modules.system.monitors;
   inherit (lib) mkEnableOption mkIf getExe;
-in {
+in
+{
   options.modules.WM.hyprland = {
     enable = mkEnableOption "hyprland";
     gnome-keyring.enable = mkEnableOption "gnome-keyring";
@@ -16,7 +18,7 @@ in {
 
   config = mkIf cfg.enable {
     services.displayManager = {
-      sessionPackages = [pkgs.hyprland]; # pkgs.gnome.gnome-session.sessions ];
+      sessionPackages = [ pkgs.hyprland ]; # pkgs.gnome.gnome-session.sessions ];
       defaultSession = "hyprland";
     };
 
@@ -46,9 +48,9 @@ in {
     services.displayManager.sddm.wayland.enable = true;
     systemd.user.services.polkit-gnome-authentication-agent-1 = mkIf cfg.gnome-keyring.enable {
       description = "polkit-gnome-authentication-agent-1";
-      wantedBy = ["graphical-session.target"];
-      wants = ["graphical-session.target"];
-      after = ["graphical-session.target"];
+      wantedBy = [ "graphical-session.target" ];
+      wants = [ "graphical-session.target" ];
+      after = [ "graphical-session.target" ];
       serviceConfig = {
         Type = "simple";
         ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
@@ -83,19 +85,19 @@ in {
         settings = {
           exec-once =
             (
-              if cfg.gnome-keyring.enable
-              then ["${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"]
-              else []
+              if cfg.gnome-keyring.enable then
+                [ "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1" ]
+              else
+                [ ]
             )
             ++ [
               "${pkgs.swww}/bin/swww-daemon"
               "${getExe pkgs.nextcloud-client}"
             ];
-          monitor =
-            map (
-              m: "${m.device},${toString m.resolution.x}x${toString m.resolution.y}@${toString m.refresh_rate},${toString m.position.x}x${toString m.position.y},${toString m.scale},transform,${toString m.transform}"
-            )
-            monitors; #TODO: default value
+          monitor = map (
+            m:
+            "${m.device},${toString m.resolution.x}x${toString m.resolution.y}@${toString m.refresh_rate},${toString m.position.x}x${toString m.position.y},${toString m.scale},transform,${toString m.transform}"
+          ) monitors; # TODO: default value
           input = {
             kb_layout = "us";
             kb_variant = "altgr-intl";
@@ -121,7 +123,7 @@ in {
             enabled = false;
             # Some default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
 
-            bezier = ["myBezier, 0.05, 0.9, 0.1, 1.05"];
+            bezier = [ "myBezier, 0.05, 0.9, 0.1, 1.05" ];
 
             animation = [
               "windowsOut, 1, 7, default, popin 80%"

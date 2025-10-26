@@ -5,10 +5,12 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   username = config.modules.system.username;
   cfg = config.modules.programs.alacritty;
-in {
+in
+{
   options.modules.programs.alacritty = {
     enable = mkEnableOption "alacritty";
     opacity = mkOption {

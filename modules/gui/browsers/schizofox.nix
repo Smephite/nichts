@@ -4,17 +4,19 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.schizofox;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.schizofox = {
     enable = mkEnableOption "schizofox";
   };
 
   config = mkIf cfg.enable {
     home-manager.users.${username} = {
-      imports = [inputs.schizofox.homeManagerModule];
+      imports = [ inputs.schizofox.homeManagerModule ];
       programs.schizofox = {
         enable = true;
 
@@ -36,7 +38,14 @@ in {
 
         search = {
           defaultSearchEngine = "Brave";
-          removeEngines = ["Google" "Bing" "Amazon.com" "eBay" "Twitter" "Wikipedia"];
+          removeEngines = [
+            "Google"
+            "Bing"
+            "Amazon.com"
+            "eBay"
+            "Twitter"
+            "Wikipedia"
+          ];
           searxUrl = "https://searx.be";
           searxQuery = "https://searx.be/search?q={searchTerms}&categories=general";
           addEngines = [

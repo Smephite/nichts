@@ -266,6 +266,18 @@
         "type": "github"
       }
     },
+    "nixpkgs-local": {
+      "locked": {
+        "lastModified": 1761326300,
+        "narHash": "sha256-KqGSBrIvJ0DHrscIN3I6qFlzkj0uA0XBfi785ToZcZE=",
+        "path": "/home/kai/workspace/nixpkgs",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/kai/workspace/nixpkgs",
+        "type": "path"
+      }
+    },
     "nixpkgs-small": {
       "locked": {
         "lastModified": 1759860509,
@@ -411,6 +423,7 @@
         "lanzaboote": "lanzaboote",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
+        "nixpkgs-local": "nixpkgs-local",
         "nixpkgs-small": "nixpkgs-small",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "noctalia": "noctalia",

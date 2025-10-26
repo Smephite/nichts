@@ -4,11 +4,13 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.modules.programs.editors.helix;
   inherit (config.modules.system) username;
   inherit (lib) mkIf mkEnableOption;
-in {
+in
+{
   # this config (including languages.nix was largely taken from https://github.com/bloxx12/nichts)
   options.modules.programs.editors.helix.enable = mkEnableOption "helix";
   config = mkIf cfg.enable {
@@ -31,18 +33,32 @@ in {
             bufferline = "multiple";
             soft-wrap.enable = true;
             lsp.display-messages = true;
-            cursor-shape = {insert = "bar";};
-            statusline.left = ["spinner" "version-control" "file-name"];
-            /*
-            inline-diagnostics = {
-              cursor-line = "hint";
-              other-lines = "error";
+            cursor-shape = {
+              insert = "bar";
             };
+            statusline.left = [
+              "spinner"
+              "version-control"
+              "file-name"
+            ];
+            /*
+              inline-diagnostics = {
+                cursor-line = "hint";
+                other-lines = "error";
+              };
             */
           };
           keys.normal = {
-            "space".g = [":new" ":insert-output ${pkgs.lazygit}/bin/lazygit" ":buffer-close!" ":redraw"];
-            esc = ["collapse_selection" "keep_primary_selection"];
+            "space".g = [
+              ":new"
+              ":insert-output ${pkgs.lazygit}/bin/lazygit"
+              ":buffer-close!"
+              ":redraw"
+            ];
+            esc = [
+              "collapse_selection"
+              "keep_primary_selection"
+            ];
             A-H = "goto_previous_buffer";
             A-L = "goto_next_buffer";
             A-w = ":buffer-close";

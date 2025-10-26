@@ -4,10 +4,12 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.zathura;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.zathura.enable = mkEnableOption "zathura";
 
   config = mkIf cfg.enable {

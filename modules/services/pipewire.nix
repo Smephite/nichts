@@ -3,9 +3,11 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.services.pipewire;
-in {
+in
+{
   options.modules.services.pipewire.enable = mkEnableOption "pipewire";
 
   config = mkIf cfg.enable {

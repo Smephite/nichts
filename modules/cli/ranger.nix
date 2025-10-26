@@ -5,10 +5,12 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.ranger;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.ranger.enable = mkEnableOption "ranger";
 
   config = mkIf cfg.enable {

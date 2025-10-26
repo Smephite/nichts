@@ -4,10 +4,12 @@
   config,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.nh;
   gitPath = config.modules.system.gitPath;
-in {
+in
+{
   options.modules.programs.nh.enable = mkEnableOption "nh";
 
   config = mkIf cfg.enable {

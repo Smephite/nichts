@@ -4,10 +4,12 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.protonvpn;
   username = config.modules.system.username;
-in {
+in
+{
   config = mkIf cfg.enable {
     home-manager.users.${username} = {
       home.packages = with pkgs; [

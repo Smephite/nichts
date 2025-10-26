@@ -4,10 +4,12 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.git;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.git = {
     enable = mkEnableOption "git";
     userName = mkOption {
@@ -45,11 +47,11 @@ in {
         inherit (cfg) enable userName userEmail;
         extraConfig = {
           /*
-             currently broken (rust compile error)
-          core = {
-              editor = cfg.editor;
-              pager = "${pkgs.delta}/bin/delta";
-          };
+               currently broken (rust compile error)
+            core = {
+                editor = cfg.editor;
+                pager = "${pkgs.delta}/bin/delta";
+            };
           */
           init.defaultBranch = cfg.defaultBranch;
           push.autoSetupRemote = true;

@@ -4,10 +4,12 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   username = config.modules.system.username;
   cfg = config.modules.WM.waybar;
-in {
+in
+{
   options.modules.WM.waybar.enable = lib.mkEnableOption "waybar";
   config = lib.mkIf cfg.enable {
     # environment.systemPackages = with pkgs; [waybar];
@@ -36,7 +38,7 @@ in {
             ];
             #  Modules
             "custom/os-icon" = {
-              format = ""; #NixOS logo
+              format = ""; # NixOS logo
             };
             battery = {
               interval = 10;
@@ -151,7 +153,7 @@ in {
               on-click = "pactl set-sink-mute @DEFAULT_SINK@ toggle";
               tooltip = false;
             };
-            user = {};
+            user = { };
             temperature = {
               critical-threshold = 90;
               interval = 5;

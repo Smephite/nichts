@@ -1,13 +1,15 @@
 # which default packages to use for the system
-{pkgs, ...}: let
-  python-packages = ps:
-    with ps; [
+{ pkgs, ... }:
+let
+  python-packages =
+    ps: with ps; [
       pandas
       numpy
       opencv4
       ipython
     ];
-in {
+in
+{
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -15,17 +17,17 @@ in {
     vscodium
 
     bash
-    
+
     bender
 
     vim
     bat
     # nheko
-#    calibre
-#    element-desktop
-#    neovim
+    #    calibre
+    #    element-desktop
+    #    neovim
     typst
-#    prismlauncher
+    #    prismlauncher
     cm_unicode
     eza # exa is unmaintained
     hwinfo
@@ -35,7 +37,7 @@ in {
     calc
     rsync
     evince
-#    wlr-randr
+    #    wlr-randr
     wget
     gnumake
     zoxide
@@ -70,8 +72,8 @@ in {
     gimp
     imagemagick
 
-#    telegram-desktop
-#    tg
+    #    telegram-desktop
+    #    tg
 
     calc
     tldr
@@ -88,5 +90,7 @@ in {
     # lsusb / lspci
     usbutils
     pciutils
+
+    btop
   ];
 }

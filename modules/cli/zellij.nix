@@ -3,10 +3,12 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.modules.programs.zellij;
   inherit (config.modules.system) username;
-in {
+in
+{
   options.modules.programs.zellij.enable = lib.mkEnableOption "zellij";
   config = lib.mkIf cfg.enable {
     home-manager.users.${username} = {

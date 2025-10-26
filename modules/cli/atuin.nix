@@ -4,10 +4,12 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.atuin;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.atuin.enable = mkEnableOption "atuin";
 
   config = mkIf cfg.enable {

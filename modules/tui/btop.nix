@@ -3,10 +3,12 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.btop;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.btop.enable = mkEnableOption "btop";
 
   config = mkIf cfg.enable {

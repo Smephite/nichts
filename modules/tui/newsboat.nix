@@ -3,10 +3,12 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.newsboat;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.newsboat.enable = mkEnableOption "newsboat";
 
   config = mkIf cfg.enable {

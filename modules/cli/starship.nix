@@ -3,10 +3,12 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.starship;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.starship.enable = mkEnableOption "starship";
 
   config = mkIf cfg.enable {

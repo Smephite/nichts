@@ -3,11 +3,13 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.modules.programs.editors.helix;
   inherit (config.modules.system) username;
   inherit (lib) mkIf getExe;
-in {
+in
+{
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       lldb # lldb debugger for C, C++, Rust etc.tinymist
@@ -20,82 +22,112 @@ in {
     ];
     home-manager.users.${username} = {
       programs.helix.languages = {
-        language = let
-          extraFormatter = lang: {
-            command = getExe pkgs.deno;
-            args = ["fmt" "-" "--ext" lang];
-          };
-        in [
-          {
-            name = "nix";
-            auto-format = true;
-            formatter.command = "${getExe pkgs.alejandra} -q";
-          }
-          {
-            name = "bash";
-            auto-format = true;
-            formatter = {
-              command = getExe pkgs.shfmt;
-              args = ["-i" "2"];
+        language =
+          let
+            extraFormatter = lang: {
+              command = getExe pkgs.deno;
+              args = [
+                "fmt"
+                "-"
+                "--ext"
+                lang
+              ];
             };
-          }
-          {
-            name = "clojure";
-            injection-regex = "(clojure|clj|edn|boot|yuck)";
-            file-types = ["clj" "cljs" "cljc" "clje" "cljr" "cljx" "edn" "boot" "yuck"];
-          }
-          {
-            name = "cmake";
-            auto-format = true;
-            language-servers = ["cmake-language-server"];
-            formatter = {
-              command = getExe pkgs.cmake-format;
-              args = ["-"];
-            };
-          }
-          {
-            name = "javascript";
-            auto-format = true;
-            language-servers = ["dprint" "typescript-language-server"];
-          }
-          {
-            name = "java";
-            auto-format = false;
-            language-servers = ["jdtls"];
-          }
-          {
-            name = "json";
-            formatter = extraFormatter "json";
-          }
-          {
-            name = "markdown";
-            auto-format = true;
-            formatter = extraFormatter "md";
-          }
-          {
-            name = "python";
-            language-servers = ["pyright"];
-            formatter = {
-              command = getExe pkgs.black;
-              args = ["-" "--quiet" "--line-length 100"];
-            };
-          }
-          {
-            name = "typescript";
-            auto-format = true;
-            language-servers = ["dprint" "typescript-language-server"];
-          }
-        ];
+          in
+          [
+            {
+              name = "nix";
+              auto-format = true;
+              formatter.command = "${getExe pkgs.alejandra} -q";
+            }
+            {
+              name = "bash";
+              auto-format = true;
+              formatter = {
+                command = getExe pkgs.shfmt;
+                args = [
+                  "-i"
+                  "2"
+                ];
+              };
+            }
+            {
+              name = "clojure";
+              injection-regex = "(clojure|clj|edn|boot|yuck)";
+              file-types = [
+                "clj"
+                "cljs"
+                "cljc"
+                "clje"
+                "cljr"
+                "cljx"
+                "edn"
+                "boot"
+                "yuck"
+              ];
+            }
+            {
+              name = "cmake";
+              auto-format = true;
+              language-servers = [ "cmake-language-server" ];
+              formatter = {
+                command = getExe pkgs.cmake-format;
+                args = [ "-" ];
+              };
+            }
+            {
+              name = "javascript";
+              auto-format = true;
+              language-servers = [
+                "dprint"
+                "typescript-language-server"
+              ];
+            }
+            {
+              name = "java";
+              auto-format = false;
+              language-servers = [ "jdtls" ];
+            }
+            {
+              name = "json";
+              formatter = extraFormatter "json";
+            }
+            {
+              name = "markdown";
+              auto-format = true;
+              formatter = extraFormatter "md";
+            }
+            {
+              name = "python";
+              language-servers = [ "pyright" ];
+              formatter = {
+                command = getExe pkgs.black;
+                args = [
+                  "-"
+                  "--quiet"
+                  "--line-length 100"
+                ];
+              };
+            }
+            {
+              name = "typescript";
+              auto-format = true;
+              language-servers = [
+                "dprint"
+                "typescript-language-server"
+              ];
+            }
+          ];
 
         language-server = {
           bash-language-server = {
             command = getExe pkgs.bash-language-server;
-            args = ["start"];
+            args = [ "start" ];
           };
 
           clangd = {
             command = "${pkgs.clang-tools}/bin/clangd";
-            clangd.fallbackFlags = ["-std=c++2b"];
+            clangd.fallbackFlags = [ "-std=c++2b" ];
           };
 
           cmake-language-server = {
@@ -104,17 +136,20 @@ in {
 
           dprint = {
             command = getExe pkgs.dprint;
-            args = ["lsp"];
+            args = [ "lsp" ];
           };
 
           nil = {
             command = getExe pkgs.nil;
-            config.nil.formatting.command = ["${getExe pkgs.alejandra}" "-q"];
+            config.nil.formatting.command = [
+              "${getExe pkgs.alejandra}"
+              "-q"
+            ];
           };
 
           pyright = {
             command = "${pkgs.pyright}/bin/pyright-langserver";
-            args = ["--stdio"];
+            args = [ "--stdio" ];
             config = {
               reportMissingTypeStubs = false;
               analysis = {

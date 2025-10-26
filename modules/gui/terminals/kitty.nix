@@ -4,10 +4,12 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.kitty;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.kitty.enable = mkEnableOption "kitty";
 
   config = mkIf cfg.enable {

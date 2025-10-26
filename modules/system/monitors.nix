@@ -1,12 +1,15 @@
-{lib, ...}: let
+{ lib, ... }:
+let
   inherit (lib) mkOption types;
-in {
+in
+{
   options.modules.system.monitors = mkOption {
     description = "
       List of monitors to use
     ";
-    default = [];
-    type = with types;
+    default = [ ];
+    type =
+      with types;
       listOf (submodule {
         options = {
           name = mkOption {

@@ -4,14 +4,15 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   username = config.modules.system.username;
   cfg = config.modules.theming.themes.catppuccin;
 
   hyprland-catppuccin = pkgs.stdenv.mkDerivation {
     name = "hyprland-catppuccin";
     version = "b57375545f5da1f7790341905d1049b1873a8bb3v";
-    runtimeInputs = with pkgs; [];
+    runtimeInputs = with pkgs; [ ];
     src = pkgs.fetchFromGitHub {
       owner = "catppuccin";
       repo = "hyprland";
@@ -37,7 +38,7 @@ with lib; let
   hyprlock-catppuccin = pkgs.stdenv.mkDerivation {
     name = "hyprlock-catppuccin";
     version = "0.0";
-    runtimeInputs = [hyprland-catppuccin];
+    runtimeInputs = [ hyprland-catppuccin ];
     src = pkgs.fetchFromGitHub {
       owner = "catppuccin";
       repo = "hyprlock";
@@ -65,7 +66,8 @@ with lib; let
     url = "https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/logos/exports/1544x1544_circle.png";
     hash = "sha256-A85wBdJ2StkgODmxtNGfbNq8PU3G3kqnBAwWvQXVtqo=";
   };
-in {
+in
+{
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       hyprlock

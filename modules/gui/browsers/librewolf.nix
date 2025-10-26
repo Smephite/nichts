@@ -5,16 +5,18 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   username = config.modules.system.username;
   cfg = config.modules.programs.librewolf;
-in {
+in
+{
   options.modules.programs.librewolf = {
     enable = mkEnableOption "librewolf";
     extensions = mkOption {
       description = "librewolf extensions (format like https://discourse.nixos.org/t/declare-firefox-extensions-and-settings/36265)";
       type = types.attrs;
-      default = {};
+      default = { };
     };
   };
 

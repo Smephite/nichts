@@ -4,17 +4,19 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.vesktop;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.programs.vesktop = {
     enable = mkEnableOption "vesktop";
   };
 
   config = mkIf cfg.enable {
     home-manager.users.${username} = {
-      home.packages = with pkgs; [vesktop];
+      home.packages = with pkgs; [ vesktop ];
       xdg.configFile."vesktop/settings.json".text = builtins.toJSON {
         discordBranch = "ptb";
         firstLaunch = false;
@@ -34,8 +36,10 @@ in {
         autoUpdate = false;
         autoUpdateNotification = false;
         useQuickCss = true;
-        themeLinks = ["https://github.com/Costeer/Gruvbox-Material-Themes/blob/main/Discord%20Theme/gruvboxmaterial.theme.css"];
-        enabledThemes = ["gruvboxmaterial.theme.css"];
+        themeLinks = [
+          "https://github.com/Costeer/Gruvbox-Material-Themes/blob/main/Discord%20Theme/gruvboxmaterial.theme.css"
+        ];
+        enabledThemes = [ "gruvboxmaterial.theme.css" ];
         enableReactDevtools = true;
         frameless = false;
         transparent = false;
@@ -133,7 +137,7 @@ in {
           iLoveSpam.enabled = true;
           IgnoreActivities = {
             enabled = true;
-            ignoredActivities = [];
+            ignoredActivities = [ ];
           };
           ImageZoom = {
             enabled = true;

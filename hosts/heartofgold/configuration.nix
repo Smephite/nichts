@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   imports = [
     ../common/default.nix
     ./packages.nix
@@ -14,7 +15,7 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  security.sudo.package = pkgs.sudo.override {withInsults = true;};
+  security.sudo.package = pkgs.sudo.override { withInsults = true; };
 
   services.logrotate.checkConfig = false;
 
@@ -38,7 +39,7 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  environment.systemPackages = with pkgs; [networkmanager]; # cli tool for managing connections
+  environment.systemPackages = with pkgs; [ networkmanager ]; # cli tool for managing connections
 
   # be nice to your ssds
   services.fstrim.enable = true;
@@ -57,7 +58,7 @@
     layout = "de";
     variant = "";
   };
-    # Configure console keymap
+  # Configure console keymap
   console.keyMap = "de";
 
   # Enable CUPS to print documents.
@@ -148,31 +149,28 @@
     };
   };
 
-    ## TODO Move somewhere else
+  ## TODO Move somewhere else
   services.xserver.displayManager = {
-    setupCommands =
-      lib.strings.concatMapStrings (
-        m: ''            xrandr --output "${m.device}" \
-                    --mode "${builtins.toString m.resolution.x}x${builtins.toString m.resolution.x}" \
-                    --rate "${builtins.toString m.refresh_rate}" \
-                    --pos  "${builtins.toString m.position.x}x${builtins.toString m.position.x}" \
-                    --pos  "${builtins.toString m.position.x}x${builtins.toString m.position.x}" \
-                    --rotate "${
-            if m.transform == 0
-            then "normal"
-            else if m.transform == 1
-            then "left"
-            else if m.transform == 2
-            then "inverted"
-            else if m.transform == 3
-            then "right"
-            else "normal"
-          }\n"
-        ''
-      )
-      config.modules.system.monitors;
+    setupCommands = lib.strings.concatMapStrings (m: ''
+      xrandr --output "${m.device}" \
+              --mode "${builtins.toString m.resolution.x}x${builtins.toString m.resolution.x}" \
+              --rate "${builtins.toString m.refresh_rate}" \
+              --pos  "${builtins.toString m.position.x}x${builtins.toString m.position.x}" \
+              --pos  "${builtins.toString m.position.x}x${builtins.toString m.position.x}" \
+              --rotate "${
+                if m.transform == 0 then
+                  "normal"
+                else if m.transform == 1 then
+                  "left"
+                else if m.transform == 2 then
+                  "inverted"
+                else if m.transform == 3 then
+                  "right"
+                else
+                  "normal"
+              }\n"
+    '') config.modules.system.monitors;
   };
-
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
