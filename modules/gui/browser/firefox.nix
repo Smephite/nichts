@@ -112,8 +112,8 @@ in {
           OverrideFirstRunPage = "";
           OverridePostUpdatePage = "";
           DontCheckDefaultBrowser = true;
-          DisplayBookmarksToolbar = "always"; # alternatives: "always" or "newtab"
-          DisplayMenuBar = "always"; # alternatives: "always", "never" or "default-on"
+          DisplayBookmarksToolbar = "newtab"; # alternatives: "always" or "newtab"
+          DisplayMenuBar = "never"; # alternatives: "always", "never" or "default-on"
           SearchBar = "unified"; # alternative: "separate"
           FirefoxSuggest = {
             WebSuggestions = true;
