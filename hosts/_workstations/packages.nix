@@ -60,6 +60,8 @@ in {
     rustc
     rust-analyzer
     clippy
+    radicle-desktop
+    radicle-tui
 
     # util
     bash
