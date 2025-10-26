@@ -4,19 +4,19 @@
   pkgs,
   ...
 }: {
+
+  # framework specific for BIOS updates
+  services.fwupd.enable = true;
+
   # Bootloader.
-  # Secure boot
+  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.enable = lib.mkForce false;
-  boot.lanzaboote = {
-    enable = true;
-    pkiBundle = "/persist/sbctl";
-  };
   time.hardwareClockInLocalTime = true; # Fix system time in dualboot
 
   # be nice to your ssds
   services.fstrim.enable = true;
-
+  # Fingerprint
+  services.fprintd.enable = true;
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
@@ -31,7 +31,7 @@
     system = rec {
       # Enable networking
       network = {
-        hostname = "heartofgold";
+        hostname = "silverwind";
       };
 
       username = "kai";
@@ -91,6 +91,7 @@
       enableDirenv = true;
     };
     programs = {
+      microchip.enable = true;
       #firefox.enable = true;
     };
     services = {
