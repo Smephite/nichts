@@ -15,7 +15,7 @@ in {
     assertions = 
       [
         {
-          assertion = config.modules.system.fonts.enable;
+          assertion = config.modules.system.fonts.enable && !config.modules.system.server;
           message = "modules.programs.starship requires modules.system.fonts to be enabled";
         }
       ];
@@ -25,6 +25,7 @@ in {
         enable = true;
         enableFishIntegration = config.modules.programs.fish.enable or false;
         enableZshIntegration = config.modules.programs.zsh.enable or false;
+        enableBashIntegration = true;
 
         settings = {
           git_status.disabled = mkIf jj (lib.MkForce false); # makes everything slow when jj is in use

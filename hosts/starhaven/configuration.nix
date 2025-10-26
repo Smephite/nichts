@@ -45,6 +45,7 @@
       enable = true;
       node.key = config.age.secrets.nylon_key.path;
     };
+    programs.starship = true;
     other.home-manager.enable = true;};
 
   networking = {
