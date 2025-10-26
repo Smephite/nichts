@@ -16,6 +16,10 @@
 
   # See ../../modules
   modules = {
+    programs = {
+      fish.enable = lib.mkDefault true;
+    };
+
     system = {
       server = true;
       # Automatically populate authorized_keys for root and ${username} with default keys
