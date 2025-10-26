@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   username = config.modules.system.username;
@@ -14,7 +15,9 @@ in {
       type = types.str;
     };
   };
+  
   config = mkIf cfg.enable {
+
     networking = {
       networkmanager = {
         enable = true;
