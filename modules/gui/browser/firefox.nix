@@ -19,14 +19,14 @@
       optionalAttrs (builtins.isString attr)
         (
           { install_url = attr;} //
-          (optionalAttrs ((builtins.match "^https?://" attr) == null) { install_url = "https://addons.mozilla.org/firefox/downloads/latest/${attr}/latest.xpi";})
+          (optionalAttrs ((builtins.match "^https?://.*" attr) == null) { install_url = "https://addons.mozilla.org/firefox/downloads/latest/${attr}/latest.xpi";})
         )
       ) //
       (
       optionalAttrs (builtins.isAttrs attr)
         (
           { install_url = attr.source;} //
-          (optionalAttrs ((builtins.match "^https?://" attr.source) == null) { install_url = "https://addons.mozilla.org/firefox/downloads/latest/${attr.source}/latest.xpi";})
+          (optionalAttrs ((builtins.match "^https?://.*" attr.source) == null) { install_url = "https://addons.mozilla.org/firefox/downloads/latest/${attr.source}/latest.xpi";})
           // attr
         )
       )
