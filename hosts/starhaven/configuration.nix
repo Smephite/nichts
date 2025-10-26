@@ -11,7 +11,7 @@
 
   age.secrets.nylon_key.file = self + "/secrets/nylon." + config.networking.hostName + ".age";
 
-  age.secrets.radicle_secret.file = self + "/secrets/radicale.${config.networking.hostName}.age";
+  age.secrets.radicle_secret.file = self + "/secrets/radicle.${config.networking.hostName}.age";
 
   virtualisation.docker = {
     enable = true;
