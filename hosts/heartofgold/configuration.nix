@@ -21,6 +21,8 @@
       network = {
         hostname = "heartofgold";
       };
+      
+      gpu.nvidia.enable = true;
 
       desktop = {
         monitors = [
