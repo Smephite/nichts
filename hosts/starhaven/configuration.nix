@@ -40,29 +40,32 @@
     glusterfs = {
       enable = true;
     };
-    radicle = {
-      enable = true;
-      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDj2PdPzTSfMumaS+6eFvPkEi3+rRr+727EsPt9adxx1 radicle";
-      privateKeyFile = config.age.secrets.radicle_secret.path;
-
-      settings = {
-        node = {
-          externalAddresses = [ "starhaven.ext.kai.run:${builtins.toString config.services.radicle.node.listenPort}" ];
-          seedingPolicy = { default = "block"; };
-        };
-      };
-
-      node = {
-        openFirewall = true;
-        listenPort = 8776;
-      };
-
-      httpd = {
-        enable = true;
-        listenAddress = "0.0.0.0"; # for now...
-        listenPort = 8081;
-      };
-    };
+#    radicle = {
+#      enable = true;
+#      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDj2PdPzTSfMumaS+6eFvPkEi3+rRr+727EsPt9adxx1 radicle";
+#      privateKeyFile = config.age.secrets.radicle_secret.path;
+#
+#      settings = {
+#        node = {
+#          alias = "starhaven.ext.kai.run";
+#          peers = {type = "dynamic"; };
+#          externalAddresses = [ "starhaven.ext.kai.run:${builtins.toString config.services.radicle.node.listenPort}" ];
+#          network = "main";
+#          seedingPolicy = { default = "block"; };
+#        };
+#      };
+#
+#      node = {
+#        openFirewall = true;
+#        listenPort = 8776;
+#      };
+#
+#      httpd = {
+#        enable = true;
+#        listenAddress = "0.0.0.0"; # for now...
+#        listenPort = 8081;
+#      };
+#    };
   };
 
     networking.firewall = {
