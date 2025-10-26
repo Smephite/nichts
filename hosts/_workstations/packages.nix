@@ -74,14 +74,5 @@ in {
     usbutils
     pciutils
 
-    # network
-    openconnect
-    networkmanager
-    networkmanager-openconnect
-
-    # font
-    material-icons
-    material-design-icons
-    cm_unicode
   ];
 }

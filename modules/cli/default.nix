@@ -1,8 +1,9 @@
 {
   imports = [
+    ./atuin.nix
     ./fish.nix
     ./git.nix
-    ./atuin.nix
     ./nh.nix
+    ./starship.nix
   ];
 }

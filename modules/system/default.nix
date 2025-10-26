@@ -1,10 +1,11 @@
 {
   imports = [
     ./udev
+    ./desktop
     ./authorized_keys.nix
-    ./network.nix
+    ./fonts.nix
+    ./network
     ./nix.nix
     ./system.nix
-    ./desktop
   ];
 }

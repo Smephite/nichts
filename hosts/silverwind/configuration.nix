@@ -12,12 +12,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
   time.hardwareClockInLocalTime = true; # Fix system time in dualboot
 
-  # be nice to your ssds
-  services.fstrim.enable = true;
   # Fingerprint
   services.fprintd.enable = true;
-
-  age.identityPaths = ["/home/${config.modules.system.username}/.ssh/id_ed25519"];
 
   # See ../../modules
   modules = {

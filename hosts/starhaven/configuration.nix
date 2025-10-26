@@ -9,7 +9,6 @@
     ./wireguard.nix
   ];
 
-  age.secrets.nylon_central.file = self + "/secrets/nylon.central.age";
   age.secrets.nylon_key.file = self + "/secrets/nylon." + config.networking.hostName + ".age";
 
   virtualisation.docker = {
@@ -39,18 +38,14 @@
     glusterfs = {
       enable = true;
     };
-    nylon-wg = {
-      enable = true;
-      centralConfig = config.age.secrets.nylon_central.path;
-      node = {
-        id = config.networking.hostName + "." + config.networking.domain;
-        key = config.age.secrets.nylon_key.path;
-      };
-      openFirewall = true;
-    };
   };
 
-  modules.other.home-manager.enable = true;
+  modules = {
+    system.network.nylon-wg = {
+      enable = true;
+      node.key = config.age.secrets.nylon_key.path;
+    };
+    other.home-manager.enable = true;};
 
   networking = {
     hostName = "starhaven";
