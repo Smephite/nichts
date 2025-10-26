@@ -47,7 +47,7 @@
 
       settings = {
         node = {
-          externalAddresses = [ "starhaven.ext.kai.run:${config.services.radicle.node.listenPort}" ];
+          externalAddresses = [ "starhaven.ext.kai.run:${builtins.toString config.services.radicle.node.listenPort}" ];
           seedingPolicy = { default = "block"; };
         };
       };
