@@ -19,7 +19,6 @@
     system = {
       # Automatically populate authorized_keys for root and ${username} with default keys
       authorizedKeys.enable = lib.mkDefault true;
-      username = lib.mkDefault "kai";
       gitPath = lib.mkDefault "/srv/nichts-server";
     };
 

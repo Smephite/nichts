@@ -27,78 +27,23 @@
 
   # See ../../modules
   modules = {
-    system = rec {
+    system = {
       # Enable networking
       network = {
         hostname = "silverwind";
       };
 
-      username = "kai";
-      gitPath = "/home/${username}/repos/nichts";
-
       udev = {
         microchip.enable = true;
       };
-
-      monitors = {
-        configureXserver = true;
-        devices = [
-          {
-            name = "Gigabyte";
-            device = "DP-1";
-            resolution = {
-              x = 3440;
-              y = 1440;
-            };
-            scale = 1.3;
-            refresh_rate = 144.0;
-            position = {
-              x = 0;
-              y = 0;
-            };
-          }
-          {
-            name = "BenQ";
-            device = "DP-2";
-            resolution = {
-              x = 1920;
-              y = 1080;
-            };
-            scale = 1.0;
-            refresh_rate = 60.0;
-            position = {
-              x = 3440;
-              y = 0;
-            };
-            transform = 3;
-          }
-          {
-            name = "Dell";
-            device = "DP-3";
-            resolution = {
-              x = 2560;
-              y = 1440;
-            };
-            scale = 1.0;
-            refresh_rate = 60.0;
-            position = {
-              x = -2560;
-              y = 0;
-            };
-          }
-        ];
+      desktop = {
+        monitors = [];
       };
-    };
-    other.home-manager = {
-      enable = true;
-      enableDirenv = true;
     };
     programs = {
       #firefox.enable = true;
     };
-    services = {
-      pipewire.enable = true;
-    };
+
   };
 
   # This value determines the NixOS release from which the default

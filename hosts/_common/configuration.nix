@@ -19,6 +19,10 @@
 
   # See ../../modules
   modules = {
+    system = {
+      username = lib.mkDefault "kai";
+    };
+
     programs = {
       git = {
         enable = lib.mkDefault true;
