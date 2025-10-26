@@ -56,12 +56,6 @@
     hostName = "starhaven";
     domain = "core.kai.run";
 
-    firewall = {
-      allowedUDPPorts = [
-        57175 # nylon
-      ];
-      trustedInterfaces = ["nylon"];
-    };
     # Interfaces
     interfaces.eth0 = {
       macAddress = "00:50:56:5d:24:92";
