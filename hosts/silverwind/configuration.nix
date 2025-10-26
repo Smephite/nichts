@@ -36,6 +36,10 @@
       username = "kai";
       gitPath = "/home/${username}/repos/nichts";
 
+      udev = {
+        microchip.enable = true;
+      };
+
       monitors = {
         configureXserver = true;
         devices = [
@@ -90,7 +94,6 @@
       enableDirenv = true;
     };
     programs = {
-      microchip.enable = true;
       #firefox.enable = true;
     };
     services = {
