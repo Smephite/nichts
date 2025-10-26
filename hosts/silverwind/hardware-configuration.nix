@@ -21,7 +21,6 @@
     "sd_mod"
   ];
   boot.initrd.kernelModules = [];
-  boot.kernelPackages = pkgs.linuxPackages_6_17;
   boot.kernelModules = ["kvm-amd"];
   boot.extraModulePackages = [];
 
