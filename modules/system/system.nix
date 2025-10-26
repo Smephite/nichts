@@ -8,7 +8,7 @@ with lib; let
 in {
   options.modules.system = {
 
-    server = mkEnable "is server";
+    server = mkEnableOption "is server";
     
     username = mkOption {
       description = "username for the admin user for this system";

@@ -15,7 +15,7 @@ in {
     assertions = 
       [
         {
-          assertion = config.modules.system.fonts.enable && !config.modules.system.server;
+          assertion = config.modules.system.fonts.enable || config.modules.system.server;
           message = "modules.programs.starship requires modules.system.fonts to be enabled";
         }
       ];
