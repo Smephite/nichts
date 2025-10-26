@@ -29,4 +29,12 @@ in {
         ./heartofgold
       ];
   };
+  silverwind = lib.nixosSystem {
+    inherit system specialArgs;
+    modules =
+      baseModules
+      ++ [
+        ./silverwind
+      ];
+  };
 }

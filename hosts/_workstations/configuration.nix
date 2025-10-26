@@ -6,9 +6,17 @@
 }: let
   username = config.modules.system.username;
 in {
-  security.sudo.wheelNeedsPassword = true;
-  home-manager.backupFileExtension = "bak";
+  security.sudo = {
+    package = pkgs.sudo.override {withInsults = true;};
+    wheelNeedsPassword = true;
+  };
+
   networking.dhcpcd.wait = "background";
+  networking.networkmanager = {
+    plugins = [ pkgs.networkmanager-openconnect ];
+  };
+
+  home-manager.backupFileExtension = "bak";
   users.users.${username}.uid = 1000;
 
   # Services
@@ -20,6 +28,11 @@ in {
   services.udev.packages = [pkgs.yubikey-personalization];
   services.pcscd.enable = true;
   services.envfs.enable = true;
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
+  # Enable sound with pipewire.
+  services.pulseaudio.enable = false;
+  security.rtkit.enable = true;
 
   # Programs
   programs.gnupg.agent = {
