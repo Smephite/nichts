@@ -7,6 +7,9 @@ with lib; let
   cfg = config.modules.system;
 in {
   options.modules.system = {
+
+    server = mkEnable "is server";
+    
     username = mkOption {
       description = "username for the admin user for this system";
       type = types.str;
