@@ -4,7 +4,6 @@
   ...
 }: let
   inherit (lib) mkOption types;
-  cfg = config.modules.system.monitors;
   monitor_t = with types;
     submodule {
       options = {
@@ -71,38 +70,9 @@
       };
     };
 in {
-  options.modules.system.monitors = {
-    devices = lib.mkOption {
-      description = "List of monitors to use";
-      default = [];
-      type = with lib.types; listOf monitor_t;
-    };
-    configureXserver = lib.mkEnableOption "configure xserver display manager";
-  };
-
-  config = {
-    services.xserver.displayManager = lib.mkIf cfg.configureXserver {
-      setupCommands =
-        lib.strings.concatMapStrings (
-          m: ''            xrandr --output "${m.device}" \
-                                --mode "${builtins.toString m.resolution.x}x${builtins.toString m.resolution.x}" \
-                                --rate "${builtins.toString m.refresh_rate}" \
-                                --pos  "${builtins.toString m.position.x}x${builtins.toString m.position.x}" \
-                                --pos  "${builtins.toString m.position.x}x${builtins.toString m.position.x}" \
-                                --rotate "${
-              if m.transform == 0
-              then "normal"
-              else if m.transform == 1
-              then "left"
-              else if m.transform == 2
-              then "inverted"
-              else if m.transform == 3
-              then "right"
-              else "normal"
-            }\n"
-          ''
-        )
-        cfg.devices;
-    };
+  options.modules.system.desktop.monitors = lib.mkOption {
+    description = "List of monitors to use";
+    default = [];
+    type = with lib.types; listOf monitor_t;
   };
 }

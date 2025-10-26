@@ -21,25 +21,19 @@
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
 
   age.identityPaths = ["/home/${config.modules.system.username}/.ssh/id_ed25519"];
 
   # See ../../modules
   modules = {
-    system = rec {
+    system = {
       # Enable networking
       network = {
         hostname = "heartofgold";
       };
 
-      username = "kai";
-      gitPath = "/home/${username}/repos/nichts";
-
-      monitors = {
-        configureXserver = true;
-        devices = [
+      desktop = {
+        monitors = [
           {
             name = "Gigabyte";
             device = "DP-1";
@@ -86,15 +80,8 @@
         ];
       };
     };
-    other.home-manager = {
-      enable = true;
-      enableDirenv = true;
-    };
     programs = {
       #firefox.enable = true;
-    };
-    services = {
-      pipewire.enable = true;
     };
   };
 

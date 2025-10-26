@@ -48,10 +48,21 @@ in {
 
     system = {
       network.enable = lib.mkDefault true;
+
+      gitPath = lib.mkDefault "/home/${config.modules.system.username}/repos/nichts";
+
+      desktop = {
+        gnome.enable = lib.mkDefault true;
+      };
     };
 
     other.home-manager = {
-      enable = lib.mkDefault false;
+      enable = lib.mkDefault true;
+      enableDirenv = lib.mkDefault true;
+    };
+
+    services = {
+      pipewire.enable = lib.mkDefault true;
     };
   };
 }
