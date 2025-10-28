@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }: let
   monitors = config.modules.system.desktop.monitors;
@@ -37,8 +38,14 @@ in {
       wayland = gnomeCfg.wayland;
     };
 
+    environment.systemPackages = with pkgs; [ lm_sensors ]; # required by freon
     services.desktopManager.gnome = {
       enable = true;
+      sessionPath = with pkgs; [
+        gnomeExtensions.pop-shell
+        gnomeExtensions.xwayland-indicator
+        gnomeExtensions.freon
+      ];
     };
 
     programs.xwayland.enable = lib.mkDefault (gnomeCfg.wayland && gnomeCfg.xWayland);   
