@@ -4,5 +4,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     fprintd # Fingerprint sensor
+    ganttproject-bin
   ];
 }
