@@ -12,6 +12,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-nylon-wg.url = "github:smephite/nixpkgs/add-nylon-wg";
+    nixpkgs-librepods.url = "github:Cameo007/nixpkgs/add-librepods";
 
     home-manager = {
       url = "github:nix-community/home-manager";

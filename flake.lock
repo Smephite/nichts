@@ -202,6 +202,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-librepods": {
+      "locked": {
+        "lastModified": 1759329182,
+        "narHash": "sha256-GO4XF9WFqbFFHPoF2pFieZYqB5WkcuV0SIYFZU/CZHQ=",
+        "owner": "Cameo007",
+        "repo": "nixpkgs",
+        "rev": "d56a42d631d2211bae6ff3e854e15c79532d8442",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Cameo007",
+        "ref": "add-librepods",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-nylon-wg": {
       "locked": {
         "lastModified": 1761326526,
@@ -283,6 +299,7 @@
         "home-manager": "home-manager_2",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-librepods": "nixpkgs-librepods",
         "nixpkgs-nylon-wg": "nixpkgs-nylon-wg",
         "nixpkgs-unstable": "nixpkgs-unstable"
       }
