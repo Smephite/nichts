@@ -43,6 +43,7 @@
       };
     };
     programs = {
+      librepods.enable = true;
       #firefox.enable = true;
     };
 
