@@ -4,6 +4,12 @@
   pkgs,
   ...
 }: {
+
+  # TODO: Fix for real
+  nixpkgs.config.permittedInsecurePackages = [
+                "gradle-7.6.6"
+              ];
+
   # framework specific for BIOS updates
   services.fwupd.enable = true;
 
@@ -13,7 +19,13 @@
   time.hardwareClockInLocalTime = true; # Fix system time in dualboot
 
   # Fingerprint
-  services.fprintd.enable = true;
+  services = {
+    tailscale = {
+      enable = true;
+      openFirewall = true;
+      };
+    fprintd.enable = true;
+    };
 
   # See ../../modules
   modules = {

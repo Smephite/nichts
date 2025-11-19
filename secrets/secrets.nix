@@ -40,4 +40,9 @@ in {
     publicKeys = [keys.starhaven] ++ masterKeys;
     armor = false;
   };
+
+  "uni.vpn.age" = {
+    publicKeys = masterKeys;
+    armor = false;
+  };
 }
