@@ -35,6 +35,7 @@
         hostname = "silverwind";
       };
 
+      tty.enable = true;
       udev = {
         microchip.enable = true;
       };

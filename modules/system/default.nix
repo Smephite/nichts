@@ -8,5 +8,6 @@
     ./network
     ./nix.nix
     ./system.nix
+    ./tty.nix
   ];
 }

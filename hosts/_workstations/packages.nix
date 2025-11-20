@@ -9,6 +9,8 @@
       numpy
       opencv4
       ipython
+      uv
+      pyserial
     ];
 in {
   environment.systemPackages = with pkgs; [
