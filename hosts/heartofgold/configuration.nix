@@ -25,6 +25,8 @@
       gpu.nvidia.enable = true;
 
       desktop = {
+        niri.enable = false;
+        gnome.enable = true;
         monitors = [
           {
             name = "Gigabyte";
