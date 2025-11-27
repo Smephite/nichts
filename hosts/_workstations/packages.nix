@@ -50,8 +50,8 @@ in {
 
     # dev
     nixd
-    alejandra
-    vscodium
+    alejandra    
+    vscode
     gnumake
     python3
     (python3.withPackages python-packages)
