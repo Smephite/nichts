@@ -4,5 +4,6 @@
     nixfmt
     alejandra
     nixd
+    tcpdump
   ];
 }
