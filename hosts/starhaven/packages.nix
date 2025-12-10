@@ -5,5 +5,6 @@
     alejandra
     nixd
     tcpdump
+    wireguard-tools
   ];
 }
