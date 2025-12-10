@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   self,
   ...
@@ -68,11 +69,16 @@
 #    };
   };
 
-    networking.firewall = {
-      allowedTCPPorts = [ 8081 ];
+   networking = {
+      firewall = {
+        allowedTCPPorts = [ 8081 25 465 587 143 993 110 995 4190 ];
+      };
     };
+  
+
 
   modules = {
+    system.network.enable = lib.mkForce false;
     system.network.nylon-wg = {
       enable = true;
       node.key = config.age.secrets.nylon_key.path;
