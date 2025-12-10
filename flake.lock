@@ -240,11 +240,11 @@
     },
     "nixpkgs-nylon-wg": {
       "locked": {
-        "lastModified": 1765397950,
-        "narHash": "sha256-E+QuvNOGduKKKCt78Fvi4+MaljL3PwEYUZHjsSy/DGk=",
+        "lastModified": 1765398898,
+        "narHash": "sha256-CaLNtsabREOCBsCH3Ry+wUpJh5pkI39ruFp0q7S/pFM=",
         "owner": "smephite",
         "repo": "nixpkgs",
-        "rev": "05c3e7a4b9d9c2afb94f93806f811f288ef7ab46",
+        "rev": "3ba35d75941e80d1eb072a2cadd8e8fbe5a66e89",
         "type": "github"
       },
       "original": {
