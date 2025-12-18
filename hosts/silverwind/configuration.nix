@@ -17,7 +17,11 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   time.hardwareClockInLocalTime = true; # Fix system time in dualboot
-
+   networking = {
+      firewall = {
+        allowedTCPPorts = [ 51820 ];
+      };
+    };
   # Fingerprint
   services = {
     tailscale = {
