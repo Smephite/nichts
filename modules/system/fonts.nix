@@ -19,5 +19,8 @@ in {
     noto-fonts-cjk-serif
     noto-fonts-color-emoji
     cm_unicode
+
+    comic-neue
+#    comic-mono-font
   ]);
 }
