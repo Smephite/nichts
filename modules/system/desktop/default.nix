@@ -5,11 +5,13 @@
   let desktops = with config.modules.system.desktop; [
     gnome.enable
     niri.enable
+    kde.enable
   ];
 in 
 {
   imports = [
     ./gnome.nix
+    ./kde.nix
     ./niri.nix
     ./monitors.nix
   ];
