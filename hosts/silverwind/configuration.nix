@@ -44,6 +44,8 @@
         microchip.enable = true;
       };
       desktop = {
+        gnome.enable = lib.mkForce false;
+        kde.enable = lib.mkDefault true;
         monitors = [];
       };
     };
