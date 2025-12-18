@@ -2,6 +2,7 @@
   # Run unpatched dynamic binaries on NixOS.
   programs.nix-ld.enable = true;
 
+
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   time.timeZone = lib.mkDefault "Europe/Zurich";
@@ -12,6 +13,15 @@
     layout = lib.mkDefault "us";
     variant = lib.mkDefault "";
   };
+
+  # Allow ssh connections
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+    };
+  };
+  
   # Configure console keymap
   console.keyMap = lib.mkDefault "us";
 

@@ -1,14 +1,6 @@
 {lib, ...}: {
   security.sudo.wheelNeedsPassword = false;
 
-  # Allow ssh connections
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "no";
-    };
-  };
-
   age.identityPaths = ["/srv/host_keys/id_ed25519"];
 
   programs.ssh.startAgent = true;
