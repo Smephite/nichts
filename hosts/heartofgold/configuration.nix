@@ -26,7 +26,8 @@
 
       desktop = {
         niri.enable = false;
-        gnome.enable = true;
+        gnome.enable = false;
+        kde.enable = true;
         monitors = [
           {
             name = "Gigabyte";
