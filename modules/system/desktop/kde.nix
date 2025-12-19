@@ -2,13 +2,28 @@
   lib,
   config,
   pkgs,
+  inputs,
   ...
 }: let
+  inherit (inputs) plasma-manager;
+
   monitors = config.modules.system.desktop.monitors;
   kdeCfg = config.modules.system.desktop.kde;
+
+  HMcfg = config.modules.other.home-manager;
+  
+  username = config.modules.system.username;
+
 in {
   options.modules.system.desktop.kde = {
     enable = lib.mkEnableOption "use KDE";
+
+    useHomeManager = lib.mkOption { 
+      type = lib.types.bool;
+      default = HMcfg.enable;
+      description = "Whether to use HomeManager for configuring Plasma";
+    };
+
     wayland = lib.mkOption {
       type = lib.types.bool;
       default = true;
@@ -79,9 +94,17 @@ in {
 
     programs.xwayland.enable = lib.mkDefault (kdeCfg.wayland && kdeCfg.xWayland);   
 
+    home-manager = lib.mkIf kdeCfg.useHomeManager {
+      sharedModules = [ plasma-manager.homeModules.plasma-manager ];
+      users."${username}" = import ./config/plasma-home.nix;
+    };
 
-
-
+    assertions = [
+      {
+        assertion = !(HMcfg.enable == 0 && kdeCfg.useHomeManager);
+        message = "KDE homemanager configuration is enabled but homemanager is not!";
+      }
+    ]; 
     #services.xserver.displayManager = lib.mkIf (!kdeCfg.wayland && kdeCfg.configureMonitors) {
     #  setupCommands =
     #    lib.strings.concatMapStrings (
