@@ -37,6 +37,7 @@ in {
 
     # Security
     pkgs-unstable.yubioath-flutter
+    yubikey-manager
     age-plugin-yubikey
 
     # media
