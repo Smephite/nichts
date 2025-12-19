@@ -4,5 +4,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     sbctl # secure boot
+    bottles
   ];
 }
