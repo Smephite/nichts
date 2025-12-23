@@ -14,7 +14,8 @@ in {
     wheelNeedsPassword = true;
   };
 
-
+  programs.ssh.enableAskPassword = true;
+  
   age.identityPaths = lib.mkDefault ["/home/${config.modules.system.username}/.ssh/id_ed25519"];
 
   networking.dhcpcd.wait = "background";
