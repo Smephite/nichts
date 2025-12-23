@@ -2,8 +2,6 @@
   security.sudo.wheelNeedsPassword = false;
 
   age.identityPaths = ["/srv/host_keys/id_ed25519"];
-
-  programs.ssh.startAgent = true;
   services.fail2ban.enable = true;
 
   # See ../../modules

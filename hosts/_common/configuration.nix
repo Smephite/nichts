@@ -21,6 +21,7 @@
       PermitRootLogin = "no";
     };
   };
+  programs.ssh.startAgent = true;
   
   # Configure console keymap
   console.keyMap = lib.mkDefault "us";
