@@ -34,6 +34,12 @@ in {
   services.envfs.enable = true;
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  # printer autodiscovery
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
