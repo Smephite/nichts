@@ -45,7 +45,8 @@
       };
       desktop = {
         gnome.enable = lib.mkForce false;
-        kde.enable = lib.mkDefault true;
+        kde.enable = lib.mkForce true;
+        cosmic.enable = lib.mkForce false;
         monitors = [];
       };
     };

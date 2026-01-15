@@ -1,6 +1,9 @@
-{lib, ...}: {
+{lib, pkgs, ...}: {
   # Run unpatched dynamic binaries on NixOS.
-  programs.nix-ld.enable = true;
+  programs.nix-ld = {
+    enable = true;
+    libraries = [pkgs.qt6.qtbase];
+  };
 
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -21,7 +24,7 @@
       PermitRootLogin = "no";
     };
   };
-  programs.ssh.startAgent = true;
+  programs.ssh.startAgent = lib.mkDefault true;
   
   # Configure console keymap
   console.keyMap = lib.mkDefault "us";

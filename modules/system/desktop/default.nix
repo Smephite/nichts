@@ -10,6 +10,7 @@
 in 
 {
   imports = [
+    ./cosmic.nix
     ./gnome.nix
     ./kde.nix
     ./niri.nix
