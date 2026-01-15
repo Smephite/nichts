@@ -31,6 +31,9 @@ in {
     users.users.${username}.shell = pkgs.fish;
 
     environment = {
+      systemPackages = [
+        pkgs.nix-your-shell
+      ];
       shells = [pkgs.fish];
       pathsToLink = ["/share/fish"];
     };
@@ -38,7 +41,10 @@ in {
     home-manager.users.${username} = {
       programs.fish = {
         enable = true;
-        interactiveShellInit = "set fish_greeting";
+        interactiveShellInit = ''
+        set fish_greeting
+        nix-your-shell fish | source
+        '';
         plugins = [
           {
             name = "sponge";
