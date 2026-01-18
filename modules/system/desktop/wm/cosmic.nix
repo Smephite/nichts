@@ -5,9 +5,9 @@
   ...
 }: let
   monitors = config.modules.system.desktop.monitors;
-  cosmicCfg = config.modules.system.desktop.cosmic;
+  cosmicCfg = config.modules.system.desktop.wm.cosmic;
 in {
-  options.modules.system.desktop.cosmic = {
+  options.modules.system.desktop.wm.cosmic = {
     enable = lib.mkEnableOption "use cosmic + cosmic greeter";
     configureMonitors = lib.mkOption {
       type = lib.types.bool;
@@ -29,9 +29,8 @@ in {
 
 
     # Enable the COSMIC login + desktop env
-    services.displayManager.cosmic-greeter.enable = true;
     services.desktopManager.cosmic.enable = true;
-    services.desktopManager.plasma6.enable = true; # Fallback
+#    services.desktopManager.plasma6.enable = true; # Fallback
 
 
     services.system76-scheduler.enable = true;

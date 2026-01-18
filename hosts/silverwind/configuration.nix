@@ -44,9 +44,7 @@
         microchip.enable = true;
       };
       desktop = {
-        gnome.enable = lib.mkForce false;
-        kde.enable = lib.mkForce true;
-        cosmic.enable = lib.mkForce false;
+        windowManager = "kde";
         monitors = [];
       };
     };

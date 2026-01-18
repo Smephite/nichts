@@ -8,14 +8,14 @@
   inherit (inputs) plasma-manager;
 
   monitors = config.modules.system.desktop.monitors;
-  kdeCfg = config.modules.system.desktop.kde;
+  kdeCfg = config.modules.system.desktop.wm.kde;
 
   HMcfg = config.modules.other.home-manager;
   
   username = config.modules.system.username;
 
 in {
-  options.modules.system.desktop.kde = {
+  options.modules.system.desktop.wm.kde = {
     enable = lib.mkEnableOption "use KDE";
 
     useHomeManager = lib.mkOption { 

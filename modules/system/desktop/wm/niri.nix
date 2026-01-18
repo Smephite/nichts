@@ -6,9 +6,9 @@
 }: let
   monitors = config.modules.system.desktop.monitors;
   username = config.modules.system.username;
-  niriCfg = config.modules.system.desktop.niri;
+  niriCfg = config.modules.system.desktop.wm.niri;
 in {
-  options.modules.system.desktop.niri = {
+  options.modules.system.desktop.wm.niri = {
     enable = lib.mkEnableOption "use niri";
     configureMonitors = lib.mkOption {
       type = lib.types.bool;

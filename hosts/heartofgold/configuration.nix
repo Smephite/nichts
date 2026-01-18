@@ -25,9 +25,7 @@
       gpu.nvidia.enable = true;
 
       desktop = {
-        niri.enable = false;
-        gnome.enable = false;
-        kde.enable = true;
+        windowManager = "kde";
         monitors = [
           {
             name = "Gigabyte";
