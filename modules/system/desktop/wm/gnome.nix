@@ -5,9 +5,9 @@
   ...
 }: let
   monitors = config.modules.system.desktop.monitors;
-  gnomeCfg = config.modules.system.desktop.gnome;
+  gnomeCfg = config.modules.system.desktop.wm.gnome;
 in {
-  options.modules.system.desktop.gnome = {
+  options.modules.system.desktop.wm.gnome = {
     enable = lib.mkEnableOption "use gnome + gdm";
     wayland = lib.mkOption {
       type = lib.types.bool;

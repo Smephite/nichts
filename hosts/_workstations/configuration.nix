@@ -85,7 +85,7 @@ in {
       gitPath = lib.mkDefault "/home/${config.modules.system.username}/repos/nichts";
 
       desktop = {
-        gnome.enable = lib.mkDefault true;
+        windowManager = lib.mkDefault "gnome";
       };
     };
 
