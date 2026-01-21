@@ -78,6 +78,8 @@ in {
     tldr # community man pages
     usbutils
     pciutils
+    gnome-calculator
+    drawio
 
   ];
 }
