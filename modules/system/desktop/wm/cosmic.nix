@@ -6,6 +6,7 @@
 }: let
   monitors = config.modules.system.desktop.monitors;
   cosmicCfg = config.modules.system.desktop.wm.cosmic;
+  username = config.modules.system.username;
 in {
   options.modules.system.desktop.wm.cosmic = {
     enable = lib.mkEnableOption "use cosmic + cosmic greeter";
@@ -25,26 +26,51 @@ in {
     };
   };
   config = lib.mkIf cosmicCfg.enable {
-   
+
 
 
     # Enable the COSMIC login + desktop env
     services.desktopManager.cosmic.enable = true;
+#    services.displayManager.cosmic-greeter.enable = true;
 #    services.desktopManager.plasma6.enable = true; # Fallback
+services.displayManager.cosmic-greeter.enable = false;
 
+  services.greetd = {
+    enable = true;
+    settings = {
+      terminal.vt = 1;
+      default_session = {
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd ${pkgs.cosmic-session}/bin/start-cosmic";
+        user = "greeter";
+      };
+    };
+  };
 
     services.system76-scheduler.enable = true;
-    
-    # Xserver support
-    programs.xwayland.enable = lib.mkDefault cosmicCfg.xWayland;   
-    services.xserver = {
-      enable = true;
-      excludePackages = [pkgs.xterm];
-    };
-    services.desktopManager.cosmic.xwayland.enable = lib.mkDefault cosmicCfg.xWayland;
 
+    # Xserver support
+    #programs.xwayland.enable = lib.mkDefault cosmicCfg.xWayland;
+    #services.xserver = {
+    #  enable = true;
+    #  excludePackages = [pkgs.xterm];
+    #};
+    #services.desktopManager.cosmic.xwayland.enable = lib.mkDefault cosmicCfg.xWayland;
+
+    environment.systemPackages = with pkgs; [
+      cosmic-session
+    ];
+#    environment.pathsToLink = [ "/share/wayland-sessions" ];
+
+ #   users.users.${username}.extraGroups = [ "shared" "video" "render"];
+ #   users.users.cosmic-greeter.extraGroups = [ "video" "render"];
 
     programs.ssh.startAgent = lib.mkForce false;
+
+    security.pam.services.greetd = {
+      enableGnomeKeyring = false; # avoid conflicts
+      fprintAuth = true;
+    };
+#    boot.blacklistedKernelModules = [ "simpledrm" ];
 
 #    services.xserver.displayManager = lib.mkIf (!gnomeCfg.wayland && gnomeCfg.configureMonitors) {
 #      setupCommands =

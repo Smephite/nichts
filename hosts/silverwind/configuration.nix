@@ -44,7 +44,7 @@
         microchip.enable = true;
       };
       desktop = {
-        windowManager = "kde";
+        windowManager = "cosmic";
         monitors = [];
       };
     };
@@ -54,6 +54,29 @@
     };
 
   };
+
+programs.steam = {
+        enable = true;
+        remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+ #       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+        localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+      };
+
+hardware = {
+    graphics = {
+        enable = true;
+        enable32Bit = true;
+    };
+};
+
+# Enable Bluetooth support
+  hardware.bluetooth.enable = true;
+
+  # Powers up the default Bluetooth controller on boot
+  hardware.bluetooth.powerOnBoot = true;
+  
+  # Optional: Adds support for specialized Bluetooth audio (A2DP, etc)
+  services.blueman.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

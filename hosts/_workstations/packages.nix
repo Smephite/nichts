@@ -51,8 +51,9 @@ in {
 
     # dev
     nixd
-    alejandra    
+    alejandra
     vscode
+    zed-editor
     gnumake
     python3
     (python3.withPackages python-packages)
