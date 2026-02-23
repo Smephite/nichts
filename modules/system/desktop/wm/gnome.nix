@@ -77,8 +77,7 @@ in {
           };
         };
       };
-
-    environment.systemPackages = with pkgs; [ lm_sensors ]; # required by freon
+      environment.systemPackages = with pkgs; [ lm_sensors ]; # required by freon
     services.desktopManager.gnome = {
       enable = true;
       sessionPath = with pkgs; [
@@ -90,6 +89,8 @@ in {
 
     programs.xwayland.enable = lib.mkDefault (gnomeCfg.wayland && gnomeCfg.xWayland);   
     services.xserver.enable = true;
+
+    programs.ssh.startAgent = lib.mkForce false;
 
     services.xserver.displayManager = lib.mkIf (!gnomeCfg.wayland && gnomeCfg.configureMonitors) {
       setupCommands =
