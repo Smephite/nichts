@@ -66,6 +66,7 @@ in {
     clippy
     radicle-desktop
     radicle-tui
+    nil
 
     # util
     bash
