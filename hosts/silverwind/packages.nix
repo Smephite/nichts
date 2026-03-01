@@ -1,9 +1,13 @@
 # which default packages to use for the system
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     fprintd # Fingerprint sensor
     ganttproject-bin
+    texliveFull
+    texlab
+    zathura
   ];
 }
