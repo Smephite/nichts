@@ -448,11 +448,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1772378731,
-        "narHash": "sha256-aP6ORSOONEe2iE+MvP+0+Qbi+Oxr78Gkm0qZpHZX7xg=",
+        "lastModified": 1772415057,
+        "narHash": "sha256-hnyKw+J8043gY/01+lmp4FfkNj8Zb/Ka5MfOgGgNpBk=",
         "owner": "Smephite",
         "repo": "zed",
-        "rev": "026ed0aa82e61a5b879c60a71d33522bf8cff19e",
+        "rev": "f31be14f2707d46c91c6237cb088c397b6589e1a",
         "type": "github"
       },
       "original": {
