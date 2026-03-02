@@ -27,7 +27,7 @@ in {
     nextcloud-client
 
     # office
-    libreoffice
+    libreoffice-fresh # libreoffice (still) has broken notoSubset glob for noto-fonts-2026.02.01, switch back once nixpkgs b097075 lands on nixos-unstable
     thunderbird
     obsidian
     zotero
