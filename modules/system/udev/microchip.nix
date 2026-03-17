@@ -4,14 +4,16 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.system.udev.microchip;
   username = config.modules.system.username;
-in {
+in
+{
   options.modules.system.udev.microchip.enable = mkEnableOption "microchip";
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [];
+    environment.systemPackages = with pkgs; [ ];
 
     services.udev.packages = [
       (pkgs.writeTextFile {
@@ -24,7 +26,7 @@ in {
           RUN+="${pkgs.kmod}/bin/modprobe ftdi_sio", RUN+="${pkgs.bash}/bin/sh -c '${pkgs.coreutils}/bin/echo 1514 200a > /sys/bus/usb-serial/drivers/ftdi_sio/new_id'"
 
           # Unbind ftdi_sio driver for channel A which should be the JTAG
-          SUBSYSTEM=="usb", DRIVER=="ftdi_sio", ATTR{bInterfaceNumber}=="00", \
+          SUBSYSTEM=="usb", ATTRS{idVendor}=="1514", ATTRS{idProduct}=="200a", DRIVER=="ftdi_sio", ATTR{bInterfaceNumber}=="00", \
           RUN+="${pkgs.bash}/bin/sh -c '${pkgs.coreutils}/bin/echo $kernel > /sys/bus/usb/drivers/ftdi_sio/unbind'"
 
           # Helper (optional)
