@@ -3,12 +3,13 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
 
   # TODO: Fix for real
   nixpkgs.config.permittedInsecurePackages = [
-                "gradle-7.6.6"
-              ];
+    "gradle-7.6.6"
+  ];
 
   # framework specific for BIOS updates
   services.fwupd.enable = true;
@@ -17,19 +18,19 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   time.hardwareClockInLocalTime = true; # Fix system time in dualboot
-   networking = {
-      firewall = {
-        allowedTCPPorts = [ 51820 ];
-      };
+  networking = {
+    firewall = {
+      allowedTCPPorts = [ 51820 ];
     };
+  };
   # Fingerprint
   services = {
     tailscale = {
       enable = true;
       openFirewall = true;
-      };
-    fprintd.enable = true;
     };
+    fprintd.enable = true;
+  };
 
   # See ../../modules
   modules = {
@@ -45,7 +46,7 @@
       };
       desktop = {
         windowManager = "cosmic";
-        monitors = [];
+        monitors = [ ];
       };
     };
     programs = {
@@ -55,26 +56,26 @@
 
   };
 
-programs.steam = {
-        enable = true;
-        remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
- #       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-        localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
-      };
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    #       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
+  };
 
-hardware = {
+  hardware = {
     graphics = {
-        enable = true;
-        enable32Bit = true;
+      enable = true;
+      enable32Bit = true;
     };
-};
+  };
 
-# Enable Bluetooth support
+  # Enable Bluetooth support
   hardware.bluetooth.enable = true;
 
   # Powers up the default Bluetooth controller on boot
   hardware.bluetooth.powerOnBoot = true;
-  
+
   # Optional: Adds support for specialized Bluetooth audio (A2DP, etc)
   services.blueman.enable = true;
 

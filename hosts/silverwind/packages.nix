@@ -9,5 +9,7 @@
     texliveFull
     texlab
     zathura
+    openocd
+    minicom
   ];
 }

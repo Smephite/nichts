@@ -2,9 +2,10 @@
   pkgs,
   pkgs-unstable,
   ...
-}: let
-  python-packages = ps:
-    with ps; [
+}:
+let
+  python-packages =
+    ps: with ps; [
       pandas
       numpy
       opencv4
@@ -12,7 +13,8 @@
       uv
       pyserial
     ];
-in {
+in
+{
   environment.systemPackages = with pkgs; [
     # communication
     pkgs-unstable.signal-desktop
@@ -21,7 +23,7 @@ in {
     mattermost-desktop
     discord
     zoom-us
-    teams-for-linux
+    #teams-for-linux
 
     # storage
     nextcloud-client
@@ -82,6 +84,7 @@ in {
     pciutils
     gnome-calculator
     drawio
+    gparted
 
   ];
 }
