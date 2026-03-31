@@ -1,0 +1,75 @@
+--- a/src/zotero_mcp/semantic_search.py
++++ b/src/zotero_mcp/semantic_search.py
+@@ -834,6 +834,7 @@
+                 stats["skipped_items"] += batch_stats["skipped"]
+                 stats["errors"] += batch_stats["errors"]
+ 
++                _failed_docs.extend(batch_stats["failed_docs"])
+                 logger.info(f"Processed {seen_items}/{total} items (added: {stats['added_items']}, skipped: {stats['skipped_items']})")
+ 
+             # Retry any documents that failed during the main run
+@@ -895,7 +896,7 @@
+ 
+     def _process_item_batch(self, items: list[dict[str, Any]], force_rebuild: bool = False) -> dict[str, int]:
+         """Process a batch of items."""
+-        stats = {"processed": 0, "added": 0, "updated": 0, "skipped": 0, "errors": 0}
++        stats = {"processed": 0, "added": 0, "updated": 0, "skipped": 0, "errors": 0, "failed_docs": []}
+ 
+         documents = []
+         metadatas = []
+@@ -941,21 +942,41 @@
+             if not force_rebuild:
+                 existing_ids = self.chroma_client.get_existing_ids(ids)
+ 
+-            try:
+-                self.chroma_client.upsert_documents(documents, metadatas, ids)
+-                for doc_id in ids:
+-                    if doc_id in existing_ids:
+-                        stats["updated"] += 1
++            max_retries = 5
++            for attempt in range(max_retries):
++                try:
++                    self.chroma_client.upsert_documents(documents, metadatas, ids)
++                    for doc_id in ids:
++                        if doc_id in existing_ids:
++                            stats["updated"] += 1
++                        else:
++                            stats["added"] += 1
++                    break
++                except Exception as e:
++                    import re as _re, time as _time
++                    err_str = str(e)
++                    if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
++                        delay_match = _re.search(r"retryDelay.*?(\d+)s", err_str)
++                        delay = int(delay_match.group(1)) + 2 if delay_match else 30
++                        stats["rate_limited"] = True
++                        stats["rate_limit_delay"] = delay
++                        if attempt < max_retries - 1:
++                            logger.warning(f"Rate limited (429), retrying in {delay}s (attempt {attempt + 1}/{max_retries})")
++                            try:
++                                sys.stderr.write(f"\r  [429] rate limited — retrying in {delay}s...{' ' * 20}")
++                                sys.stderr.flush()
++                            except Exception:
++                                pass
++                            _time.sleep(delay)
++                        else:
++                            logger.warning(f"Batch upsert failed after {max_retries} attempts, saving for retry")
++                            for j in range(len(documents)):
++                                stats["failed_docs"].append((documents[j], metadatas[j], ids[j]))
+                     else:
+-                        stats["added"] += 1
+-            except Exception as e:
+-                # Batch failed — collect failures for end-of-run retry.
+-                # ChromaDB's ONNX tokenizer can fail intermittently in bursts;
+-                # retrying immediately usually fails too. Collecting failures
+-                # and retrying after all batches are done is more effective.
+-                logger.warning(f"Batch upsert failed ({e}), saving for retry")
+-                for j in range(len(documents)):
+-                    _failed_docs.append((documents[j], metadatas[j], ids[j]))
++                        logger.warning(f"Batch upsert failed ({e}), saving for retry")
++                        for j in range(len(documents)):
++                            stats["failed_docs"].append((documents[j], metadatas[j], ids[j]))
++                        break
+ 
+         return stats
+ 

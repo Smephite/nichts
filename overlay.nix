@@ -21,11 +21,20 @@ let
         });
 
   };
+  add_claude_desktop = final: prev: {
+    claude-desktop =
+      inputs.claude-desktop.packages.${prev.stdenv.hostPlatform.system}.claude-desktop-with-fhs;
+  };
+  add_claude_code = inputs.claude-code.overlays.default;
+  add_local_pkgs = final: prev: import ./pkgs { pkgs = final; };
 in
 {
   nixpkgs.overlays = [
     add_nylon_pr
     add_librepods_pr
     #add_zed_fork
+    add_claude_desktop
+    add_claude_code
+    add_local_pkgs
   ];
 }

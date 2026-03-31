@@ -11,5 +11,8 @@
     zathura
     openocd
     minicom
+    claude-desktop
+    claude-code
+    zotero-mcp
   ];
 }
