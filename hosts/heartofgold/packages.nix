@@ -5,5 +5,15 @@
   environment.systemPackages = with pkgs; [
     sbctl # secure boot
     bottles
+
+    texliveFull
+    texlab
+    zathura
+    
+    
+    claude-desktop
+    claude-code
+    zotero-mcp
+    
   ];
 }

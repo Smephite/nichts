@@ -25,7 +25,7 @@
       gpu.nvidia.enable = true;
 
       desktop = {
-        windowManager = "kde";
+        windowManager = "cosmic";
         monitors = [
           {
             name = "Gigabyte";
