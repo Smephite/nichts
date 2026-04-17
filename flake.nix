@@ -14,7 +14,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-nylon-wg.url = "github:smephite/nixpkgs/add-nylon-wg";
-    nixpkgs-librepods.url = "github:Cameo007/nixpkgs/add-librepods";
 
     nix-index-database = {
       url = "github:nix-community/nix-index-database";

@@ -20,7 +20,6 @@ let
     inputs.nix-index-database.nixosModules.default
     inputs.lanzaboote.nixosModules.lanzaboote
     "${inputs.nixpkgs-nylon-wg}/nixos/modules/services/networking/nylon-wg.nix"
-    "${inputs.nixpkgs-librepods}/nixos/modules/programs/librepods.nix"
   ];
 in
 {
