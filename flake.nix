@@ -47,7 +47,7 @@
     };
 
     claude-desktop = {
-      url = "github:k3d3/claude-desktop-linux-flake";
+      url = "github:Reginleif88/claude-cowork-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     claude-code = {

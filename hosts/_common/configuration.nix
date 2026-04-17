@@ -2,19 +2,28 @@
   lib,
   pkgs,
   self,
+  config,
   ...
 }:
 {
+
+  age.secrets.github-ro-token.file = "${self}/secrets/github-ro.age";
+
   # Run unpatched dynamic binaries on NixOS.
   programs.nix-ld = {
     enable = true;
     libraries = [ pkgs.qt6.qtbase ];
   };
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix = {
+    extraOptions = ''
+      !include ${config.age.secrets.github-ro-token.path}
+    '';
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+  };
 
   time.timeZone = lib.mkDefault "Europe/Zurich";
   i18n.defaultLocale = lib.mkDefault "en_GB.UTF-8";

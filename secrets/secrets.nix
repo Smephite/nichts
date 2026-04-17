@@ -7,37 +7,38 @@ let
     keys.silverwind-nix
     keys.yubikey
   ];
-in {
+in
+{
   "telegram.age" = {
-    publicKeys = [keys.starhaven] ++ masterKeys;
+    publicKeys = [ keys.starhaven ] ++ masterKeys;
     armor = false;
   };
   "wg.starhaven.age" = {
-    publicKeys = [keys.starhaven] ++ masterKeys;
+    publicKeys = [ keys.starhaven ] ++ masterKeys;
     armor = false;
   };
   "wg.preshared.age" = {
-    publicKeys = [keys.starhaven] ++ masterKeys;
+    publicKeys = [ keys.starhaven ] ++ masterKeys;
     armor = false;
   };
 
   "nylon.central.age" = {
-    publicKeys = [keys.starhaven] ++ masterKeys;
+    publicKeys = [ keys.starhaven ] ++ masterKeys;
     armor = false;
   };
 
   "nylon.starhaven.age" = {
-    publicKeys = [keys.starhaven] ++ masterKeys;
+    publicKeys = [ keys.starhaven ] ++ masterKeys;
     armor = false;
   };
 
   "nylon.central.key.age" = {
-    publicKeys = [keys.starhaven] ++ masterKeys;
+    publicKeys = [ keys.starhaven ] ++ masterKeys;
     armor = false;
   };
 
   "radicle.starhaven.age" = {
-    publicKeys = [keys.starhaven] ++ masterKeys;
+    publicKeys = [ keys.starhaven ] ++ masterKeys;
     armor = false;
   };
 
@@ -45,4 +46,10 @@ in {
     publicKeys = masterKeys;
     armor = false;
   };
+
+  "github-ro.age" = {
+    publicKeys = masterKeys;
+    armor = false;
+  };
+
 }

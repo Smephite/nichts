@@ -19,6 +19,7 @@ let
     ../overlay.nix
     inputs.nix-index-database.nixosModules.default
     inputs.lanzaboote.nixosModules.lanzaboote
+    inputs.claude-desktop.nixosModules.default
     "${inputs.nixpkgs-nylon-wg}/nixos/modules/services/networking/nylon-wg.nix"
   ];
 in
