@@ -98,9 +98,11 @@ in
     home-manager.users.${username} = mkIf config.modules.other.home-manager.enable {
       programs.git = {
         enable = cfg.enable;
-        userName = cfg.userName;
-        userEmail = cfg.userEmail;
-        extraConfig = {
+        settings = {
+          user = {
+            name = cfg.userName;
+            email = cfg.userEmail;
+          };
           init.defaultBranch = cfg.defaultBranch;
           push.autoSetupRemote = true;
           commit.verbose = true;
@@ -110,8 +112,7 @@ in
           fetch.fsckobjects = true;
           receive.fsckobjects = true;
           pull.rebase = cfg.pullRebase;
-        }
-        // optionalAttrs (cfg.signing.key != null && cfg.signing.allowedKeys != [ ]) {
+        } // optionalAttrs (cfg.signing.key != null && cfg.signing.allowedKeys != [ ]) {
           gpg.ssh.allowedSignersFile = "${allowedSignersFile}";
         };
 
