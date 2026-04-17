@@ -15,7 +15,6 @@ in
   nixpkgs.overlays = [
     add_nylon_pr
     #add_zed_fork
-    add_claude_desktop
     add_claude_code
     add_local_pkgs
   ];

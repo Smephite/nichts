@@ -49,8 +49,15 @@ in
   services.fstrim.enable = true;
 
   # Programs
-  programs.gnupg.agent = {
-    enable = true;
+  programs = {
+    gnupg.agent = {
+      enable = true;
+    };
+    claude-desktop = {
+      enable = true;
+      fhs = true;
+      claudeCodePackage = pkgs.claude-code;
+    };
   };
 
   # ../../modules
@@ -75,11 +82,6 @@ in
           "zotero@chnm.gmu.edu" =
             "https://download.zotero.org/connector/firefox/release/Zotero_Connector-5.0.186.xpi"; # Zotero
         };
-      };
-      claude-desktop = {
-        enable = true;
-        fhs = true;
-        claudeCodePackage = pkgs.claude-code;
       };
     };
 
