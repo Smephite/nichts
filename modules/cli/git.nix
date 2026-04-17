@@ -4,38 +4,44 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.programs.git;
   username = config.modules.system.username;
+
+  allowedSignersFile = pkgs.writeText "git-allowed-signers" (
+    concatMapStringsSep "\n" (key: "${cfg.userEmail} ${key}") cfg.signing.allowedKeys + "\n"
+  );
+
   gitConfig = {
     userName = cfg.userName;
     userEmail = cfg.userEmail;
     extraConfig = {
-      /*
-         currently broken (rust compile error)
-      core = {
-          editor = cfg.editor;
-          pager = "${pkgs.delta}/bin/delta";
-      };
-      */
       init.defaultBranch = cfg.defaultBranch;
       push.autoSetupRemote = true;
-      commit = {
-        verbose = true;
-        # gpgsign = true;
-      };
-      # gpg.format = "ssh";
-      #                    user.signingkey = "key::${cfg.signingKey}";
+      commit.verbose = true;
       merge.conflictstyle = "zdiff3";
-      # currently broken: interactive.diffFilter = "${pkgs.delta}/bin/delta --color-only";
       diff.algorithm = "histogram";
       transfer.fsckobjects = true;
       fetch.fsckobjects = true;
       receive.fsckobjects = true;
       pull.rebase = cfg.pullRebase;
+    }
+    // optionalAttrs (cfg.signing.key != null && cfg.signing.allowedKeys != [ ]) {
+      gpg.ssh.allowedSignersFile = "${allowedSignersFile}";
     };
   };
-in {
+
+  # Emitted only when a signing key is configured.
+  signingConfig = optionalAttrs (cfg.signing.key != null) {
+    signing = {
+      format = "ssh";
+      key = cfg.signing.key;
+      signByDefault = cfg.signing.signByDefault;
+    };
+  };
+in
+{
   options.modules.programs.git = {
     enable = mkEnableOption "git";
     userName = mkOption {
@@ -46,10 +52,6 @@ in {
       type = types.str;
       description = "git email";
     };
-    #        signingKey = mkOption {
-    #           type = types.str;
-    #          description = "git commit signing key";
-    #     };
     editor = mkOption {
       type = types.str;
       default = "$EDITOR";
@@ -63,20 +65,70 @@ in {
     pullRebase = mkOption {
       type = types.bool;
       default = false;
-      description = "git config pull.rebase {pullRebase}";
+      description = "git config pull.rebase";
+    };
+
+    signing = {
+      key = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = ''
+          Path to the SSH public key file for signing (e.g. "~/.ssh/id_ed25519.pub"),
+          or a literal key with the "key::" prefix. null disables SSH signing.
+        '';
+      };
+      signByDefault = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Sign all commits and tags by default.";
+      };
+      allowedKeys = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = ''
+          SSH public key strings (authorised_keys format) trusted to sign commits
+          as this identity. Used to populate the allowed_signers file that git
+          needs for signature verification.
+        '';
+      };
     };
   };
 
   config = mkIf cfg.enable {
-    home-manager.users.${username}.programs.git =
-      mkIf config.modules.other.home-manager.enable {
+    home-manager.users.${username} = mkIf config.modules.other.home-manager.enable {
+      programs.git = {
         enable = cfg.enable;
-      }
-      // gitConfig;
-    programs.git =
-      mkIf (!config.modules.other.home-manager.enable) {
-        enable = cfg.enable;
-      }
-      // gitConfig;
+        userName = cfg.userName;
+        userEmail = cfg.userEmail;
+        extraConfig = {
+          init.defaultBranch = cfg.defaultBranch;
+          push.autoSetupRemote = true;
+          commit.verbose = true;
+          merge.conflictstyle = "zdiff3";
+          diff.algorithm = "histogram";
+          transfer.fsckobjects = true;
+          fetch.fsckobjects = true;
+          receive.fsckobjects = true;
+          pull.rebase = cfg.pullRebase;
+        }
+        // optionalAttrs (cfg.signing.key != null && cfg.signing.allowedKeys != [ ]) {
+          gpg.ssh.allowedSignersFile = "${allowedSignersFile}";
+        };
+
+        # Always set format explicitly — even as null — so home-manager never
+        # falls through to its stateVersion-dependent default and emits a warning.
+        signing = {
+          format = if cfg.signing.key != null then "ssh" else null;
+        }
+        // optionalAttrs (cfg.signing.key != null) {
+          key = cfg.signing.key;
+          signByDefault = cfg.signing.signByDefault;
+        };
+      };
+    };
+
+    programs.git = mkIf (!config.modules.other.home-manager.enable) {
+      enable = cfg.enable;
+    };
   };
 }
