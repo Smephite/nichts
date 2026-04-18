@@ -7,6 +7,7 @@
     ./fonts.nix
     ./network
     ./nix.nix
+    ./ssh-key.nix
     ./system.nix
     ./tty.nix
   ];

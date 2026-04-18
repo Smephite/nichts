@@ -7,8 +7,6 @@
 }:
 {
 
-  age.secrets.github-ro-token.file = "${self}/secrets/github-ro.age";
-
   # Run unpatched dynamic binaries on NixOS.
   programs.nix-ld = {
     enable = true;
@@ -16,9 +14,6 @@
   };
 
   nix = {
-    extraOptions = ''
-      !include ${config.age.secrets.github-ro-token.path}
-    '';
     settings.experimental-features = [
       "nix-command"
       "flakes"
@@ -48,10 +43,12 @@
 
   nixpkgs.config.allowUnfree = lib.mkDefault true;
 
+  age.identityPaths = lib.mkDefault [ "/home/${config.modules.system.username}/.ssh/id_ed25519" ];
   # See ../../modules
   modules = {
     system = {
       username = lib.mkDefault "kai";
+      sshKey.enable = lib.mkDefault true;
     };
 
     programs = {
@@ -67,12 +64,10 @@
           signByDefault = lib.mkDefault false;
           allowedKeys =
             let
-              keys = import "${self}/secrets/public_keys.nix";
+              keys = import "${self}/secrets/ssh/user_keys.nix";
+              masterKeys = import "${self}/secrets/ssh/master_keys.nix";
             in
-            lib.mkDefault [
-              keys.heartofgold-nix
-              keys.silverwind-nix
-            ];
+            keys ++ masterKeys;
         };
 
       };

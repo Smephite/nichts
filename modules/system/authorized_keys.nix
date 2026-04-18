@@ -4,22 +4,19 @@
   lib,
   self,
   ...
-}: let
-  hosts = import (self + "/secrets/public_keys.nix");
+}:
+let
+  keys = import (self + "/secrets/ssh/public_keys.nix");
+  masterKeys = import (self + "/secrets/ssh/master_keys.nix");
   cfg = config.modules.system.authorizedKeys;
   username = config.modules.system.username;
   inherit (lib) types mkIf mkOption;
-in {
+in
+{
   options.modules.system.authorizedKeys = {
     defaultKeys = mkOption {
       type = types.listOf types.str;
-      default = with hosts; [
-        heartofgold
-        heartofgold-nix
-        silverwind
-        silverwind-nix
-        yubikey
-      ];
+      default = masterKeys;
     };
 
     enable = lib.mkEnableOption "Automatically populate the authorized keys for root and admin user with the default ones";

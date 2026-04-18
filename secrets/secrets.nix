@@ -1,55 +1,59 @@
 let
-  keys = import ./public_keys.nix;
-  masterKeys = [
-    keys.heartofgold
-    keys.heartofgold-nix
-    keys.silverwind
-    keys.silverwind-nix
-    keys.yubikey
-  ];
+  keys = import ./ssh/public_keys.nix;
+  masterKeys = import ./ssh/master_keys.nix;
+  allKeys = import ./ssh/all_keys.nix;
+  allHosts = import ./ssh/host_keys.nix;
+  allUsers = import ./ssh/user_keys.nix;
+
+  userKeySecrets = import ./ssh/_user_secrets.nix;
 in
 {
   "telegram.age" = {
-    publicKeys = [ keys.starhaven ] ++ masterKeys;
+    publicKeys = [ keys.host-starhaven ] ++ masterKeys;
     armor = false;
   };
   "wg.starhaven.age" = {
-    publicKeys = [ keys.starhaven ] ++ masterKeys;
+    publicKeys = [ keys.host-starhaven ] ++ masterKeys;
     armor = false;
   };
   "wg.preshared.age" = {
-    publicKeys = [ keys.starhaven ] ++ masterKeys;
+    publicKeys = [ keys.host-starhaven ] ++ masterKeys;
     armor = false;
   };
 
   "nylon.central.age" = {
-    publicKeys = [ keys.starhaven ] ++ masterKeys;
+    publicKeys = [ keys.host-starhaven ] ++ masterKeys;
     armor = false;
   };
 
   "nylon.starhaven.age" = {
-    publicKeys = [ keys.starhaven ] ++ masterKeys;
+    publicKeys = [ keys.host-starhaven ] ++ masterKeys;
     armor = false;
   };
 
   "nylon.central.key.age" = {
-    publicKeys = [ keys.starhaven ] ++ masterKeys;
+    publicKeys = [ keys.host-starhaven ] ++ masterKeys;
     armor = false;
   };
 
   "radicle.starhaven.age" = {
-    publicKeys = [ keys.starhaven ] ++ masterKeys;
+    publicKeys = [ keys.host-starhaven ] ++ masterKeys;
     armor = false;
   };
 
   "uni.vpn.age" = {
-    publicKeys = masterKeys;
+    publicKeys = [
+      keys.host-heartofgold
+      #      keys.host-silverwind
+    ]
+    ++ masterKeys;
     armor = false;
   };
 
   "github-ro.age" = {
-    publicKeys = masterKeys;
+    publicKeys = allKeys;
     armor = false;
   };
 
 }
+// userKeySecrets

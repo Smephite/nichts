@@ -3,13 +3,15 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.modules.system;
-in {
+in
+{
   options.modules.system = {
 
     server = mkEnableOption "is server";
-    
+
     username = mkOption {
       description = "username for the admin user for this system";
       type = types.str;
@@ -24,7 +26,7 @@ in {
   config = {
     users.users.${cfg.username} = {
       isNormalUser = true;
-      extraGroups = ["wheel"];
+      extraGroups = [ "wheel" ];
     };
   };
 }
