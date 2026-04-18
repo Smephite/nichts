@@ -12,6 +12,9 @@
 
   age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
+  services.qemuGuest.enable = true;
+  services.fstrim.enable = true;
+
   modules = {
     other.home-manager.enable = true;
   };
