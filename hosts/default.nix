@@ -42,4 +42,10 @@ in
       ./silverwind
     ];
   };
+  c3 = lib.nixosSystem {
+    inherit specialArgs;
+    modules = baseModules ++ [
+      ./c3
+    ];
+  };
 }
