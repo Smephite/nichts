@@ -10,5 +10,5 @@ in
   user-silverwind-win
 
   user-heartofgold
-  user-silverwind-nix
+  user-silverwind
 ])
