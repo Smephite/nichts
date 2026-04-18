@@ -15,7 +15,24 @@
   services.qemuGuest.enable = true;
   services.fstrim.enable = true;
 
-  age.secrets.attic-credentials.file = self + "/secrets/attic.c3.age";
+  users.users.atticd = {
+    isSystemUser = true;
+    group = "atticd";
+  };
+  users.groups.atticd = { };
+
+  age.secrets.attic-credentials = {
+    file = self + "/secrets/attic.c3.age";
+    owner = "atticd";
+    group = "atticd";
+    mode = "0400";
+  };
+
+  systemd.services.atticd.serviceConfig = {
+    DynamicUser = lib.mkForce false;
+    User = "atticd";
+    Group = "atticd";
+  };
 
   services.atticd = {
     enable = true;
