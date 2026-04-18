@@ -2,7 +2,8 @@
   pkgs,
   inputs,
   ...
-}: {
+}:
+{
   environment.systemPackages = with pkgs; [
     git
     bash
@@ -21,5 +22,6 @@
     autorestic
     smartmontools
     parted
+    attic-client
   ];
 }
