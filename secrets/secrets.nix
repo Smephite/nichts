@@ -71,8 +71,8 @@ in
 
   "attic-push.age" = {
     publicKeys = [
-      keys.user-heartofgold
-      keys.user-silverwind
+      keys.host-heartofgold
+      #keys.host-silverwind
     ]
     ++ masterKeys;
     armor = false;
