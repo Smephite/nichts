@@ -1,16 +1,29 @@
 {
   modulesPath,
   config,
+  lib,
   ...
-}: {
-  imports = [(modulesPath + "/profiles/qemu-guest.nix")];
+}:
+{
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
   boot.loader.grub.device = "/dev/sda";
   # Not much space on /boot
   boot.loader.grub.configurationLimit = 3;
 
-  boot.initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "xen_blkfront" "vmw_pvscsi" "virtio_pci" "virtio_scsi"];
-  boot.initrd.kernelModules = ["nvme" "dm-snapshot"];
+  boot.initrd.availableKernelModules = [
+    "ata_piix"
+    "uhci_hcd"
+    "xen_blkfront"
+    "vmw_pvscsi"
+    "virtio_pci"
+    "virtio_scsi"
+  ];
+  boot.initrd.kernelModules = [
+    "nvme"
+    "dm-snapshot"
+  ];
 
   fileSystems."/" = {
     device = "/dev/sda1";
@@ -23,6 +36,6 @@
   fileSystems."/srv/docker" = {
     device = "localhost:/gv0";
     fsType = "glusterfs";
-    options = ["nofail"];
+    options = [ "nofail" ];
   };
 }
