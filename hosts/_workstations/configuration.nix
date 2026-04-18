@@ -104,6 +104,7 @@ in
 
     services = {
       pipewire.enable = lib.mkDefault true;
+      attic-push.enable = lib.mkDefault true;
     };
   };
 }
