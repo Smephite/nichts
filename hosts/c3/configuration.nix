@@ -39,7 +39,9 @@
     environmentFile = config.age.secrets.attic-credentials.path;
 
     settings = {
-      listen = "[::]:8080";
+      listen = "[::]:11974";
+      api-endpoint = "https://cache.app.kai.run/";
+      allowed-hosts = [ "cache.app.kai.run" ];
       database.url = "sqlite:///var/lib/atticd/db.sqlite";
 
       storage = {
@@ -54,7 +56,7 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ 8080 ];
+  networking.firewall.allowedTCPPorts = [ 11974 ];
 
   modules = {
     other.home-manager.enable = true;

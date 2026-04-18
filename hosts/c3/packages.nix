@@ -5,5 +5,7 @@
     nixd
     tcpdump
     wireguard-tools
+    attic-client
+    attic-server
   ];
 }
