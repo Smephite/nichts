@@ -41,10 +41,7 @@
       inputs.home-manager.follows = "home-manager";
     };
 
-    zed-fork = {
-      url = "github:Smephite/zed";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    zed.url = "github:zed-industries/zed";
 
     claude-desktop = {
       url = "github:Reginleif88/claude-cowork-nix";
