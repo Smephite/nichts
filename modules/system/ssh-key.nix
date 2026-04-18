@@ -26,7 +26,7 @@ in
     {
       warnings =
         optional (!ageFileExists)
-          "modules.system.sshKey: secrets/${secretName}.age does not exist; SSH key will not be managed by agenix on this host";
+          "modules.system.sshKey: ${ageFile} does not exist; SSH key will not be managed by agenix on this host";
 
       # The host SSH key is generated at first boot before agenix runs, which
       # breaks the chicken-and-egg problem of using the user key as the identity

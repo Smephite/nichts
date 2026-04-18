@@ -9,7 +9,11 @@ let
 in
 {
   "telegram.age" = {
-    publicKeys = [ keys.host-starhaven ] ++ masterKeys;
+    publicKeys = [
+      keys.host-starhaven
+      keys.host-c3
+    ]
+    ++ masterKeys;
     armor = false;
   };
   "wg.starhaven.age" = {
