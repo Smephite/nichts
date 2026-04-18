@@ -28,6 +28,7 @@ in
   config = lib.mkIf cfg.enable {
     age.secrets.attic-push-token = {
       file = "${self}/secrets/attic-push.age";
+      owner = config.modules.system.username;
       mode = "0400";
     };
 
