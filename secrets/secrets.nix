@@ -59,5 +59,10 @@ in
     armor = false;
   };
 
+  "attic.c3.age" = {
+    publicKeys = [ keys.host-c3 ] ++ masterKeys;
+    armor = false;
+  };
+
 }
 // userKeySecrets

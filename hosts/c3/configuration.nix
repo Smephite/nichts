@@ -15,6 +15,30 @@
   services.qemuGuest.enable = true;
   services.fstrim.enable = true;
 
+  age.secrets.attic-credentials.file = self + "/secrets/attic.c3.age";
+
+  services.atticd = {
+    enable = true;
+    environmentFile = config.age.secrets.attic-credentials.path;
+
+    settings = {
+      listen = "[::]:8080";
+      database.url = "sqlite:///var/lib/atticd/db.sqlite";
+
+      storage = {
+        type = "local";
+        path = "/var/lib/atticd/storage";
+      };
+
+      garbage-collection = {
+        interval = "12 hours";
+        default-retention-period = "90 days";
+      };
+    };
+  };
+
+  networking.firewall.allowedTCPPorts = [ 8080 ];
+
   modules = {
     other.home-manager.enable = true;
   };
