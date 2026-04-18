@@ -64,5 +64,24 @@ in
     armor = false;
   };
 
+  "attic-pull.age" = {
+    publicKeys = allKeys;
+    armor = false;
+  };
+
+  "attic-push.age" = {
+    publicKeys = [
+      keys.user-heartofgold
+      keys.user-silverwind
+    ]
+    ++ masterKeys;
+    armor = false;
+  };
+
+  "attic-admin.age" = {
+    publicKeys = masterKeys;
+    armor = false;
+  };
+
 }
 // userKeySecrets
