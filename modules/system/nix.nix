@@ -6,10 +6,17 @@
   config,
   ...
 }:
+let
+  username = config.modules.system.username;
+in
 {
   # partly taken from github.com/bloxx12/nichts
 
-  age.secrets.github-ro-token.file = "${self}/secrets/github-ro.age";
+  age.secrets.github-ro-token = {
+    file = "${self}/secrets/github-ro.age";
+    owner = username;
+    mode = "0400";
+  };
 
   nix = {
     extraOptions = ''
@@ -27,6 +34,10 @@
       extra-experimental-features = [
         "flakes" # flakes
         "nix-command" # experimental nix commands
+      ];
+      trusted-users = [
+        "root"
+        username
       ];
       warn-dirty = false;
     };
