@@ -4,7 +4,8 @@
   pkgs,
   self,
   ...
-}: {
+}:
+{
   imports = [
     ./packages.nix
     ./wireguard.nix
@@ -14,70 +15,57 @@
 
   age.secrets.radicle_secret.file = self + "/secrets/radicle.${config.networking.hostName}.age";
 
-  virtualisation.docker = {
-    enable = true;
-    package = pkgs.docker_28;
-    daemon.settings = {
-      live-restore = false;
-      data-root = "/var/lib/docker";
-      default-address-pools = [
-        {
-          base = "172.30.0.0/16";
-          size = 23;
-        }
-      ];
-    };
-
-    storageDriver = "overlay2";
-
-    autoPrune = {
-      enable = true;
-      dates = "weekly";
-    };
-  };
-
   services = {
     logrotate.checkConfig = false;
     glusterfs = {
       enable = true;
     };
-#    radicle = {
-#      enable = true;
-#      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDj2PdPzTSfMumaS+6eFvPkEi3+rRr+727EsPt9adxx1 radicle";
-#      privateKeyFile = config.age.secrets.radicle_secret.path;
-#
-#      settings = {
-#        node = {
-#          alias = "starhaven.ext.kai.run";
-#          peers = {type = "dynamic"; };
-#          externalAddresses = [ "starhaven.ext.kai.run:${builtins.toString config.services.radicle.node.listenPort}" ];
-#          network = "main";
-#          seedingPolicy = { default = "block"; };
-#        };
-#      };
-#
-#      node = {
-#        openFirewall = true;
-#        listenPort = 8776;
-#      };
-#
-#      httpd = {
-#        enable = true;
-#        listenAddress = "0.0.0.0"; # for now...
-#        listenPort = 8081;
-#      };
-#    };
+    #    radicle = {
+    #      enable = true;
+    #      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDj2PdPzTSfMumaS+6eFvPkEi3+rRr+727EsPt9adxx1 radicle";
+    #      privateKeyFile = config.age.secrets.radicle_secret.path;
+    #
+    #      settings = {
+    #        node = {
+    #          alias = "starhaven.ext.kai.run";
+    #          peers = {type = "dynamic"; };
+    #          externalAddresses = [ "starhaven.ext.kai.run:${builtins.toString config.services.radicle.node.listenPort}" ];
+    #          network = "main";
+    #          seedingPolicy = { default = "block"; };
+    #        };
+    #      };
+    #
+    #      node = {
+    #        openFirewall = true;
+    #        listenPort = 8776;
+    #      };
+    #
+    #      httpd = {
+    #        enable = true;
+    #        listenAddress = "0.0.0.0"; # for now...
+    #        listenPort = 8081;
+    #      };
+    #    };
   };
 
-   networking = {
-      firewall = {
-        allowedTCPPorts = [ 8081 25 465 587 143 993 110 995 4190 ];
-      };
+  networking = {
+    firewall = {
+      allowedTCPPorts = [
+        8081
+        25
+        465
+        587
+        143
+        993
+        110
+        995
+        4190
+      ];
     };
-  
-
+  };
 
   modules = {
+    services.docker.enable = true;
     system.network.enable = lib.mkForce false;
     system.network.nylon-wg = {
       enable = true;
@@ -115,12 +103,16 @@
       address = "fe80::1";
       interface = "eth0";
     };
-    nameservers = ["213.136.95.10" "213.136.95.11" "2a02:c207::1:53"];
+    nameservers = [
+      "213.136.95.10"
+      "213.136.95.11"
+      "2a02:c207::1:53"
+    ];
   };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # on your system were taken. It's perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
