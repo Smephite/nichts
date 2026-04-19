@@ -56,6 +56,11 @@ in {
     environment.systemPackages = with pkgs; [
       cosmic-session
     ];
+
+    xdg.portal = {
+      enable = true;
+      extraPortals = [pkgs.xdg-desktop-portal-cosmic];
+    };
     #    environment.pathsToLink = [ "/share/wayland-sessions" ];
 
     #   users.users.${username}.extraGroups = [ "shared" "video" "render"];
@@ -63,8 +68,9 @@ in {
 
     programs.ssh.startAgent = lib.mkForce false;
 
+    services.gnome.gnome-keyring.enable = true;
     security.pam.services.greetd = {
-      enableGnomeKeyring = false; # avoid conflicts
+      enableGnomeKeyring = true;
       fprintAuth = true;
     };
     #    boot.blacklistedKernelModules = [ "simpledrm" ];
