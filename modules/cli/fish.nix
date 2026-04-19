@@ -23,10 +23,7 @@ in {
     programs.fish.enable = true;
 
     nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
-    programs.nix-index = {
-      enable = true;
-      enableFishIntegration = true;
-    };
+    programs.nix-index.enableFishIntegration = true;
     programs.command-not-found.enable = mkForce false;
     users.users.${username}.shell = pkgs.fish;
 
