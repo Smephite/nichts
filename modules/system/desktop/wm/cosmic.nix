@@ -3,13 +3,11 @@
   config,
   pkgs,
   ...
-}:
-let
+}: let
   monitors = config.modules.system.desktop.monitors;
   cosmicCfg = config.modules.system.desktop.wm.cosmic;
   username = config.modules.system.username;
-in
-{
+in {
   options.modules.system.desktop.wm.cosmic = {
     enable = lib.mkEnableOption "use cosmic + cosmic greeter";
     configureMonitors = lib.mkOption {
@@ -28,7 +26,6 @@ in
     };
   };
   config = lib.mkIf cosmicCfg.enable {
-
     # Enable the COSMIC login + desktop env
     services.desktopManager.cosmic.enable = true;
     #    services.displayManager.cosmic-greeter.enable = true;
@@ -52,7 +49,7 @@ in
     programs.xwayland.enable = lib.mkDefault cosmicCfg.xWayland;
     services.xserver = {
       enable = true;
-      excludePackages = [ pkgs.xterm ];
+      excludePackages = [pkgs.xterm];
     };
     services.desktopManager.cosmic.xwayland.enable = lib.mkDefault cosmicCfg.xWayland;
 

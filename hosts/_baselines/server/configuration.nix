@@ -4,13 +4,12 @@
   pkgs,
   self,
   ...
-}:
-{
+}: {
   imports = [
     ./packages.nix
   ];
 
-  age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+  age.identityPaths = ["/etc/ssh/ssh_host_ed25519_key"];
 
   modules = {
     other.home-manager.enable = true;

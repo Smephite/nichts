@@ -4,8 +4,7 @@
   self,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.modules.system.sshKey;
   username = config.modules.system.username;
   hostname = config.networking.hostName;
@@ -15,9 +14,7 @@ let
 
   userKeyName = "id_ed25519_nix";
   userKeyPath = "/home/${username}/.ssh/${userKeyName}";
-
-in
-{
+in {
   options.modules.system.sshKey = {
     enable = mkEnableOption "agenix-managed SSH identity key (${userKeyPath})";
   };
@@ -26,13 +23,13 @@ in
     {
       warnings =
         optional (!ageFileExists)
-          "modules.system.sshKey: ${ageFile} does not exist; SSH key will not be managed by agenix on this host";
+        "modules.system.sshKey: ${ageFile} does not exist; SSH key will not be managed by agenix on this host";
 
       # The host SSH key is generated at first boot before agenix runs, which
       # breaks the chicken-and-egg problem of using the user key as the identity
       # when the user key is itself an agenix secret.
       # mkOverride 900 beats mkDefault (1000) but yields to any explicit setting (100).
-      age.identityPaths = mkOverride 900 [ "/etc/ssh/ssh_host_ed25519_key" ];
+      age.identityPaths = mkOverride 900 ["/etc/ssh/ssh_host_ed25519_key"];
     }
 
     (mkIf ageFileExists {

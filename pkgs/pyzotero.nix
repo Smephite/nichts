@@ -7,7 +7,6 @@
   httpx,
   whenever,
 }:
-
 buildPythonPackage rec {
   pname = "pyzotero";
   version = "1.11.0";
@@ -23,7 +22,7 @@ buildPythonPackage rec {
     hash = "sha256-VDSMczLHnNGs9THyVI/I2MbqMeiemMQgIy2XoZOtlbI=";
   };
 
-  build-system = [ ];
+  build-system = [];
 
   dependencies = [
     feedparser
@@ -32,12 +31,12 @@ buildPythonPackage rec {
     whenever
   ];
 
-  pythonImportsCheck = [ "pyzotero" ];
+  pythonImportsCheck = ["pyzotero"];
 
   meta = {
     description = "Python wrapper for the Zotero API";
     homepage = "https://github.com/urschrei/pyzotero";
     license = lib.licenses.blueOak100;
-    maintainers = [ ];
+    maintainers = [];
   };
 }

@@ -11,7 +11,6 @@ in {
     enable = mkEnableOption "openconnect";
   };
   config = mkIf cfg.enable {
-    
     assertions = [
       {
         assertion = config.networking.networkmanager.enable;
@@ -22,6 +21,5 @@ in {
     networking.networkmanager = {
       plugins = [pkgs.networkmanager-openconnect];
     };
-
   };
 }

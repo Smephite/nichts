@@ -5,25 +5,31 @@ let
     builtins.attrNames (builtins.readDir ./user)
   );
 in
-builtins.listToAttrs (
-  map (
-    file:
-    let
-      hostname = builtins.replaceStrings [ ".age" ] [ "" ] file;
-    in
-    {
-      name = "ssh/user/${file}";
-      value = {
-        publicKeys =
-          let
+  builtins.listToAttrs (
+    map (
+      file: let
+        hostname = builtins.replaceStrings [".age"] [""] file;
+      in {
+        name = "ssh/user/${file}";
+        value = {
+          publicKeys = let
             extra = builtins.filter (k: !builtins.elem k masterKeys) (
-              (if keys ? "user-${hostname}" then [ keys."user-${hostname}" ] else [ ])
-              ++ (if keys ? "host-${hostname}" then [ keys."host-${hostname}" ] else [ ])
+              (
+                if keys ? "user-${hostname}"
+                then [keys."user-${hostname}"]
+                else []
+              )
+              ++ (
+                if keys ? "host-${hostname}"
+                then [keys."host-${hostname}"]
+                else []
+              )
             );
           in
-          masterKeys ++ extra;
-        armor = false;
-      };
-    }
-  ) sshUserAgeFiles
-)
+            masterKeys ++ extra;
+          armor = false;
+        };
+      }
+    )
+    sshUserAgeFiles
+  )

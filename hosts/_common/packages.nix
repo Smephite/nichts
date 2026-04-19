@@ -2,8 +2,7 @@
   pkgs,
   inputs,
   ...
-}:
-{
+}: {
   environment.systemPackages = with pkgs; [
     git
     bash
@@ -12,8 +11,7 @@
     htop
     btop
     hwinfo
-    comma
-    nix-index
+
     unzip
     nano
     vim

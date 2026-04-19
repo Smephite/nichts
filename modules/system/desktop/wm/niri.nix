@@ -58,10 +58,8 @@ in {
         xwayland-satellite # xwayland support
       ];
     };
-    
 
-    programs.xwayland.enable = lib.mkDefault true;   
+    programs.xwayland.enable = lib.mkDefault true;
     services.xserver.enable = true;
-
   };
 }

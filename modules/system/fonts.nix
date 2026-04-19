@@ -21,6 +21,6 @@ in {
     cm_unicode
 
     comic-neue
-#    comic-mono-font
+    #    comic-mono-font
   ]);
 }

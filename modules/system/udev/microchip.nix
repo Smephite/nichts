@@ -4,16 +4,14 @@
   pkgs,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.modules.system.udev.microchip;
   username = config.modules.system.username;
-in
-{
+in {
   options.modules.system.udev.microchip.enable = mkEnableOption "microchip";
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [ ];
+    environment.systemPackages = with pkgs; [];
 
     services.udev.packages = [
       (pkgs.writeTextFile {

@@ -3,9 +3,7 @@
   lib,
   pkgs,
   ...
-}:
-{
-
+}: {
   # TODO: Fix for real
   nixpkgs.config.permittedInsecurePackages = [
     "gradle-7.6.6"
@@ -20,7 +18,7 @@
   time.hardwareClockInLocalTime = true; # Fix system time in dualboot
   networking = {
     firewall = {
-      allowedTCPPorts = [ 51820 ];
+      allowedTCPPorts = [51820];
     };
   };
   # Fingerprint
@@ -46,14 +44,13 @@
       };
       desktop = {
         windowManager = "cosmic";
-        monitors = [ ];
+        monitors = [];
       };
     };
     programs = {
       librepods.enable = true;
       #firefox.enable = true;
     };
-
   };
 
   programs.steam = {

@@ -4,13 +4,11 @@
   self,
   config,
   ...
-}:
-{
-
+}: {
   # Run unpatched dynamic binaries on NixOS.
   programs.nix-ld = {
     enable = true;
-    libraries = [ pkgs.qt6.qtbase ];
+    libraries = [pkgs.qt6.qtbase];
   };
 
   nix = {
@@ -43,7 +41,9 @@
 
   nixpkgs.config.allowUnfree = lib.mkDefault true;
 
-  age.identityPaths = lib.mkDefault [ "/home/${config.modules.system.username}/.ssh/id_ed25519" ];
+  programs.nix-index-database.comma.enable = true;
+
+  age.identityPaths = lib.mkDefault ["/home/${config.modules.system.username}/.ssh/id_ed25519"];
   # See ../../modules
   modules = {
     system = {
@@ -62,14 +62,12 @@
         signing = {
           key = lib.mkDefault "~/.ssh/id_ed25519.pub";
           signByDefault = lib.mkDefault false;
-          allowedKeys =
-            let
-              keys = import "${self}/secrets/ssh/user_keys.nix";
-              masterKeys = import "${self}/secrets/ssh/master_keys.nix";
-            in
+          allowedKeys = let
+            keys = import "${self}/secrets/ssh/user_keys.nix";
+            masterKeys = import "${self}/secrets/ssh/master_keys.nix";
+          in
             keys ++ masterKeys;
         };
-
       };
 
       nh.enable = lib.mkDefault true;

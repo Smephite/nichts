@@ -7,81 +7,83 @@ let
 
   userKeySecrets = import ./ssh/_user_secrets.nix;
 in
-{
-  "telegram.age" = {
-    publicKeys = [
-      keys.host-starhaven
-      keys.host-c3
-    ]
-    ++ masterKeys;
-    armor = false;
-  };
-  "wg.starhaven.age" = {
-    publicKeys = [ keys.host-starhaven ] ++ masterKeys;
-    armor = false;
-  };
-  "wg.preshared.age" = {
-    publicKeys = [ keys.host-starhaven ] ++ masterKeys;
-    armor = false;
-  };
+  {
+    "telegram.age" = {
+      publicKeys =
+        [
+          keys.host-starhaven
+          keys.host-c3
+        ]
+        ++ masterKeys;
+      armor = false;
+    };
+    "wg.starhaven.age" = {
+      publicKeys = [keys.host-starhaven] ++ masterKeys;
+      armor = false;
+    };
+    "wg.preshared.age" = {
+      publicKeys = [keys.host-starhaven] ++ masterKeys;
+      armor = false;
+    };
 
-  "nylon.central.age" = {
-    publicKeys = [ keys.host-starhaven ] ++ masterKeys;
-    armor = false;
-  };
+    "nylon.central.age" = {
+      publicKeys = [keys.host-starhaven] ++ masterKeys;
+      armor = false;
+    };
 
-  "nylon.starhaven.age" = {
-    publicKeys = [ keys.host-starhaven ] ++ masterKeys;
-    armor = false;
-  };
+    "nylon.starhaven.age" = {
+      publicKeys = [keys.host-starhaven] ++ masterKeys;
+      armor = false;
+    };
 
-  "nylon.central.key.age" = {
-    publicKeys = [ keys.host-starhaven ] ++ masterKeys;
-    armor = false;
-  };
+    "nylon.central.key.age" = {
+      publicKeys = [keys.host-starhaven] ++ masterKeys;
+      armor = false;
+    };
 
-  "radicle.starhaven.age" = {
-    publicKeys = [ keys.host-starhaven ] ++ masterKeys;
-    armor = false;
-  };
+    "radicle.starhaven.age" = {
+      publicKeys = [keys.host-starhaven] ++ masterKeys;
+      armor = false;
+    };
 
-  "uni.vpn.age" = {
-    publicKeys = [
-      keys.host-heartofgold
-      #      keys.host-silverwind
-    ]
-    ++ masterKeys;
-    armor = false;
-  };
+    "uni.vpn.age" = {
+      publicKeys =
+        [
+          keys.host-heartofgold
+          #      keys.host-silverwind
+        ]
+        ++ masterKeys;
+      armor = false;
+    };
 
-  "github-ro.age" = {
-    publicKeys = allKeys;
-    armor = false;
-  };
+    "github-ro.age" = {
+      publicKeys = allKeys;
+      armor = false;
+    };
 
-  "attic.c3.age" = {
-    publicKeys = [ keys.host-c3 ] ++ masterKeys;
-    armor = false;
-  };
+    "attic.c3.age" = {
+      publicKeys = [keys.host-c3] ++ masterKeys;
+      armor = false;
+    };
 
-  "attic-pull.age" = {
-    publicKeys = allKeys;
-    armor = false;
-  };
+    "attic-pull.age" = {
+      publicKeys = allKeys;
+      armor = false;
+    };
 
-  "attic-push.age" = {
-    publicKeys = [
-      keys.host-heartofgold
-      #keys.host-silverwind
-    ]
-    ++ masterKeys;
-    armor = false;
-  };
+    "attic-push.age" = {
+      publicKeys =
+        [
+          keys.host-heartofgold
+          #keys.host-silverwind
+        ]
+        ++ masterKeys;
+      armor = false;
+    };
 
-  "attic-admin.age" = {
-    publicKeys = masterKeys;
-    armor = false;
-  };
-
-}
-// userKeySecrets
+    "attic-admin.age" = {
+      publicKeys = masterKeys;
+      armor = false;
+    };
+  }
+  // userKeySecrets

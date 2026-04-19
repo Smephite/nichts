@@ -3,18 +3,17 @@
   lib,
   pkgs,
   ...
-}:
-let
+}: let
   username = config.modules.system.username;
   cfg = config.modules.system.network;
-  inherit (lib)
+  inherit
+    (lib)
     mkIf
     mkEnableOption
     types
     mkOption
     ;
-in
-{
+in {
   options.modules.system.network = {
     enable = mkEnableOption "networking";
     hostname = mkOption {
@@ -24,7 +23,6 @@ in
   };
 
   config = mkIf cfg.enable {
-
     networking = {
       networkmanager = {
         enable = true;
@@ -41,6 +39,6 @@ in
         ];
       };
     };
-    users.users.${username}.extraGroups = [ "networkmanager" ];
+    users.users.${username}.extraGroups = ["networkmanager"];
   };
 }

@@ -1,7 +1,6 @@
 let
   keys = import ./public_keys.nix;
-in
-(with keys; [
+in (with keys; [
   #  keys.heartofgold-win
   #  keys.silverwind-win
   user-yubikey

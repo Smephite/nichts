@@ -11,14 +11,13 @@
   kdeCfg = config.modules.system.desktop.wm.kde;
 
   HMcfg = config.modules.other.home-manager;
-  
-  username = config.modules.system.username;
 
+  username = config.modules.system.username;
 in {
   options.modules.system.desktop.wm.kde = {
     enable = lib.mkEnableOption "use KDE";
 
-    useHomeManager = lib.mkOption { 
+    useHomeManager = lib.mkOption {
       type = lib.types.bool;
       default = HMcfg.enable;
       description = "Whether to use HomeManager for configuring Plasma";
@@ -49,11 +48,10 @@ in {
   config = lib.mkIf kdeCfg.enable {
     # TODO: Split display and desktopmanager
 
-    environment.systemPackages = with pkgs; 
-    [
-      lm_sensors # required by freon 
+    environment.systemPackages = with pkgs; [
+      lm_sensors # required by freon
       # KDE
-#      kdePackages.discover # Optional: Install if you use Flatpak or fwupd firmware update sevice
+      #      kdePackages.discover # Optional: Install if you use Flatpak or fwupd firmware update sevice
       kdePackages.kcalc # Calculator
       kdePackages.kcharselect # Tool to select and copy special characters from all installed fonts
       kdePackages.kclock # Clock app
@@ -68,7 +66,7 @@ in {
       wayland-utils # Wayland utilities
       wl-clipboard # Command-line copy/paste utilities for Wayland
     ];
-    
+
     services = {
       displayManager.sddm.enable = true;
       displayManager.sddm.wayland.enable = kdeCfg.wayland;
@@ -76,13 +74,13 @@ in {
       desktopManager.plasma6 = {
         enable = true;
       };
-      
+
       xrdp = {
         defaultWindowManager = "startplasma-x11";
         enable = true;
         openFirewall = true;
       };
-      
+
       xserver = {
         enable = true;
         excludePackages = [pkgs.xterm];
@@ -93,10 +91,10 @@ in {
       };
     };
 
-    programs.xwayland.enable = lib.mkDefault (kdeCfg.wayland && kdeCfg.xWayland);   
+    programs.xwayland.enable = lib.mkDefault (kdeCfg.wayland && kdeCfg.xWayland);
 
     home-manager = lib.mkIf kdeCfg.useHomeManager {
-      sharedModules = [ plasma-manager.homeModules.plasma-manager ];
+      sharedModules = [plasma-manager.homeModules.plasma-manager];
       users."${username}" = import ./config/plasma-home.nix;
     };
 
@@ -105,7 +103,7 @@ in {
         assertion = !(HMcfg.enable == 0 && kdeCfg.useHomeManager);
         message = "KDE homemanager configuration is enabled but homemanager is not!";
       }
-    ]; 
+    ];
     #services.xserver.displayManager = lib.mkIf (!kdeCfg.wayland && kdeCfg.configureMonitors) {
     #  setupCommands =
     #    lib.strings.concatMapStrings (

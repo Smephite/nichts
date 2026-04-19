@@ -42,8 +42,8 @@ in {
       programs.fish = {
         enable = true;
         interactiveShellInit = ''
-        set fish_greeting
-        nix-your-shell fish | source
+          set fish_greeting
+          nix-your-shell fish | source
         '';
         plugins = [
           {
@@ -62,7 +62,7 @@ in {
         shellAbbrs = mkMerge [
           {
             rebuild = mkIf config.programs.nh.enable "nh os switch";
-            update = mkIf config.programs.nh.enable  "nh os switch --update";
+            update = mkIf config.programs.nh.enable "nh os switch --update";
             cat = mkIf (builtins.elem pkgs.bat config.environment.systemPackages) "bat --plain";
             cl = "clear";
             cp = "cp -ivr";
@@ -70,7 +70,7 @@ in {
             ls = mkIf (builtins.elem pkgs.eza config.environment.systemPackages) "eza --icons";
             la = mkIf (builtins.elem pkgs.eza config.environment.systemPackages) "eza --icons -a";
             ll = mkIf (builtins.elem pkgs.eza config.environment.systemPackages) "eza --icons -lha";
-            l  = mkIf (builtins.elem pkgs.eza config.environment.systemPackages) "eza --icons -lha";
+            l = mkIf (builtins.elem pkgs.eza config.environment.systemPackages) "eza --icons -lha";
             zj = mkIf (builtins.elem pkgs.zellij config.environment.systemPackages) "zellij";
             lg = mkIf (builtins.elem pkgs.lazygit config.environment.systemPackages) "lazygit";
             ns = "nix repl --expr 'import <nixpkgs>{}'";

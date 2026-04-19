@@ -4,11 +4,9 @@
   pkgs,
   self,
   ...
-}:
-let
+}: let
   cfg = config.modules.services.attic-push;
-in
-{
+in {
   options.modules.services.attic-push = {
     enable = lib.mkEnableOption "attic push post-build-hook";
 
@@ -32,15 +30,13 @@ in
       mode = "0400";
     };
 
-    nix.settings.post-build-hook =
-      let
-        pushScript = pkgs.writeShellScript "attic-push" ''
-          set -euo pipefail
-          export ATTIC_TOKEN=$(cat ${config.age.secrets.attic-push-token.path})
-          ${pkgs.attic-client}/bin/attic login local ${cfg.serverUrl} "$ATTIC_TOKEN" 2>/dev/null
-          ${pkgs.attic-client}/bin/attic push local:${cfg.cacheName} $OUT_PATHS 2>/dev/null || true
-        '';
-      in
-      "${pushScript}";
+    nix.settings.post-build-hook = let
+      pushScript = pkgs.writeShellScript "attic-push" ''
+        set -euo pipefail
+        export ATTIC_TOKEN=$(cat ${config.age.secrets.attic-push-token.path})
+        ${pkgs.attic-client}/bin/attic login local ${cfg.serverUrl} "$ATTIC_TOKEN" 2>/dev/null
+        ${pkgs.attic-client}/bin/attic push local:${cfg.cacheName} $OUT_PATHS 2>/dev/null || true
+      '';
+    in "${pushScript}";
   };
 }

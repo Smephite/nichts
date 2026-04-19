@@ -11,7 +11,6 @@ in {
   options.modules.programs.librepods.enable = mkEnableOption "librepods";
 
   config = mkIf cfg.enable {
-
     programs.librepods = {
       enable = true;
     };

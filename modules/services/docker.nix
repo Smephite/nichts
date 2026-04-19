@@ -4,15 +4,13 @@
   pkgs,
   ...
 }:
-with lib;
-let
+with lib; let
   cfg = config.modules.services.docker;
-in
-{
+in {
   options.modules.services.docker = {
     enable = mkEnableOption "docker";
 
-    package = mkPackageOption pkgs "docker_28" { };
+    package = mkPackageOption pkgs "docker_28" {};
 
     dataRoot = mkOption {
       type = types.str;
@@ -51,7 +49,7 @@ in
     }
 
     (mkIf cfg.addUserToGroup {
-      users.users.${config.modules.system.username}.extraGroups = [ "docker" ];
+      users.users.${config.modules.system.username}.extraGroups = ["docker"];
     })
   ]);
 }

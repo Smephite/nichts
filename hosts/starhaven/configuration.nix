@@ -4,8 +4,7 @@
   pkgs,
   self,
   ...
-}:
-{
+}: {
   imports = [
     ./packages.nix
     ./wireguard.nix

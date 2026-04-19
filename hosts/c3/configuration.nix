@@ -4,13 +4,12 @@
   pkgs,
   self,
   ...
-}:
-{
+}: {
   imports = [
     ./packages.nix
   ];
 
-  age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+  age.identityPaths = ["/etc/ssh/ssh_host_ed25519_key"];
 
   services.qemuGuest.enable = true;
   services.fstrim.enable = true;
@@ -19,7 +18,7 @@
     isSystemUser = true;
     group = "atticd";
   };
-  users.groups.atticd = { };
+  users.groups.atticd = {};
 
   age.secrets.attic-credentials = {
     file = self + "/secrets/attic.c3.age";
@@ -41,7 +40,7 @@
     settings = {
       listen = "[::]:11974";
       api-endpoint = "https://cache.app.kai.run/";
-      allowed-hosts = [ "cache.app.kai.run" ];
+      allowed-hosts = ["cache.app.kai.run"];
       database.url = "sqlite:///var/lib/atticd/db.sqlite";
 
       storage = {
@@ -56,7 +55,7 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ 11974 ];
+  networking.firewall.allowedTCPPorts = [11974];
 
   modules = {
     other.home-manager.enable = true;

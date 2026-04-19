@@ -1,0 +1,73 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "project_panel": {
+    "dock": "left",
+  },
+  "bottom_dock_layout": "contained",
+  "title_bar": {
+    "show_menus": false,
+    "show_user_menu": true,
+    "show_user_picture": false,
+    "show_branch_icon": false,
+  },
+  "proxy": "",
+  "minimap": {
+    "show": "auto",
+  },
+  "which_key": {
+    "enabled": false,
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+  },
+  "use_system_prompts": false,
+  "use_system_path_prompts": false,
+  "edit_predictions": {
+    "provider": "copilot",
+  },
+  "agent_servers": {
+    "github-copilot-cli": {
+      "type": "registry",
+    },
+  },
+  "agent": {
+    "dock": "right",
+    "show_turn_stats": true,
+    "enable_feedback": false,
+    "sidebar_side": "right",
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "claude-opus-4.6",
+      "enable_thinking": true,
+      "effort": "high",
+    },
+    "favorite_models": [
+      {
+        "provider": "copilot_chat",
+        "model": "claude-opus-4.6",
+        "enable_thinking": false,
+      },
+      {
+        "provider": "copilot_chat",
+        "model": "claude-sonnet-4.6",
+        "enable_thinking": false,
+      },
+    ],
+    "model_parameters": [],
+  },
+  "ui_font_size": 16,
+  "buffer_font_size": 15,
+  "theme": {
+    "mode": "system",
+    "light": "One Light",
+    "dark": "One Dark",
+  },
+}

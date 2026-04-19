@@ -5,11 +5,9 @@
   self,
   config,
   ...
-}:
-let
+}: let
   username = config.modules.system.username;
-in
-{
+in {
   # partly taken from github.com/bloxx12/nichts
 
   age.secrets.github-ro-token = {

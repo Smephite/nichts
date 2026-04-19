@@ -3,10 +3,9 @@
   config,
   lib,
   ...
-}:
-{
+}: {
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
+  imports = [(modulesPath + "/profiles/qemu-guest.nix")];
 
   boot.loader.grub.device = "/dev/sda";
   # Not much space on /boot
@@ -36,6 +35,6 @@
   fileSystems."/srv/docker" = {
     device = "localhost:/gv0";
     fsType = "glusterfs";
-    options = [ "nofail" ];
+    options = ["nofail"];
   };
 }

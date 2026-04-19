@@ -11,14 +11,12 @@ in {
   options.modules.programs.starship.enable = mkEnableOption "starship";
 
   config = mkIf cfg.enable {
-    
-    assertions = 
-      [
-        {
-          assertion = config.modules.system.fonts.enable || config.modules.system.server;
-          message = "modules.programs.starship requires modules.system.fonts to be enabled";
-        }
-      ];
+    assertions = [
+      {
+        assertion = config.modules.system.fonts.enable || config.modules.system.server;
+        message = "modules.programs.starship requires modules.system.fonts to be enabled";
+      }
+    ];
 
     home-manager.users.${username} = {
       programs.starship = {

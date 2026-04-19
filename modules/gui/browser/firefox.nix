@@ -12,21 +12,21 @@
     installation_mode = "force_installed";
   };
   mkFirefoxExtension = id: attr:
-    lib.nameValuePair id 
+    lib.nameValuePair id
     (
-      _extensionDefault //
-      (
-      optionalAttrs (builtins.isString attr)
+      _extensionDefault
+      // (
+        optionalAttrs (builtins.isString attr)
         (
-          { install_url = attr;} //
-          (optionalAttrs ((builtins.match "^https?://.*" attr) == null) { install_url = "https://addons.mozilla.org/firefox/downloads/latest/${attr}/latest.xpi";})
+          {install_url = attr;}
+          // (optionalAttrs ((builtins.match "^https?://.*" attr) == null) {install_url = "https://addons.mozilla.org/firefox/downloads/latest/${attr}/latest.xpi";})
         )
-      ) //
-      (
-      optionalAttrs (builtins.isAttrs attr)
+      )
+      // (
+        optionalAttrs (builtins.isAttrs attr)
         (
-          { install_url = attr.source;} //
-          (optionalAttrs ((builtins.match "^https?://.*" attr.source) == null) { install_url = "https://addons.mozilla.org/firefox/downloads/latest/${attr.source}/latest.xpi";})
+          {install_url = attr.source;}
+          // (optionalAttrs ((builtins.match "^https?://.*" attr.source) == null) {install_url = "https://addons.mozilla.org/firefox/downloads/latest/${attr.source}/latest.xpi";})
           // attr
         )
       )

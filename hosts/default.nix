@@ -1,5 +1,4 @@
-{ inputs, ... }:
-let
+{inputs, ...}: let
   inherit (inputs) self;
   inherit (self) lib;
   system = "x86_64-linux";
@@ -22,30 +21,37 @@ let
     inputs.claude-desktop.nixosModules.default
     "${inputs.nixpkgs-nylon-wg}/nixos/modules/services/networking/nylon-wg.nix"
   ];
-in
-{
+in {
   starhaven = lib.nixosSystem {
     inherit specialArgs;
-    modules = baseModules ++ [
-      ./starhaven
-    ];
+    modules =
+      baseModules
+      ++ [
+        ./starhaven
+      ];
   };
   heartofgold = lib.nixosSystem {
     inherit specialArgs;
-    modules = baseModules ++ [
-      ./heartofgold
-    ];
+    modules =
+      baseModules
+      ++ [
+        ./heartofgold
+      ];
   };
   silverwind = lib.nixosSystem {
     inherit specialArgs;
-    modules = baseModules ++ [
-      ./silverwind
-    ];
+    modules =
+      baseModules
+      ++ [
+        ./silverwind
+      ];
   };
   c3 = lib.nixosSystem {
     inherit specialArgs;
-    modules = baseModules ++ [
-      ./c3
-    ];
+    modules =
+      baseModules
+      ++ [
+        ./c3
+      ];
   };
 }
