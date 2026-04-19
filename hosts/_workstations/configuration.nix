@@ -3,13 +3,15 @@
   pkgs,
   config,
   ...
-}: let
+}:
+let
   username = config.modules.system.username;
-in {
+in
+{
   boot.loader.systemd-boot.configurationLimit = 20;
 
   security.sudo = {
-    package = pkgs.sudo.override {withInsults = true;};
+    package = pkgs.sudo.override { withInsults = true; };
     wheelNeedsPassword = true;
   };
 
@@ -26,7 +28,7 @@ in {
     interval = "hourly";
     package = pkgs.plocate;
   };
-  services.udev.packages = [pkgs.yubikey-personalization];
+  services.udev.packages = [ pkgs.yubikey-personalization ];
   services.pcscd.enable = true;
   services.envfs.enable = true;
   # Enable CUPS to print documents.
@@ -62,6 +64,8 @@ in {
       starship.enable = lib.mkDefault true;
       atuin.enable = lib.mkDefault true;
 
+      zed.enable = lib.mkDefault true;
+
       firefox = {
         enable = lib.mkDefault true;
         extensions = {
@@ -74,7 +78,8 @@ in {
             private_browsing = true;
           };
           "87677a2c52b84ad3a151a4a72f5bd3c4@jetpack" = "grammarly-1"; # Grammarly
-          "zotero@chnm.gmu.edu" = "https://download.zotero.org/connector/firefox/release/Zotero_Connector-5.0.186.xpi"; # Zotero
+          "zotero@chnm.gmu.edu" =
+            "https://download.zotero.org/connector/firefox/release/Zotero_Connector-5.0.186.xpi"; # Zotero
         };
       };
     };
