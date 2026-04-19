@@ -61,6 +61,11 @@ in
       armor = false;
     };
 
+    "github-ssh.age" = {
+      publicKeys = masterKeys;
+      armor = false;
+    };
+
     "attic.c3.age" = {
       publicKeys = [keys.host-c3] ++ masterKeys;
       armor = false;
