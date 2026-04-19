@@ -6,6 +6,7 @@
   ...
 }: let
   cfg = config.modules.services.attic-push;
+  tokenPath = config.age.secrets.attic-push-token.path;
 in {
   options.modules.services.attic-push = {
     enable = lib.mkEnableOption "attic push post-build-hook";
@@ -30,10 +31,18 @@ in {
       mode = "0400";
     };
 
+    warnings =
+      lib.optional (!builtins.pathExists "${self}/secrets/attic-push.age")
+      "modules.services.attic-push: attic-push.age not found — push hook will be a no-op until the secret is available.";
+
     nix.settings.post-build-hook = let
       pushScript = pkgs.writeShellScript "attic-push" ''
         set -euo pipefail
-        export ATTIC_TOKEN=$(cat ${config.age.secrets.attic-push-token.path})
+        if [ ! -r "${tokenPath}" ]; then
+          echo "attic-push: token not available at ${tokenPath}, skipping push" >&2
+          exit 0
+        fi
+        export ATTIC_TOKEN=$(cat ${tokenPath})
         ${pkgs.attic-client}/bin/attic login local ${cfg.serverUrl} "$ATTIC_TOKEN" 2>/dev/null
         ${pkgs.attic-client}/bin/attic push local:${cfg.cacheName} $OUT_PATHS 2>/dev/null || true
       '';
