@@ -64,6 +64,8 @@ in {
 
       zed.enable = lib.mkDefault true;
 
+      git.signing.signByDefault = lib.mkOverride 900 true;
+
       firefox = {
         enable = lib.mkDefault true;
         extensions = {
