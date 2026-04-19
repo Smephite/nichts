@@ -8,19 +8,15 @@ let
   );
   hostKeys = builtins.listToAttrs (
     map (file: {
-      name = "host-" + (builtins.replaceStrings [".pub"] [""] file);
-      value = builtins.replaceStrings ["\n"] [""] (builtins.readFile (sshDir + "/host/${file}"));
-    })
-    pubHostKeyFileNames
+      name = "host-" + (builtins.replaceStrings [ ".pub" ] [ "" ] file);
+      value = builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile (sshDir + "/host/${file}"));
+    }) pubHostKeyFileNames
   );
   userKeys = builtins.listToAttrs (
     map (file: {
-      name = "user-" + (builtins.replaceStrings [".pub"] [""] file);
-      value = builtins.replaceStrings ["\n"] [""] (builtins.readFile (sshDir + "/user/${file}"));
-    })
-    pubUserKeyFileNames
+      name = "user-" + (builtins.replaceStrings [ ".pub" ] [ "" ] file);
+      value = builtins.replaceStrings [ "\n" ] [ "" ] (builtins.readFile (sshDir + "/user/${file}"));
+    }) pubUserKeyFileNames
   );
 in
-  rec {}
-  // hostKeys
-  // userKeys
+rec { } // hostKeys // userKeys
