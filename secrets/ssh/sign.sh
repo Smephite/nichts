@@ -17,6 +17,8 @@ Usage: $0 <public-key-file> [-n principal]... [-I identity] [-V validity]
   -I, --identity      Certificate identity (default: <first-principal>-$(hostname -s))
   -V, --validity      Certificate validity (default: +52w)
                       Examples: +1d, +4w, +52w, +1y, 20260101:20270101
+  -z, --serial        Certificate serial number (default: current unix timestamp)
+                      Record this to enable precise KRL revocation later.
 
 Environment:
   CA_PUB              Path to CA public key (default: \$SCRIPT_DIR/ssh/ca.pub)
@@ -36,6 +38,7 @@ KEY_TO_SIGN=""
 PRINCIPALS=()
 IDENTITY=""
 VALIDITY="+52w"
+SERIAL=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -49,6 +52,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -V|--validity)
             VALIDITY="$2"
+            shift 2
+            ;;
+        -z|--serial)
+            SERIAL="$2"
             shift 2
             ;;
         -h|--help)
@@ -74,12 +81,15 @@ if [[ -z "$KEY_TO_SIGN" ]]; then
     usage
 fi
 
-# Default principal and identity
+# Default principal, identity, and serial
 if [[ ${#PRINCIPALS[@]} -eq 0 ]]; then
     PRINCIPALS=("$USER")
 fi
 if [[ -z "$IDENTITY" ]]; then
     IDENTITY="${PRINCIPALS[0]}-$(hostname -s)"
+fi
+if [[ -z "$SERIAL" ]]; then
+    SERIAL="$(date +%s)"
 fi
 
 # Join principals with comma for ssh-keygen -n
@@ -111,6 +121,7 @@ echo "==> Signing:     $KEY_TO_SIGN"
 echo "==> Identity:    $IDENTITY"
 echo "==> Principals:  ${PRINCIPALS[*]}"
 echo "==> Validity:    $VALIDITY"
+echo "==> Serial:      $SERIAL"
 echo "==> CA key:      $CA_PUB"
 echo "==> PKCS#11:     $PKCS11_LIB"
 echo ""
@@ -123,6 +134,7 @@ ssh-keygen \
     -I "$IDENTITY" \
     -n "$PRINCIPALS_CSV" \
     -V "$VALIDITY" \
+    -z "$SERIAL" \
     "$KEY_TO_SIGN"
 
 CERT="${KEY_TO_SIGN%.pub}-cert.pub"
@@ -130,3 +142,6 @@ echo ""
 echo "✓ Certificate written to: $CERT"
 echo ""
 ssh-keygen -L -f "$CERT" | sed 's/^/    /'
+echo ""
+echo "ℹ️  Serial $SERIAL — record this to revoke the cert precisely later:"
+echo "    ssh-keygen -k -f secrets/ssh/krl -u -z $SERIAL secrets/ssh/ca.pub"

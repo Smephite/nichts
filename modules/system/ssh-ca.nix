@@ -8,6 +8,7 @@
 with lib; let
   cfg = config.modules.system.sshCA;
   caKeyFile = self + "/secrets/ssh/ca.pub";
+  krlFile = self + "/secrets/ssh/krl";
 
   # environment.etc copies the file (rather than symlinking) when mode is set
   # to anything other than "symlink".  This gives sshd a real file under
@@ -30,6 +31,11 @@ in {
       mode = "0444";
     };
 
+    environment.etc."ssh/revoked_keys" = {
+      source = krlFile;
+      mode = "0444";
+    };
+
     environment.etc."ssh/ssh-principals" = {
       source = principalsScript;
       mode = "0555";
@@ -39,6 +45,7 @@ in {
       TrustedUserCAKeys /etc/ssh/ca.pub
       AuthorizedPrincipalsCommand ${principalsScriptPath} %u
       AuthorizedPrincipalsCommandUser nobody
+      RevokedKeys /etc/ssh/revoked_keys
     '';
   };
 }
