@@ -7,12 +7,13 @@
 with lib; let
   cfg = config.modules.system.sshKey;
   username = config.modules.system.username;
+
   hostname = config.networking.hostName;
   secretName = "ssh-${hostname}";
   ageFile = self + "/secrets/ssh/user/${hostname}.age";
   ageFileExists = builtins.pathExists ageFile;
 
-  userKeyName = "id_ed25519_nix";
+  userKeyName = "id_ed25519";
   userKeyPath = "/home/${username}/.ssh/${userKeyName}";
   userPubKeyPath = "/home/${username}/.ssh/${userKeyName}.pub";
   userCertKeyPath = "/home/${username}/.ssh/${userKeyName}-cert.pub";
@@ -63,11 +64,11 @@ in {
             exit 0
           fi
 
+          # Back up any externally-managed key before taking over.
+          # A symlink means we already own it; a real file is from outside.
           if [ -e "$USER_KEY" ] && [ ! -L "$USER_KEY" ]; then
-            # A real (non-symlink) file exists — guard against silent overwrites.
-            echo "error: $USER_KEY already exists" >&2
-            echo "       Remove or back up $USER_KEY manually if you want it managed by agenix." >&2
-            exit 1
+            echo "sshKeyFromSecret: backing up existing $USER_KEY to ${userKeyPath}.bak" >&2
+            mv "$USER_KEY" "${userKeyPath}.bak"
           fi
 
           mkdir -p "$(dirname "$USER_KEY")"
