@@ -18,6 +18,8 @@
 
   # Minimal git config that points to the allowed-signers file and enables SSH signing verification.
   gitConfig = pkgs.writeText "git-auto-update-config" ''
+    [safe]
+      directory = ${gitPath}
     [gpg]
       format = ssh
     [gpg "ssh"]
