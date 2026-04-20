@@ -9,14 +9,16 @@ with lib; let
   cfg = config.modules.system.sshCA;
   caKeyFile = self + "/secrets/ssh/ca.pub";
 
-  # Script lives in the Nix store — owned by root, not group/world-writable,
-  # which satisfies sshd's AuthorizedPrincipalsCommand security requirements.
-  # %u is expanded by sshd and passed as $1; keeping it out of sshd_config
-  # avoids sshd's double-quoted token expansion mangling "$1" into "".
+  # environment.etc copies the file (rather than symlinking) when mode is set
+  # to anything other than "symlink".  This gives sshd a real file under
+  # /etc/ssh/ with no /nix/store ancestry, satisfying its path-safety check
+  # for AuthorizedPrincipalsCommand (which rejects paths through group-writable
+  # directories — /nix/store is root:nixbld 1775).
   principalsScript = pkgs.writeShellScript "ssh-principals" ''
     echo "$1"
     echo "*"
   '';
+  principalsScriptPath = "/etc/ssh/ssh-principals";
 in {
   options.modules.system.sshCA = {
     enable = mkEnableOption "Trust the repository SSH CA for user authentication";
@@ -28,9 +30,14 @@ in {
       mode = "0444";
     };
 
+    environment.etc."ssh/ssh-principals" = {
+      source = principalsScript;
+      mode = "0555";
+    };
+
     services.openssh.extraConfig = ''
       TrustedUserCAKeys /etc/ssh/ca.pub
-      AuthorizedPrincipalsCommand ${principalsScript} %u
+      AuthorizedPrincipalsCommand ${principalsScriptPath} %u
       AuthorizedPrincipalsCommandUser nobody
     '';
   };
