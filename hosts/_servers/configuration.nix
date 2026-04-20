@@ -13,7 +13,7 @@
     system = {
       server = true;
       # Automatically populate authorized_keys for root and ${username} with default keys
-      authorizedKeys.enable = lib.mkDefault true;
+      #authorizedKeys.enable = lib.mkDefault true;
       gitPath = lib.mkDefault "/srv/nichts";
     };
 
