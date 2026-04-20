@@ -17,16 +17,28 @@ with lib; let
     name = "nh";
     runtimeInputs = [pkgs.git pkgs.gawk];
     text = ''
-      if [ "$#" -ge 2 ] && [ "$1" = "os" ]; then
+      # Strip --no-verify from args and set a flag if found
+      no_verify=0
+      filtered_args=()
+      for arg in "$@"; do
+        if [ "$arg" = "--no-verify" ]; then
+          no_verify=1
+        else
+          filtered_args+=("$arg")
+        fi
+      done
+      set -- "''${filtered_args[@]}"
+
+      if [ "$no_verify" = "0" ] && [ "$#" -ge 2 ] && [ "$1" = "os" ]; then
         case "$2" in
           switch|boot|test)
-            unsigned=$(git -C ${gitPath} log --format="%H %G?" HEAD \
+            unsigned=$(git -c log.showSignature=false -C ${gitPath} log --format="%H %G?" HEAD \
               | gawk '$2 != "G" { print $1 }')
 
             if [ -n "$unsigned" ]; then
               echo "⚠  Warning: unsigned or untrusted commits in history:"
               while IFS= read -r commit; do
-                echo "  $(git -C ${gitPath} log --format="%h %s" -1 "$commit")"
+                echo "  $(git -c log.showSignature=false -C ${gitPath} log --format="%h %s" -1 "$commit")"
               done <<< "$unsigned"
               echo ""
 

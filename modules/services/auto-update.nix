@@ -33,7 +33,7 @@
     ${pkgs.git}/bin/git -C ${gitPath} fetch origin
 
     echo "auto-update: verifying all commit signatures..."
-    UNSIGNED=$(${pkgs.git}/bin/git -C ${gitPath} log --format="%H %G?" origin/main \
+    UNSIGNED=$(${pkgs.git}/bin/git -c log.showSignature=false -C ${gitPath} log --format="%H %G?" origin/main \
       | ${pkgs.gawk}/bin/awk '$2 != "G" { print $1 }')
 
     if [ -n "$UNSIGNED" ]; then

@@ -11,36 +11,6 @@ with lib; let
   allowedSignersFile = pkgs.writeText "git-allowed-signers" (
     concatMapStringsSep "\n" (key: "${cfg.userEmail} ${key}") cfg.signing.allowedKeys + "\n"
   );
-
-  gitConfig = {
-    userName = cfg.userName;
-    userEmail = cfg.userEmail;
-    extraConfig =
-      {
-        init.defaultBranch = cfg.defaultBranch;
-        push.autoSetupRemote = true;
-        commit.verbose = true;
-        log.showSignature = true;
-        merge.conflictstyle = "zdiff3";
-        diff.algorithm = "histogram";
-        transfer.fsckobjects = true;
-        fetch.fsckobjects = true;
-        receive.fsckobjects = true;
-        pull.rebase = cfg.pullRebase;
-      }
-      // optionalAttrs (cfg.signing.key != null && cfg.signing.allowedKeys != []) {
-        gpg.ssh.allowedSignersFile = "${allowedSignersFile}";
-      };
-  };
-
-  # Emitted only when a signing key is configured.
-  signingConfig = optionalAttrs (cfg.signing.key != null) {
-    signing = {
-      format = "ssh";
-      key = cfg.signing.key;
-      signByDefault = cfg.signing.signByDefault;
-    };
-  };
 in {
   options.modules.programs.git = {
     enable = mkEnableOption "git";
@@ -107,6 +77,7 @@ in {
             init.defaultBranch = cfg.defaultBranch;
             push.autoSetupRemote = true;
             commit.verbose = true;
+            log.showSignature = true;
             merge.conflictstyle = "zdiff3";
             diff.algorithm = "histogram";
             transfer.fsckobjects = true;
