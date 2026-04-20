@@ -20,6 +20,7 @@ with lib; let
         init.defaultBranch = cfg.defaultBranch;
         push.autoSetupRemote = true;
         commit.verbose = true;
+        log.showSignature = true;
         merge.conflictstyle = "zdiff3";
         diff.algorithm = "histogram";
         transfer.fsckobjects = true;
