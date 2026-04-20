@@ -7,6 +7,7 @@
 }: let
   cfg = config.modules.services.autoUpdate;
   hostname = config.networking.hostName;
+  username = config.modules.system.username;
   gitPath = config.modules.system.gitPath;
   masterKeys = import (self + "/secrets/ssh/master_keys.nix");
 
@@ -18,13 +19,15 @@
 
   # Minimal git config that points to the allowed-signers file and enables SSH signing verification.
   gitConfig = pkgs.writeText "git-auto-update-config" ''
-    [safe]
-      directory = ${gitPath}
     [gpg]
       format = ssh
     [gpg "ssh"]
       allowedSignersFile = ${allowedSignersFile}
   '';
+
+  # Wrapper that runs a git command as the repo owner, preserving GIT_CONFIG_GLOBAL.
+  # This avoids safe.directory issues since the repo is owned by the admin user, not root.
+  asUser = cmd: "${pkgs.util-linux}/bin/runuser -u ${username} -- ${cmd}";
 
   updateScript = pkgs.writeShellScript "nixos-auto-update" ''
     set -euo pipefail
@@ -32,10 +35,10 @@
     export GIT_CONFIG_GLOBAL=${gitConfig}
 
     echo "auto-update: fetching origin..."
-    ${pkgs.git}/bin/git -C ${gitPath} fetch origin
+    ${asUser "${pkgs.git}/bin/git -C ${gitPath} fetch origin"}
 
     echo "auto-update: verifying all commit signatures..."
-    UNSIGNED=$(${pkgs.git}/bin/git -c log.showSignature=false -C ${gitPath} log --format="%H %G?" origin/main \
+    UNSIGNED=$(${asUser "${pkgs.git}/bin/git -c log.showSignature=false -C ${gitPath} log --format=\"%H %G?\" origin/main"} \
       | ${pkgs.gawk}/bin/awk '$2 != "G" { print $1 }')
 
     if [ -n "$UNSIGNED" ]; then
@@ -45,7 +48,7 @@
     fi
 
     echo "auto-update: all commits verified, updating to origin/main..."
-    ${pkgs.git}/bin/git -C ${gitPath} reset --hard origin/main
+    ${asUser "${pkgs.git}/bin/git -C ${gitPath} reset --hard origin/main"}
 
     echo "auto-update: rebuilding NixOS (${hostname})..."
     ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${gitPath}#${hostname}
