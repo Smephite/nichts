@@ -11,6 +11,9 @@
   gitPath = config.modules.system.gitPath;
   masterKeys = import (self + "/secrets/ssh/master_keys.nix");
 
+  telegramSecretFile = self + "/secrets/telegram.age";
+  hasTelegram = builtins.pathExists telegramSecretFile;
+
   # Build a git allowed-signers file from the master signing keys at eval time.
   # The '*' principal accepts any signer identity (email/name).
   allowedSignersFile =
@@ -34,6 +37,19 @@
 
     export GIT_CONFIG_GLOBAL=${gitConfig}
 
+    ${lib.optionalString hasTelegram ''
+      # shellcheck disable=SC1091
+      source ${config.age.secrets.telegram-auto-update.path}
+      telegram_send() {
+        ${pkgs.curl}/bin/curl --silent --output /dev/null \
+          --data-urlencode "chat_id=$TELEGRAM_CHAT_ID" \
+          --data-urlencode "text=$1" \
+          --data-urlencode "parse_mode=HTML" \
+          --data-urlencode "disable_web_page_preview=true" \
+          "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" || true
+      }
+    ''}
+
     echo "auto-update: fetching origin..."
     ${asUser "${pkgs.git}/bin/git -C ${gitPath} fetch origin"}
 
@@ -44,6 +60,13 @@
     if [ -n "$UNSIGNED" ]; then
       echo "auto-update: REFUSING — unsigned or untrusted commits found:" >&2
       echo "$UNSIGNED" >&2
+      ${lib.optionalString hasTelegram ''
+              COUNT=$(echo "$UNSIGNED" | wc -l | tr -d ' ')
+              telegram_send "⚠️ <b>NixOS auto-update REFUSED</b>
+      Host: ${hostname}
+      Reason: $COUNT unsigned or untrusted commit(s)
+      Time: $(date)"
+    ''}
       exit 1
     fi
 
@@ -52,6 +75,14 @@
 
     echo "auto-update: rebuilding NixOS (${hostname})..."
     ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake path:${gitPath}#${hostname}
+
+    ${lib.optionalString hasTelegram ''
+            COMMIT=$(${pkgs.git}/bin/git -C ${gitPath} log -1 --format="%h %s" HEAD)
+            telegram_send "✅ <b>NixOS auto-update</b>
+      Host: ${hostname}
+      Commit: $COMMIT
+      Time: $(date)"
+    ''}
   '';
 in {
   options.modules.services.autoUpdate = {
@@ -65,6 +96,10 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    age.secrets.telegram-auto-update = lib.mkIf hasTelegram {
+      file = telegramSecretFile;
+    };
+
     systemd.services.nixos-auto-update = {
       description = "NixOS auto-update from git (signature-verified)";
       # Do not restart or stop this service when its unit changes during a
@@ -81,6 +116,7 @@ in {
         pkgs.openssh
         pkgs.gawk
         pkgs.util-linux
+        pkgs.curl
         config.nix.package
       ];
       environment = {
