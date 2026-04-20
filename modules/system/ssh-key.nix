@@ -14,6 +14,13 @@ with lib; let
 
   userKeyName = "id_ed25519_nix";
   userKeyPath = "/home/${username}/.ssh/${userKeyName}";
+  userPubKeyPath = "/home/${username}/.ssh/${userKeyName}.pub";
+  userCertKeyPath = "/home/${username}/.ssh/${userKeyName}-cert.pub";
+
+  pubKeyFile = self + "/secrets/ssh/user/${hostname}.pub";
+  certKeyFile = self + "/secrets/ssh/user/${hostname}-cert.pub";
+  pubKeyFileExists = builtins.pathExists pubKeyFile;
+  certKeyFileExists = builtins.pathExists certKeyFile;
 in {
   options.modules.system.sshKey = {
     enable = mkEnableOption "agenix-managed SSH identity key (${userKeyPath})";
@@ -65,6 +72,14 @@ in {
 
           mkdir -p "$(dirname "$USER_KEY")"
           ln -sf "$DECRYPTED" "$USER_KEY"
+
+          ${optionalString pubKeyFileExists ''
+            ln -sf "${pubKeyFile}" "${userPubKeyPath}"
+          ''}
+
+          ${optionalString certKeyFileExists ''
+            ln -sf "${certKeyFile}" "${userCertKeyPath}"
+          ''}
         '';
       };
     })
