@@ -19,6 +19,7 @@
 
     services = {
       ssh-notify.enable = lib.mkDefault true;
+      autoUpdate.enable = lib.mkDefault true;
     };
 
     other.home-manager.enable = lib.mkDefault false;
