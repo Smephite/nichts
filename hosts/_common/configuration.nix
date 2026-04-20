@@ -49,6 +49,7 @@
     system = {
       username = lib.mkDefault "kai";
       sshKey.enable = lib.mkDefault true;
+      sshCA.enable = lib.mkDefault true;
     };
 
     programs = {
