@@ -77,7 +77,7 @@
     ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake path:${gitPath}#${hostname}
 
     ${lib.optionalString hasTelegram ''
-            COMMIT=$(${pkgs.git}/bin/git -C ${gitPath} log -1 --format="%h %s" HEAD)
+            COMMIT=$(${asUser "${pkgs.git}/bin/git -C ${gitPath} log -1 --format='%h %s' HEAD"})
             telegram_send "✅ <b>NixOS auto-update</b>
       Host: ${hostname}
       Commit: $COMMIT
