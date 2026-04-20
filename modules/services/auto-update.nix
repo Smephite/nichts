@@ -25,7 +25,7 @@
       allowedSignersFile = ${allowedSignersFile}
   '';
 
-  # Wrapper that runs a git command as the repo owner, preserving GIT_CONFIG_GLOBAL.
+  # Wrapper that runs a git command as the repo owner.
   # This avoids safe.directory issues since the repo is owned by the admin user, not root.
   asUser = cmd: "${pkgs.util-linux}/bin/runuser -u ${username} -- ${cmd}";
 
@@ -51,7 +51,7 @@
     ${asUser "${pkgs.git}/bin/git -C ${gitPath} reset --hard origin/main"}
 
     echo "auto-update: rebuilding NixOS (${hostname})..."
-    ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${gitPath}#${hostname}
+    ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake path:${gitPath}#${hostname}
   '';
 in {
   options.modules.services.autoUpdate = {
@@ -67,8 +67,25 @@ in {
   config = lib.mkIf cfg.enable {
     systemd.services.nixos-auto-update = {
       description = "NixOS auto-update from git (signature-verified)";
+      # Do not restart or stop this service when its unit changes during a
+      # nixos-rebuild switch — it must be allowed to finish the very rebuild
+      # that triggered the unit change.
+      restartIfChanged = false;
+      unitConfig.X-StopOnRemoval = false;
       after = ["network-online.target"];
       wants = ["network-online.target"];
+      # Put all required binaries on PATH so that git's internal ssh/ssh-keygen
+      # calls work without any GIT_SSH_COMMAND / gpg.ssh.program hacks.
+      path = [
+        pkgs.git
+        pkgs.openssh
+        pkgs.gawk
+        pkgs.util-linux
+        config.nix.package
+      ];
+      environment = {
+        HOME = "/root";
+      };
       serviceConfig = {
         Type = "oneshot";
         ExecStart = "${updateScript}";
