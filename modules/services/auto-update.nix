@@ -53,6 +53,15 @@
     echo "auto-update: fetching origin..."
     ${asUser "${pkgs.git}/bin/git -C ${gitPath} fetch origin"}
 
+    echo "auto-update: checking for new commits..."
+    LOCAL=$(${asUser "${pkgs.git}/bin/git -C ${gitPath} rev-parse HEAD"})
+    REMOTE=$(${asUser "${pkgs.git}/bin/git -C ${gitPath} rev-parse origin/main"})
+
+    if [ "$LOCAL" = "$REMOTE" ]; then
+      echo "auto-update: already up-to-date, skipping."
+      exit 0
+    fi
+
     echo "auto-update: verifying all commit signatures..."
     UNSIGNED=$(${asUser "${pkgs.git}/bin/git -c log.showSignature=false -C ${gitPath} log --format=\"%H %G?\" origin/main"} \
       | ${pkgs.gawk}/bin/awk '$2 != "G" { print $1 }')
