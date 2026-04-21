@@ -31,7 +31,7 @@ in {
       extra-substituters = [
         "https://zed.cachix.org"
         "https://cache.garnix.io"
-        "https://cache.app.kai.run/nixos"
+        "https://cache.kai.run/nixos"
       ];
       extra-trusted-public-keys = [
         "zed.cachix.org-1:/pHQ6dpMsAZk2DiP4WCL0p9YDNKWj2Q5FL20bNmw1cU="

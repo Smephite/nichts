@@ -19,7 +19,7 @@ in {
 
     serverUrl = lib.mkOption {
       type = lib.types.str;
-      default = "https://cache.app.kai.run";
+      default = "https://cache.kai.run";
       description = "URL of the attic server.";
     };
   };

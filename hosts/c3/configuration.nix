@@ -45,8 +45,8 @@
 
       settings = {
         listen = "[::]:11974";
-        api-endpoint = "https://cache.app.kai.run/";
-        allowed-hosts = ["cache.app.kai.run"];
+        api-endpoint = "https://cache.kai.run/";
+        allowed-hosts = ["cache.kai.run"];
         database.url = "sqlite:///var/lib/atticd/db.sqlite";
 
         storage = {
