@@ -33,24 +33,31 @@
     Group = "atticd";
   };
 
-  services.atticd = {
-    enable = true;
-    environmentFile = config.age.secrets.attic-credentials.path;
+  services = {
+    whoami = {
+      enable = true;
+      port = 8413;
+    };
 
-    settings = {
-      listen = "[::]:11974";
-      api-endpoint = "https://cache.app.kai.run/";
-      allowed-hosts = ["cache.app.kai.run"];
-      database.url = "sqlite:///var/lib/atticd/db.sqlite";
+    atticd = {
+      enable = true;
+      environmentFile = config.age.secrets.attic-credentials.path;
 
-      storage = {
-        type = "local";
-        path = "/var/lib/atticd/storage";
-      };
+      settings = {
+        listen = "[::]:11974";
+        api-endpoint = "https://cache.app.kai.run/";
+        allowed-hosts = ["cache.app.kai.run"];
+        database.url = "sqlite:///var/lib/atticd/db.sqlite";
 
-      garbage-collection = {
-        interval = "12 hours";
-        default-retention-period = "90 days";
+        storage = {
+          type = "local";
+          path = "/var/lib/atticd/storage";
+        };
+
+        garbage-collection = {
+          interval = "12 hours";
+          default-retention-period = "90 days";
+        };
       };
     };
   };
@@ -58,11 +65,17 @@
   networking.firewall.allowedTCPPorts = [11974];
 
   modules = {
+    services.caddy.enable = true;
     other.home-manager.enable = true;
+    system.network.nylon-wg = {
+      enable = true;
+      node.key = config.age.secrets.nylon_key.path;
+    };
   };
 
   networking = {
     hostName = "c3";
+    domain = "aurora.core.kai.run";
     useDHCP = lib.mkDefault true;
   };
 

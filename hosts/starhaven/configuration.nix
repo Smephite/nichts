@@ -15,6 +15,11 @@
   age.secrets.radicle_secret.file = self + "/secrets/radicle.${config.networking.hostName}.age";
 
   services = {
+    whoami = {
+      enable = true;
+      port = 8413;
+    };
+
     logrotate.checkConfig = false;
     glusterfs = {
       enable = true;
@@ -64,6 +69,11 @@
   };
 
   modules = {
+    services.caddy = {
+      enable = true;
+      httpPort = 81;
+      httpsPort = 444;
+    };
     services.docker.enable = true;
     system.network.enable = lib.mkForce false;
     system.network.nylon-wg = {

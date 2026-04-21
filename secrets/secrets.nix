@@ -8,6 +8,28 @@ let
   userKeySecrets = import ./ssh/_user_secrets.nix;
 in
   {
+    # Caddy reverse proxy secrets
+    "caddy/starhaven-caddyfile.age" = {
+      publicKeys = [keys.host-starhaven] ++ masterKeys;
+      armor = false;
+    };
+    "caddy/c3-caddyfile.age" = {
+      publicKeys = [keys.host-c3] ++ masterKeys;
+      armor = false;
+    };
+    "caddy/starhaven-services.age" = {
+      publicKeys = [keys.host-starhaven] ++ masterKeys;
+      armor = false;
+    };
+    "caddy/c3-services.age" = {
+      publicKeys = [keys.host-c3] ++ masterKeys;
+      armor = false;
+    };
+    "caddy/env.age" = {
+      publicKeys = [keys.host-starhaven keys.host-c3] ++ masterKeys;
+      armor = false;
+    };
+
     "telegram.age" = {
       publicKeys =
         [
@@ -27,12 +49,16 @@ in
     };
 
     "nylon.central.age" = {
-      publicKeys = [keys.host-starhaven] ++ masterKeys;
+      publicKeys = [keys.host-starhaven keys.host-c3] ++ masterKeys;
       armor = false;
     };
 
     "nylon.starhaven.age" = {
       publicKeys = [keys.host-starhaven] ++ masterKeys;
+      armor = false;
+    };
+    "nylon.c3.age" = {
+      publicKeys = [keys.host-c3] ++ masterKeys;
       armor = false;
     };
 

@@ -1,9 +1,8 @@
 let
   keys = import ./public_keys.nix;
+  yubikey = builtins.replaceStrings ["\n"] [""] (builtins.readFile ./yubikey.age);
 in (with keys; [
-  #  keys.heartofgold-win
-  #  keys.silverwind-win
-  user-yubikey
+  yubikey
 
   user-heartofgold-win
   user-silverwind-win
