@@ -1,6 +1,6 @@
 let
   keys = import ./public_keys.nix;
-  yubikey = builtins.replaceStrings ["\n"] [""] (builtins.readFile ./yubikey.age);
+  yubikey = builtins.replaceStrings ["\n"] [""] (builtins.readFile ./master/yubikey.age);
 in (with keys; [
   yubikey
 

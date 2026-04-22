@@ -16,10 +16,10 @@ with lib; let
   userKeyName = "id_ed25519";
   userKeyPath = "/home/${username}/.ssh/${userKeyName}";
   userPubKeyPath = "/home/${username}/.ssh/${userKeyName}.pub";
-  userCertKeyPath = "/home/${username}/.ssh/${userKeyName}-cert.pub";
+  userCertKeyPath = "/home/${username}/.ssh/${userKeyName}-cert.pub"; # SSH expects this exact filename
 
   pubKeyFile = self + "/secrets/ssh/user/${hostname}.pub";
-  certKeyFile = self + "/secrets/ssh/user/${hostname}-cert.pub";
+  certKeyFile = self + "/secrets/ssh/user/${hostname}.cert";
   pubKeyFileExists = builtins.pathExists pubKeyFile;
   certKeyFileExists = builtins.pathExists certKeyFile;
 in {
