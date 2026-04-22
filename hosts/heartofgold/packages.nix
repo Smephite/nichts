@@ -12,5 +12,6 @@
 
     claude-code
     zotero-mcp
+    optolith
   ];
 }
