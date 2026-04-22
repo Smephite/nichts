@@ -9,4 +9,5 @@
     pyzotero = pkgs.pyzotero;
     inherit withSemantic withPdf withScite;
   };
+  optolith = pkgs.callPackage ./optolith {};
 }
