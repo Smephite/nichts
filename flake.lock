@@ -322,11 +322,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1776948597,
-        "narHash": "sha256-qcjV9ZW80ugqFlJfp0/cdI9WIRMurg603Yhe3Qb8Das=",
+        "lastModified": 1776950688,
+        "narHash": "sha256-loE/Tf+o+QJVfnhJm8WF/2aHCTsO6/C4F9IctNo5kg4=",
         "ref": "refs/heads/main",
-        "rev": "0f031bfd053a0307b19293f944b44b51bb136478",
-        "revCount": 6,
+        "rev": "9f29a58f6a95df71b7ede3f5bf1c979087bea532",
+        "revCount": 1,
         "type": "git",
         "url": "ssh://git@github.com/Smephite/nichts-unfree"
       },
