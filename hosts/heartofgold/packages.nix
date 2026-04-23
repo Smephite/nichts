@@ -13,5 +13,7 @@
     claude-code
     zotero-mcp
     optolith
+    optolith-insider
+    thedarkaid
   ];
 }

@@ -1,0 +1,21 @@
+--- a/webpack.config.js
++++ b/webpack.config.js
+@@ -63,7 +63,7 @@
+     entry: {
+       renderer: './src/renderer.tsx'
+     },
+-    target: 'node',
++    target: 'electron-renderer',
+     optimization: {
+       splitChunks: {
+         chunks: "all",
+@@ -99,7 +99,8 @@
+       ]
+     },
+     resolve: {
+-      symlinks: false
++      symlinks: false,
++      aliasFields: [],
+     },
+     output: {
+       path: __dirname + '/app',

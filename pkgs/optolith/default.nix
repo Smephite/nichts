@@ -24,7 +24,14 @@ buildNpmPackage rec {
     hash = "sha256-8Xv5oGgOWCnSH01xgJLSi8wl6HIhIlvmVyCvRr4FYUg=";
   };
 
-  npmDepsHash = "sha256-uoqa1U8EgcTOA0prmwb4oPOHmaRcgLj5YCP0KeFw5xQ=";
+  npmDepsHash = lib.fakeHash;
+
+  patches = [
+    # Upgrades @electron/remote to 2.1.3 (fixes features.isDesktopCapturerEnabled
+    # crash on Electron 20+), bumps electron-updater, switches webpack renderer
+    # target to electron-renderer, and updates package-lock.json accordingly.
+    ./electron41-compat.patch
+  ];
 
   desktopItems = [
     (makeDesktopItem {
@@ -53,15 +60,10 @@ buildNpmPackage rec {
   buildPhase = ''
     runHook preBuild
 
-    # 1. Compile TypeScript (required before webpack picks up the .js output
-    #    for some re-exported modules, but ts-loader handles most of it).
-    #    Skip tsc type-check to avoid needing the full TS toolchain separately;
-    #    ts-loader with transpileOnly:true covers the actual compilation.
-
-    # 2. Compile SCSS -> app/main.css
+    # Compile SCSS -> app/main.css
     sass --style=compressed src/Main.scss app/main.css
 
-    # 3. Bundle JS with webpack (ts-loader is invoked inline)
+    # Bundle JS with webpack (ts-loader handles TypeScript inline)
     NODE_ENV=production npm run js:build
 
     runHook postBuild
