@@ -56,6 +56,7 @@
     };
     nichts-unfree = {
       url = "git+ssh://git@github.com/Smephite/nichts-unfree";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     claude-code = {
