@@ -5,6 +5,8 @@
 }: {
   environment.systemPackages = with pkgs; [
     git
+    git-lfs
+
     bash
     rsync
     wget

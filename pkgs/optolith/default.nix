@@ -2,6 +2,8 @@
   lib,
   buildNpmPackage,
   fetchFromGitHub,
+  runCommand,
+  nodejs_22,
   electron,
   makeWrapper,
   makeDesktopItem,
@@ -12,11 +14,7 @@
       url = "git@github.com:Smephite/optolith-data.git";
       rev = "6c082fb86bb6736427b4d145d607499aef9fe0e6";
     },
-}:
-buildNpmPackage rec {
-  pname = "optolith";
-  version = "1.5.2";
-
+}: let
   src = fetchFromGitHub {
     owner = "elyukai";
     repo = "optolith-client";
@@ -24,88 +22,137 @@ buildNpmPackage rec {
     hash = "sha256-8Xv5oGgOWCnSH01xgJLSi8wl6HIhIlvmVyCvRr4FYUg=";
   };
 
-  npmDepsHash = lib.fakeHash;
+  # Apply the electron41-compat patch and then strip deploy-only devDependencies
+  # that pull in native addons (ssh2-sftp-client -> cpu-features/NAN,
+  # electron-builder, electron-notarize). These are only needed by the deploy/
+  # scripts which are never run in the Nix build.
+  #
+  # We do this in a separate derivation so that the patched package-lock.json is
+  # the one that fetchNpmDeps hashes against.
+  patchedSrc =
+    runCommand "optolith-src-patched" {
+      inherit src;
+      nativeBuildInputs = [nodejs_22];
+      patches = [
+        ./electron41-compat.patch
+      ];
+    } ''
+      cp -r "$src" "$out"
+      chmod -R u+w "$out"
 
-  patches = [
-    # Upgrades @electron/remote to 2.1.3 (fixes features.isDesktopCapturerEnabled
-    # crash on Electron 20+), bumps electron-updater, switches webpack renderer
-    # target to electron-renderer, and updates package-lock.json accordingly.
-    ./electron41-compat.patch
-  ];
+      cd "$out"
 
-  desktopItems = [
-    (makeDesktopItem {
-      name = "optolith";
-      desktopName = "Optolith Insider";
-      comment = meta.description;
-      exec = "optolith %U";
-      icon = "optolith";
-      categories = ["Game"];
-      startupWMClass = "Optolith";
-    })
-  ];
+      for p in $patches; do
+        patch -p1 < "$p"
+      done
 
-  nativeBuildInputs = [makeWrapper copyDesktopItems sass];
+      node - <<'EOF'
+      const fs = require("fs");
+      const drop = ["ssh2-sftp-client", "electron-builder", "electron-notarize"];
 
-  # Skip postinstall scripts that try to download Electron or platform-native
-  # binaries — Electron is provided by nixpkgs.
-  npmFlags = ["--ignore-scripts"];
+      const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
+      drop.forEach(d => delete pkg.devDependencies[d]);
+      fs.writeFileSync("package.json", JSON.stringify(pkg, null, 2));
 
-  postPatch = ''
-    # Populate the database submodule (expected at app/Database by webpack
-    # config and the runtime loader).
-    cp -r ${optolith-data}/. app/Database/
-  '';
+      const lock = JSON.parse(fs.readFileSync("package-lock.json", "utf8"));
+      drop.forEach(d => {
+        delete lock.dependencies?.[d];
+        delete lock.packages?.["node_modules/" + d];
+      });
+      fs.writeFileSync("package-lock.json", JSON.stringify(lock, null, 2));
+      EOF
+    '';
+in
+  buildNpmPackage {
+    pname = "optolith";
+    version = "1.5.2";
 
-  buildPhase = ''
-    runHook preBuild
+    src = patchedSrc;
 
-    # Compile SCSS -> app/main.css
-    sass --style=compressed src/Main.scss app/main.css
+    # Regenerate after any change to patchedSrc / package-lock.json:
+    #   nix build .#optolith 2>&1 | grep 'got:' | awk '{print $2}'
+    npmDepsHash = "sha256-0JgSjXQ52lEFGmUcpoxQcyxFWhRzDM96Cy+maUOF+Pk=";
 
-    # Bundle JS with webpack (ts-loader handles TypeScript inline)
-    NODE_ENV=production npm run js:build
+    nodejs = nodejs_22;
 
-    runHook postBuild
-  '';
+    nativeBuildInputs = [makeWrapper copyDesktopItems sass];
 
-  installPhase = ''
-    runHook preInstall
+    npmFlags = ["--legacy-peer-deps"];
 
-    local appdir="$out/lib/optolith"
-    mkdir -p "$appdir"
+    env = {
+      # Do not download the Electron binary – we use the one from nixpkgs.
+      ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
+    };
 
-    # Webpack outputs main.js, renderer.js, and vendor chunks directly into app/
-    # The full app/ directory is the Electron app root.
-    cp -r app "$appdir/app"
+    postPatch = ''
+      # Populate the database submodule (expected at app/Database by webpack
+      # config and the runtime loader).
+      cp -r ${optolith-data}/. app/Database/
+    '';
 
-    # Runtime node_modules needed by the main/renderer processes. Only the
-    # production dependencies are required; devDependencies are build-time only.
-    # We copy the whole node_modules since several packages are lazily required
-    # at runtime and it is hard to enumerate them all.
-    cp -r node_modules "$appdir/node_modules"
+    # The upstream "build" script calls tsc first (noEmit = true) which exits
+    # non-zero due to pre-existing type mismatches in the repo. Skip tsc and
+    # invoke the two real build steps directly:
+    #   • webpack  (transpileOnly = true → no type errors)
+    #   • sass
+    npmBuildScript = null;
 
-    cp package.json "$appdir/"
-    cp CHANGELOG.md LICENSE "$appdir/" 2>/dev/null || true
+    buildPhase = ''
+      runHook preBuild
 
-    # Install icon
-    install -Dm644 app/icon.png "$out/share/icons/hicolor/256x256/apps/optolith.png"
+      npm run js:build
+      npm run css:build
 
-    # Launcher wrapper — Electron's app root is the directory containing
-    # package.json (i.e. $appdir), which also contains app/main.js.
-    mkdir -p "$out/bin"
-    makeWrapper ${electron}/bin/electron "$out/bin/optolith" \
-      --add-flags "$appdir" \
-      --add-flags "--js-flags='--stack-size=65536'"
+      runHook postBuild
+    '';
 
-    runHook postInstall
-  '';
+    installPhase = ''
+      runHook preInstall
 
-  meta = {
-    description = "Character generator for The Dark Eye (Das Schwarze Auge) 5th edition";
-    homepage = "https://optolith.app";
-    license = lib.licenses.mpl20;
-    mainProgram = "optolith";
-    platforms = lib.platforms.linux;
-  };
-}
+      # Copy the fully built app/ directory (JS bundles, CSS, assets,
+      # game data, fonts, images, icons, index.html …)
+      install -dm755 $out/lib/optolith
+      cp -r app/. $out/lib/optolith/
+
+      # Icons
+      install -Dm644 app/icon256x256.png \
+        $out/share/icons/hicolor/256x256/apps/optolith.png || true
+      install -Dm644 app/icon.png \
+        $out/share/icons/hicolor/128x128/apps/optolith.png
+
+      # Launcher wrapper – use the NixOS-managed Electron binary so that
+      # all shared libraries (glib, X11, …) are properly resolved.
+      # Force native Wayland via ozone to avoid XWayland leaving modifier
+      # keys (Shift etc.) stuck in the compositor after the app exits.
+      makeWrapper ${electron}/bin/electron \
+        $out/bin/optolith \
+        --add-flags "$out/lib/optolith/main.js" \
+        --add-flags "--no-sandbox" \
+        --add-flags "--ozone-platform=wayland" \
+        --add-flags "--enable-features=WaylandWindowDecorations"
+
+      runHook postInstall
+    '';
+
+    desktopItems = [
+      (makeDesktopItem {
+        name = "optolith";
+        desktopName = "Optolith";
+        exec = "optolith %U";
+        icon = "optolith";
+        comment = "Hero generator for The Dark Eye";
+        categories = ["Game" "RolePlaying"];
+        terminal = false;
+        type = "Application";
+        startupWMClass = "Optolith";
+      })
+    ];
+
+    meta = {
+      description = "Character generator for The Dark Eye (Das Schwarze Auge) 5th edition";
+      homepage = "https://optolith.app";
+      license = lib.licenses.mpl20;
+      mainProgram = "optolith";
+      platforms = lib.platforms.linux;
+    };
+  }

@@ -6,5 +6,7 @@
     wireguard-tools
     attic-client
     attic-server
+
+    claude-code
   ];
 }

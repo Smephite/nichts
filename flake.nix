@@ -4,9 +4,13 @@
     self,
     nixpkgs,
     ...
-  }: {
+  }: let
+    system = "x86_64-linux";
+    pkgs = nixpkgs.legacyPackages.${system};
+  in {
     inherit (nixpkgs) lib;
     nixosConfigurations = import ./hosts {inherit inputs;};
+    packages.${system} = import ./pkgs {inherit pkgs;};
   };
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -50,6 +54,10 @@
       url = "github:Reginleif88/claude-cowork-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nichts-unfree = {
+      url = "git+ssh://git@github.com/Smephite/nichts-unfree";
+    };
+
     claude-code = {
       url = "github:sadjow/claude-code-nix";
       inputs.nixpkgs.follows = "nixpkgs";
