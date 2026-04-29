@@ -28,26 +28,28 @@ in {
 
     home-manager.users.${username} = mkIf config.modules.other.home-manager.enable {
       imports = [./hm.nix];
-      modules.programs.fish = {
-        flakePath = gitPath;
-        extraAliases = mkMerge [
-          (mkIf (builtins.elem pkgs.bat config.environment.systemPackages) {cat = "bat --plain";})
-          (mkIf (builtins.elem pkgs.eza config.environment.systemPackages) {
-            ls = "eza --icons";
-            la = "eza --icons -a";
-            ll = "eza --icons -lha";
-            l = "eza --icons -lha";
-          })
-          (mkIf (builtins.elem pkgs.zellij config.environment.systemPackages) {zj = "zellij";})
-          (mkIf (builtins.elem pkgs.lazygit config.environment.systemPackages) {lg = "lazygit";})
-          (mkIf (builtins.elem pkgs.neovim config.environment.systemPackages) {nv = "nvim";})
-          (mkIf config.programs.nh.enable {
-            rebuild = "nh os switch";
-            update = "nh os switch --update";
-          })
-          cfg.extraAliases
-        ];
-      };
+      modules.programs.fish = mkMerge [
+        cfg
+        {
+          flakePath = lib.mkDefault gitPath;
+          extraAliases = mkMerge [
+            (mkIf (builtins.elem pkgs.bat config.environment.systemPackages) {cat = "bat --plain";})
+            (mkIf (builtins.elem pkgs.eza config.environment.systemPackages) {
+              ls = "eza --icons";
+              la = "eza --icons -a";
+              ll = "eza --icons -lha";
+              l = "eza --icons -lha";
+            })
+            (mkIf (builtins.elem pkgs.zellij config.environment.systemPackages) {zj = "zellij";})
+            (mkIf (builtins.elem pkgs.lazygit config.environment.systemPackages) {lg = "lazygit";})
+            (mkIf (builtins.elem pkgs.neovim config.environment.systemPackages) {nv = "nvim";})
+            (mkIf config.programs.nh.enable {
+              rebuild = "nh os switch";
+              update = "nh os switch --update";
+            })
+          ];
+        }
+      ];
     };
   };
 }

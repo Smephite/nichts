@@ -12,6 +12,7 @@ in {
   config = mkIf cfg.enable {
     home-manager.users.${username} = mkIf config.modules.other.home-manager.enable {
       imports = [./hm.nix];
+      modules.programs.atuin = cfg;
     };
   };
 }

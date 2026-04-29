@@ -19,7 +19,11 @@ in {
 
     home-manager.users.${username} = mkIf config.modules.other.home-manager.enable {
       imports = [./hm.nix];
-      modules.programs.starship.jj = config.modules.programs.jj.enable or false;
+      modules.programs.starship =
+        {
+          jj = config.modules.programs.jj.enable or false;
+        }
+        // cfg;
     };
   };
 }
