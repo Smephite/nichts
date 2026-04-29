@@ -9,6 +9,10 @@ pkgs.writeShellApplication {
     set -euo pipefail
     NIX_HOME="''${NIX_HOME:-$HOME/nix-home}"
 
+    # Disable SQLite WAL and metadata fsync during activation to avoid issues on NFS/shared filesystems
+    export NIX_CONFIG="use-sqlite-wal = false
+fsync-metadata = false"
+
     mkdir -p "$NIX_HOME"
 
     # Activate HM on first run, or when "switch" is passed

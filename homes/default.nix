@@ -16,6 +16,7 @@
     ../overlay.nix
     inputs.nix-index-database.homeModules.default
     inputs.claude-desktop.homeManagerModules.default
+    ../modules/hm.nix
   ];
 in {
   ethz = home-manager.lib.homeManagerConfiguration {

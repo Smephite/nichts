@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  self,
   ...
 }: let
   user = "msc25h18";
@@ -10,61 +11,64 @@ in {
   home.homeDirectory = "${realHome}/nix-home";
   home.stateVersion = "25.05";
 
-  # --- Shell ---
-  programs.bash = {
-    enable = true;
-    historyFile = "${realHome}/nix-home/.bash_history";
-    sessionVariables = {
-      EDITOR = "nano";
-      PAGER = "less -R";
-    };
-    shellAliases = {
-      ll = "eza -l --git";
-      la = "eza -la --git";
-      cat = "bat -p";
-    };
-    initExtra = ''
-      # Visual marker so you always know you're inside nix-home
-      export PS1='\[\e[1;35m\][nix-home]\[\e[0m\] \[\e[1;34m\]\w\[\e[0m\] \$ '
+  modules.programs = {
+    git = {
+      enable = lib.mkDefault true;
+      userName = lib.mkDefault "Kai Berszin";
+      userEmail = lib.mkDefault "kberszin@ethz.ch";
+      defaultBranch = lib.mkDefault "main";
+      pullRebase = lib.mkDefault true;
 
-      # Make sure HM session vars are loaded
-      [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ] && \
-        . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
-    '';
+      signing = {
+        key = lib.mkDefault "~/.ssh/id_ed25519.pub";
+        signByDefault = lib.mkDefault true;
+        allowedKeys = let
+          keys = import "${self}/secrets/ssh/user_keys.nix";
+          masterKeys = import "${self}/secrets/ssh/master_keys.nix";
+        in
+          keys ++ masterKeys;
+      };
+    };
+    fish.enable = lib.mkDefault true;
+    starship.enable = lib.mkDefault true;
+    atuin.enable = lib.mkDefault true;
+
+    #zed.enable = lib.mkDefault true;
+
+    firefox = {
+      enable = lib.mkDefault true;
+      extensions = {
+        "uBlock0@raymondhill.net" = {
+          source = "ublock-origin"; # Ublock Origin
+          private_browsing = true;
+        };
+        "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
+          source = "bitwarden-password-manager"; # Bitwarden
+          private_browsing = true;
+        };
+        "87677a2c52b84ad3a151a4a72f5bd3c4@jetpack" = "grammarly-1"; # Grammarly
+        "zotero@chnm.gmu.edu" = "https://download.zotero.org/connector/firefox/release/Zotero_Connector-5.0.186.xpi"; # Zotero
+      };
+    };
   };
+
+  modules.system.sshKey = {
+    enable = true;
+    hostname = "ethz";
+  };
+
+
+  age.identityPaths = [ "${realHome}/.ssh/host_key" ];
+
+  # --- Shell
 
   # --- Tools ---
-  programs.zoxide.enable = true;
-  programs.fzf.enable = true;
-  programs.bat.enable = true;
-  programs.eza.enable = true;
-  programs.tmux = {
-    enable = true;
-    keyMode = "vi";
-    terminal = "tmux-256color";
+  nix.package = pkgs.nix;
+  nix.settings = {
+    use-sqlite-wal = false;
+    fsync-metadata = false;
   };
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
-  programs.git = {
-    enable = true;
-    settings = {
-      user = {
-        name = "Kai Berszin";
-        email = "kberszin@ethz.ch";
-      };
-      init.defaultBranch = "main";
-    };
-  };
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-    withRuby = false;
-    withPython3 = false;
-  };
+
 
   home.packages = with pkgs; [
     nix
