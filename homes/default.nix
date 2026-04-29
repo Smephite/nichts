@@ -3,6 +3,7 @@
   inherit (self) lib;
   system = "x86_64-linux";
   pkgs-unstable = inputs.nixpkgs-unstable.legacyPackages.${system};
+  pkgs = inputs.nixpkgs.legacyPackages.${system};
   specialArgs = {
     inherit
       pkgs-unstable
@@ -22,7 +23,7 @@
   ];
 in {
   ethz = home-manager.lib.homeManagerConfiguration {
-    inherit specialArgs;
+    inherit pkgs specialArgs;
     modules =
       baseModules
       ++ [
