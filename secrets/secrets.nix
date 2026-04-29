@@ -91,6 +91,10 @@ in
       publicKeys = masterKeys;
       armor = false;
     };
+    "gitlab-ssh.age" = {
+      publicKeys = masterKeys;
+      armor = false;
+    };
 
     "attic.c3.age" = {
       publicKeys = [keys.host-c3] ++ masterKeys;

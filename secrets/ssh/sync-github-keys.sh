@@ -6,6 +6,7 @@ PREFIX="managed-"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 KEY_DIR="${1:-"$SCRIPT_DIR/user"}"
+KEY_DIRS=("$KEY_DIR" "$SCRIPT_DIR/master")
 
 if [[ -z "${GITHUB_TOKEN:-}" ]]; then
   AGE_FILE="$SCRIPT_DIR/../github-ssh.age"
@@ -87,9 +88,17 @@ key_material() {
 declare -A local_keys=()
 declare -A local_key_full=()
 
-pub_files=("$KEY_DIR"/*.pub)
-if [[ "${pub_files[0]}" == "$KEY_DIR/*.pub" ]]; then
-  echo "No .pub files found in $KEY_DIR"
+pub_files=()
+for dir in "${KEY_DIRS[@]}"; do
+  if [[ -d "$dir" ]]; then
+    for f in "$dir"/*.pub; do
+      [[ -e "$f" ]] && pub_files+=("$f")
+    done
+  fi
+done
+
+if [[ "${#pub_files[@]}" -eq 0 ]]; then
+  echo "No .pub files found in: ${KEY_DIRS[*]}"
   exit 0
 fi
 
