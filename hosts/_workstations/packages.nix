@@ -66,6 +66,7 @@ in {
     radicle-desktop
     radicle-tui
     nil
+    zed-editor
 
     gh
 

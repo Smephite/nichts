@@ -62,7 +62,7 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [11974];
+  networking.firewall.allowedTCPPorts = [11974 5173];
 
   modules = {
     services.caddy.enable = true;
