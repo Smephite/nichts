@@ -10,6 +10,7 @@
   in {
     inherit (nixpkgs) lib;
     nixosConfigurations = import ./hosts {inherit inputs;};
+    homeConfigurations = import ./home {inherit inputs;};
     packages.${system} = import ./pkgs {inherit pkgs;};
   };
   inputs = {
