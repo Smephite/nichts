@@ -49,18 +49,25 @@ in {
   };
   programs.git = {
     enable = true;
-    userName = "Kai";
-    userEmail = "..."; # fill in
-    extraConfig.init.defaultBranch = "main";
+    settings = {
+      user = {
+        name = "Kai Berszin";
+        email = "kberszin@ethz.ch";
+      };
+      init.defaultBranch = "main";
+    };
   };
   programs.neovim = {
     enable = true;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+    withRuby = false;
+    withPython3 = false;
   };
 
   home.packages = with pkgs; [
+    nix
     ripgrep
     fd
     jq

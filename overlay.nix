@@ -9,7 +9,10 @@
     zed-editor = inputs.zed.packages.${prev.stdenv.hostPlatform.system}.default;
   };
   add_claude_code = inputs.claude-code.overlays.default;
-  add_local_pkgs = final: prev: import ./pkgs {pkgs = final;};
+  add_local_pkgs = final: prev: import ./pkgs {
+    pkgs = final;
+    self = inputs.self;
+  };
 in {
   nixpkgs.overlays = [
     add_nylon_pr

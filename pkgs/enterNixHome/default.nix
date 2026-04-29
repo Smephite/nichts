@@ -4,7 +4,7 @@
 }:
 pkgs.writeShellApplication {
   name = "enter-nix-home";
-  runtimeInputs = with pkgs; [coreutils];
+  runtimeInputs = with pkgs; [coreutils nix];
   text = ''
     set -euo pipefail
     NIX_HOME="''${NIX_HOME:-$HOME/nix-home}"
@@ -23,6 +23,7 @@ pkgs.writeShellApplication {
       USER="''${USER:-$(id -un)}" \
       TERM="''${TERM:-xterm-256color}" \
       LANG="''${LANG:-C.UTF-8}" \
+      PATH="$NIX_HOME/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin" \
       SSH_AUTH_SOCK="''${SSH_AUTH_SOCK:-}" \
       SSH_CONNECTION="''${SSH_CONNECTION:-}" \
       "$NIX_HOME/.nix-profile/bin/bash" --login

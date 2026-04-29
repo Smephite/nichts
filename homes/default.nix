@@ -7,19 +7,15 @@
   specialArgs = {
     inherit
       pkgs-unstable
-      lib
       inputs
       self
       ;
   };
   baseModules = [
-    inputs.home-manager.nixosModules.home-manager
-    inputs.agenix.nixosModules.default
-    ../modules
+    inputs.agenix.homeManagerModules.default
     ../overlay.nix
-    inputs.nix-index-database.nixosModules.default
-    inputs.claude-desktop.nixosModules.default
-    "${inputs.nixpkgs-nylon-wg}/nixos/modules/services/networking/nylon-wg.nix"
+    inputs.nix-index-database.homeModules.default
+    inputs.claude-desktop.homeManagerModules.default
   ];
 in {
   ethz = home-manager.lib.homeManagerConfiguration {
