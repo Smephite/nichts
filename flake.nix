@@ -10,8 +10,8 @@
   in {
     inherit (nixpkgs) lib;
     nixosConfigurations = import ./hosts {inherit inputs;};
-    homeConfigurations = import ./home {inherit inputs;};
-    packages.${system} = import ./pkgs {inherit pkgs;};
+    homeConfigurations = import ./homes {inherit inputs;};
+    packages.${system} = import ./pkgs {inherit pkgs self;};
   };
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -25,7 +25,7 @@
 
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "home-manager";
     };
 
     agenix = {
