@@ -1,5 +1,6 @@
 {
   pkgs,
+  self,
   withSemantic ? true,
   withPdf ? true,
   withScite ? true,
@@ -8,5 +9,8 @@
   zotero-mcp = pkgs.python3Packages.callPackage ./zotero-mcp {
     pyzotero = pkgs.pyzotero;
     inherit withSemantic withPdf withScite;
+  };
+  enterNixHome = pkgs.callPackage ./enter-nix-home {
+    hmActivation = self.homeConfigurations.ethz.activationPackage;
   };
 }
