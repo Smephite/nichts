@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   self,
   ...
 }:
@@ -21,6 +22,8 @@ with lib; let
   certKeyFile = self + "/secrets/ssh/user/${hostname}.cert";
   pubKeyFileExists = builtins.pathExists pubKeyFile;
   certKeyFileExists = builtins.pathExists certKeyFile;
+
+
 in {
   options.modules.system.sshKey = {
     enable = mkEnableOption "agenix-managed SSH identity key (${userKeyPath})";
@@ -47,7 +50,7 @@ in {
       warnings =
         optional (!ageFileExists)
         "modules.system.sshKey: ${ageFile} does not exist; SSH key will not be managed by agenix on this host"
-        ++ optional (cfg.identityPaths == [])
+        ++ optional (config.age.identityPaths == [])
         "modules.system.sshKey: identityPaths is empty; set it to an identity that can decrypt ${ageFile}";
     }
 

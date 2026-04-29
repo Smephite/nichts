@@ -2,6 +2,7 @@
   pkgs,
   lib,
   self,
+  config,
   ...
 }: let
   user = "msc25h18";
@@ -58,7 +59,24 @@ in {
   };
 
 
-  age.identityPaths = [ "${realHome}/.ssh/host_key" ];
+  age = {
+    # The directory where agenix stores decrypted secrets
+    secretsDir = "${config.home.homeDirectory}/.local/share/agenix/agenix";
+
+    # The directory where agenix creates symlinks to those secrets
+    secretsMountPoint = "${config.home.homeDirectory}/.local/share/agenix/agenix.d";
+
+    # The paths to the age identity files
+    identityPaths = [ "${realHome}/.ssh/host_key" ];
+  };
+
+  # Disable the built-in service if you are using the standard agenix module
+
+  systemd.user.startServices = false;
+
+  home.activation.agenixManual = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    ${builtins.head config.systemd.user.services.agenix.Service.ExecStart}
+      '';
 
   # --- Shell
 

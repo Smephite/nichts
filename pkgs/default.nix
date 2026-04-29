@@ -10,7 +10,7 @@
     pyzotero = pkgs.pyzotero;
     inherit withSemantic withPdf withScite;
   };
-  #enterNixHome = pkgs.callPackage ./enterNixHome {
-  #  hmActivation = self.homeConfigurations.ethz.activationPackage;
-  #};
+  enterNixHome = pkgs.callPackage ./enterNixHome {
+    hmActivation = self.homeConfigurations.ethz.activationPackage;
+  };
 }

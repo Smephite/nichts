@@ -4,14 +4,15 @@
 }:
 pkgs.writeShellApplication {
   name = "enter-nix-home";
-  runtimeInputs = with pkgs; [coreutils nix];
+  runtimeInputs = with pkgs; [coreutils nix bash];
   text = ''
     set -euo pipefail
     NIX_HOME="''${NIX_HOME:-$HOME/nix-home}"
 
-    # Disable SQLite WAL and metadata fsync during activation to avoid issues on NFS/shared filesystems
+    # Disable SQLite WAL, metadata fsync, and syscall filtering for proot/NFS compatibility
     export NIX_CONFIG="use-sqlite-wal = false
-fsync-metadata = false"
+fsync-metadata = false
+filter-syscalls = false"
 
     mkdir -p "$NIX_HOME"
 
@@ -22,6 +23,12 @@ fsync-metadata = false"
     fi
 
     # Drop into a clean login shell rooted at nix-home
+    # Prefer bash from the nix-home profile if it exists, otherwise use the one from runtimeInputs
+    SHELL_BIN="$NIX_HOME/.nix-profile/bin/bash"
+    if [[ ! -x "$SHELL_BIN" ]]; then
+      SHELL_BIN="bash"
+    fi
+
     exec env -i \
       HOME="$NIX_HOME" \
       USER="''${USER:-$(id -un)}" \
@@ -30,6 +37,6 @@ fsync-metadata = false"
       PATH="$NIX_HOME/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin" \
       SSH_AUTH_SOCK="''${SSH_AUTH_SOCK:-}" \
       SSH_CONNECTION="''${SSH_CONNECTION:-}" \
-      "$NIX_HOME/.nix-profile/bin/bash" --login
+      "$SHELL_BIN" --login
   '';
 }
