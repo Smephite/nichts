@@ -23,9 +23,12 @@ filter-syscalls = false"
     fi
 
     # Drop into a clean login shell rooted at nix-home
-    # Prefer bash from the nix-home profile if it exists, otherwise use the one from runtimeInputs
-    SHELL_BIN="$NIX_HOME/.nix-profile/bin/bash"
-    if [[ ! -x "$SHELL_BIN" ]]; then
+    # Try fish from the profile first, then bash from the profile, then fallback to runtime bash
+    if [[ -x "$NIX_HOME/.nix-profile/bin/fish" ]]; then
+      SHELL_BIN="$NIX_HOME/.nix-profile/bin/fish"
+    elif [[ -x "$NIX_HOME/.nix-profile/bin/bash" ]]; then
+      SHELL_BIN="$NIX_HOME/.nix-profile/bin/bash"
+    else
       SHELL_BIN="bash"
     fi
 
@@ -38,5 +41,6 @@ filter-syscalls = false"
       SSH_AUTH_SOCK="''${SSH_AUTH_SOCK:-}" \
       SSH_CONNECTION="''${SSH_CONNECTION:-}" \
       "$SHELL_BIN" --login
+
   '';
 }
