@@ -23,7 +23,8 @@
   ];
 in {
   ethz = home-manager.lib.homeManagerConfiguration {
-    inherit pkgs specialArgs;
+    inherit pkgs;
+    extraSpecialArgs = specialArgs;
     modules =
       baseModules
       ++ [
