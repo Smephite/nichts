@@ -1,26 +1,36 @@
 {
-  inputs,
   lib,
   pkgs,
   self,
   config,
   ...
 }: let
-  username = config.modules.system.username;
+  username =
+    if config ? modules.system.username
+    then config.modules.system.username
+    else if config ? home.username
+    then config.home.username
+    else null;
 in {
   # partly taken from github.com/bloxx12/nichts
 
-  age.secrets.github-ro-token = {
-    file = "${self}/secrets/github-ro.age";
-    owner = username;
-    mode = "0400";
-  };
+  age.secrets.github-ro-token =
+    {
+      file = "${self}/secrets/github-ro.age";
+    }
+    // lib.optionalAttrs (config ? users) {
+      owner = username;
+      mode = "0400";
+    };
 
-  age.secrets.attic-pull-token = {
-    file = "${self}/secrets/attic-pull.age";
-    owner = username;
-    mode = "0400";
-  };
+  age.secrets.attic-pull-token =
+    {
+      file = "${self}/secrets/attic-pull.age";
+    }
+    // lib.optionalAttrs (config ? users) {
+      owner = username;
+      mode = "0400";
+    };
 
   nix = {
     extraOptions = ''
@@ -42,10 +52,9 @@ in {
         "flakes" # flakes
         "nix-command" # experimental nix commands
       ];
-      trusted-users = [
-        "root"
-        username
-      ];
+      trusted-users =
+        lib.optional (config ? users) "root"
+        ++ lib.optional (username != null) username;
       warn-dirty = false;
     };
   };

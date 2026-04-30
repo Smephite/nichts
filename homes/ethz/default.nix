@@ -8,9 +8,17 @@
   user = "msc25h18";
   realHome = "/home/${user}";
 in {
+
+  imports = [
+    ./packages.nix
+    ../../modules/system/nix.nix
+  ];
+
   home.username = user;
   home.homeDirectory = "${realHome}/nix-home";
   home.stateVersion = "25.05";
+
+  programs.nix-index-database.comma.enable = true;
 
   modules.programs = {
     git = {
@@ -60,49 +68,23 @@ in {
 
 
   age = {
-    # The directory where agenix stores decrypted secrets
     secretsDir = "${config.home.homeDirectory}/.local/share/agenix/agenix";
-
-    # The directory where agenix creates symlinks to those secrets
     secretsMountPoint = "${config.home.homeDirectory}/.local/share/agenix/agenix.d";
-
-    # The paths to the age identity files
     identityPaths = [ "${realHome}/.ssh/host_key" ];
   };
 
-  # Disable the built-in service if you are using the standard agenix module
-
+  # We need to manually execute the agenix service
   systemd.user.startServices = false;
-
   home.activation.agenixManual = lib.hm.dag.entryAfter ["writeBoundary"] ''
     ${builtins.head config.systemd.user.services.agenix.Service.ExecStart}
       '';
 
-  # --- Shell
 
-  # --- Tools ---
   nix.package = pkgs.nix;
   nix.settings = {
     use-sqlite-wal = false;
     fsync-metadata = false;
   };
-
-
-  home.packages = with pkgs; [
-    nix
-    ripgrep
-    fd
-    jq
-    yq-go
-    htop
-    btop
-    file
-    tree
-    git-lfs
-    gnumake
-    curl
-    wget
-  ];
 
   # XDG inside nix-home, isolated from host
   xdg.enable = true;
