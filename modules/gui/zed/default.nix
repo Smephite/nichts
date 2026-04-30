@@ -15,7 +15,7 @@ in {
 
     home-manager.users.${username} = mkIf config.modules.other.home-manager.enable {
       imports = [./hm.nix];
-      modules.programs.zed.withPackage = false;
+      modules.programs.zed = cfg // {withPackage = false;};
     };
   };
 }
