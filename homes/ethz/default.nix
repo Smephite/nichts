@@ -18,6 +18,10 @@ in {
   home.homeDirectory = "${realHome}/nix-home";
   home.stateVersion = "25.05";
 
+  home.sessionVariables = {
+    EDITOR = "nano";
+  };
+
   programs.nix-index-database.comma.enable = true;
 
   modules.programs = {
@@ -41,6 +45,10 @@ in {
     fish.enable = lib.mkDefault true;
     starship.enable = lib.mkDefault true;
     atuin.enable = lib.mkDefault true;
+    nh = {
+      enable = lib.mkDefault true;
+      flakePath = lib.mkDefault "${config.home.homeDirectory}/repos/nichts";
+    };
 
     #zed.enable = lib.mkDefault true;
 
@@ -84,6 +92,9 @@ in {
   nix.settings = {
     use-sqlite-wal = false;
     fsync-metadata = false;
+    sandbox = false;
+#    max-jobs = lib.mkDefault 8;
+#    cores = lib.mkDefault 0;
   };
 
   # XDG inside nix-home, isolated from host
