@@ -35,7 +35,6 @@ python-packages = ps:
     nixd
     alejandra
     gnumake
-    python3
     (python3.withPackages python-packages)
     nodejs
     gcc
