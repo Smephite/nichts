@@ -71,7 +71,14 @@
         };
       };
 
-      nh.enable = lib.mkDefault true;
+      nh = {
+        enable = lib.mkDefault true;
+        trustedSigningKeys = let keys = import "${self}/secrets/ssh/public_keys.nix"; in
+          [
+            keys."user-heartofgold"
+            keys."user-silverwind"
+          ];
+      };
     };
   };
 }
