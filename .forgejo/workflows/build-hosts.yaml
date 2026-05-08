@@ -28,6 +28,10 @@ jobs:
             "http://c3.wol.int.kai.run:31415/Smephite/nichts-unfree/info/refs?service=git-upload-pack")
           echo "git-HTTP status: $code"
           [ "$code" = "200" ]
+          echo "--- git ls-remote ---"
+          GIT_TRACE=1 GIT_CURL_VERBOSE=1 \
+            git ls-remote "http://oauth2:$GIT_TOKEN@c3.wol.int.kai.run:31415/Smephite/nichts-unfree" 2>&1 \
+            | sed "s/$GIT_TOKEN/***/g" | head -80
 
       - name: Build ${{ matrix.host }}
         env:
