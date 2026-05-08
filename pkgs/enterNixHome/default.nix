@@ -43,6 +43,7 @@ extra-trusted-public-keys = nixos:m1C4Znb4JdZre2SJyregJz/kDU3ELalD8qEJc/dP0KE= z
       PATH="$NIX_HOME/.nix-profile/bin:/usr/local/bin:/usr/bin:/bin" \
       SSH_AUTH_SOCK="''${SSH_AUTH_SOCK:-}" \
       SSH_CONNECTION="''${SSH_CONNECTION:-}" \
+      NIX_CONFIG="$NIX_CONFIG" \
       "$SHELL_BIN" --login
 
   '';
