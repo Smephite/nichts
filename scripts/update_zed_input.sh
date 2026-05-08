@@ -1,8 +1,9 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash -p curl jq nix git
 
-# Update the `zed` flake input in flake.nix to the latest Zed commit with a
-# successful release_nightly workflow run, then refresh flake.lock.
+# Update the `zed` flake input in flake.lock to the latest Zed commit
+# with a successful release_nightly workflow run. flake.nix is left
+# untouched; the pin lives in flake.lock via --override-input.
 
 set -euo pipefail
 
@@ -11,10 +12,10 @@ WORKFLOW_FILE="release_nightly.yml"
 TOKEN_FILE="/run/agenix/github-ro-token"
 
 REPO_ROOT=$(git -C "$(dirname "$0")" rev-parse --show-toplevel)
-FLAKE_NIX="$REPO_ROOT/flake.nix"
+FLAKE_LOCK="$REPO_ROOT/flake.lock"
 
-if [[ ! -f "$FLAKE_NIX" ]]; then
-    echo "flake.nix not found at $FLAKE_NIX"
+if [[ ! -f "$FLAKE_LOCK" ]]; then
+    echo "flake.lock not found at $FLAKE_LOCK"
     exit 1
 fi
 
@@ -49,23 +50,19 @@ fi
 
 echo "Latest successful zed nightly commit: $SHA"
 
-# Idempotent skip when flake.nix already pins this exact commit.
-if grep -qE "zed\.url *= *\"github:zed-industries/zed/$SHA\"" "$FLAKE_NIX"; then
-    echo "flake.nix already pins zed to $SHA; nothing to do."
+CURRENT_SHA=$(jq -r '.nodes.zed.locked.rev // empty' "$FLAKE_LOCK")
+if [[ "$CURRENT_SHA" == "$SHA" ]]; then
+    echo "flake.lock already pins zed to $SHA; nothing to do."
     exit 0
 fi
 
-# Rewrite zed.url, whether it currently has a rev suffix or not.
-sed -i -E "s|(zed\.url *= *\"github:zed-industries/zed)(/[A-Za-z0-9._-]+)?\";|\1/$SHA\";|" "$FLAKE_NIX"
+echo "Updating flake.lock zed input to $SHA..."
+( cd "$REPO_ROOT" && nix flake update zed --override-input zed "github:zed-industries/zed/$SHA" )
 
-if ! grep -qE "zed\.url *= *\"github:zed-industries/zed/$SHA\"" "$FLAKE_NIX"; then
-    echo "Error: failed to rewrite zed.url in $FLAKE_NIX"
+NEW_SHA=$(jq -r '.nodes.zed.locked.rev // empty' "$FLAKE_LOCK")
+if [[ "$NEW_SHA" != "$SHA" ]]; then
+    echo "Error: flake.lock zed rev is '$NEW_SHA', expected '$SHA'"
     exit 3
 fi
-
-echo "Updated $FLAKE_NIX zed input to $SHA"
-
-echo "Refreshing flake.lock for the zed input..."
-( cd "$REPO_ROOT" && nix flake update zed )
 
 echo "Done."
