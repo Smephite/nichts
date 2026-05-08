@@ -72,7 +72,7 @@
       openFirewall = true;
       requireSignin = true;
       defaultPrivate = true;
-      minRsaSize = 2048;
+      minRsaSize = 2047;
     };
     other.home-manager.enable = true;
     system.network.nylon-wg = {

@@ -68,7 +68,7 @@ in {
             then "private"
             else "public";
         };
-        "ssh.minimum_key_size_check" = {
+        "ssh.minimum_key_sizes" = {
           RSA = cfg.minRsaSize;
         };
       };
