@@ -9,11 +9,16 @@ KEY_DIR="${1:-"$SCRIPT_DIR/user"}"
 KEY_DIRS=("$KEY_DIR" "$SCRIPT_DIR/master")
 
 # Read Forgejo/Gitea tokens from agenix file (format: <host>:<token> per line)
+# <host> can include a port (e.g. host:31415) or protocol (e.g. http://host)
 FORGEJO_TOKEN_FILE="$SCRIPT_DIR/../forgejo-ssh.age"
 declare -A FORGEJO_TOKENS=()
 
 if [[ -f "$FORGEJO_TOKEN_FILE" ]] && command -v age &>/dev/null; then
-  while IFS=: read -r host token; do
+  while IFS=: read -r -a parts; do
+    [[ "${#parts[@]}" -lt 2 ]] && continue
+    token="${parts[-1]}"
+    # Everything before the last colon is the host/base_url
+    host=$(IFS=:; echo "${parts[*]:0:${#parts[@]}-1}")
     [[ -z "$host" || -z "$token" ]] && continue
     FORGEJO_TOKENS["$host"]="$token"
   done < <(age -d -i ~/.ssh/id_ed25519 "$FORGEJO_TOKEN_FILE")
@@ -41,20 +46,26 @@ if [[ ! -d "$KEY_DIR" ]]; then
 fi
 
 # Forgejo API helpers
-# Usage: fj_get <host> <endpoint>
+# Usage: fj_get <host_or_url> <endpoint>
 fj_get() {
-  local host="$1"
+  local target="$1"
   local endpoint="$2"
-  local token="${FORGEJO_TOKENS[$host]:-}"
+  local token="${FORGEJO_TOKENS[$target]:-}"
 
   if [[ -z "$token" ]]; then
-    echo "  Error: No token found for host $host" >&2
+    echo "  Error: No token found for $target" >&2
     return 1
   fi
 
+  local base_url="$target"
+  if [[ ! "$base_url" =~ ^https?:// ]]; then
+    base_url="https://$base_url"
+  fi
+  base_url="${base_url%/}"
+
   # For specific items (containing an ID), don't paginate
   if [[ "$endpoint" =~ /[0-9]+$ ]]; then
-    curl -sf -H "Authorization: token $token" -H "Accept: application/json" "https://$host/api/v1$endpoint"
+    curl -sf -H "Authorization: token $token" -H "Accept: application/json" "$base_url/api/v1$endpoint"
     return
   fi
 
@@ -63,7 +74,7 @@ fj_get() {
   while true; do
     local response
     # Try with Forgejo-specific header as well
-    response=$(curl -sf -H "Authorization: token $token" -H "Accept: application/vnd.forgejo.v1+json, application/json" "https://$host/api/v1$endpoint?limit=50&page=$page")
+    response=$(curl -sf -H "Authorization: token $token" -H "Accept: application/vnd.forgejo.v1+json, application/json" "$base_url/api/v1$endpoint?limit=50&page=$page")
 
     if [[ -z "$response" || "$response" == "null" ]]; then
       break
@@ -83,12 +94,19 @@ fj_get() {
 }
 
 fj_post() {
-  local host="$1"
+  local target="$1"
   local endpoint="$2"
   local data="$3"
-  local token="${FORGEJO_TOKENS[$host]}"
+  local token="${FORGEJO_TOKENS[$target]:-}"
+
+  local base_url="$target"
+  if [[ ! "$base_url" =~ ^https?:// ]]; then
+    base_url="https://$base_url"
+  fi
+  base_url="${base_url%/}"
+
   local response http_code
-  response=$(curl -s -w "\n%{http_code}" -X POST -H "Authorization: token $token" -H "Accept: application/vnd.forgejo.v1+json, application/json" -H "Content-Type: application/json" -d "$data" "https://$host/api/v1$endpoint")
+  response=$(curl -s -w "\n%{http_code}" -X POST -H "Authorization: token $token" -H "Accept: application/vnd.forgejo.v1+json, application/json" -H "Content-Type: application/json" -d "$data" "$base_url/api/v1$endpoint")
   http_code=$(echo "$response" | tail -1)
   response=$(echo "$response" | sed '$d')
 
@@ -107,10 +125,17 @@ fj_post() {
 
 
 fj_delete() {
-  local host="$1"
+  local target="$1"
   local endpoint="$2"
-  local token="${FORGEJO_TOKENS[$host]}"
-  curl -sf -X DELETE -H "Authorization: token $token" "https://$host/api/v1$endpoint"
+  local token="${FORGEJO_TOKENS[$target]:-}"
+
+  local base_url="$target"
+  if [[ ! "$base_url" =~ ^https?:// ]]; then
+    base_url="https://$base_url"
+  fi
+  base_url="${base_url%/}"
+
+  curl -sf -X DELETE -H "Authorization: token $token" "$base_url/api/v1$endpoint"
 }
 
 # Extract key material (type + base64) from a full public key line, stripping comments
@@ -153,8 +178,15 @@ echo
 for host in "${!FORGEJO_TOKENS[@]}"; do
   echo "Processing Forgejo instance: $host"
 
+  token="${FORGEJO_TOKENS[$host]}"
+  base_url="$host"
+  if [[ ! "$base_url" =~ ^https?:// ]]; then
+    base_url="https://$base_url"
+  fi
+  base_url="${base_url%/}"
+
   # Version check
-  version_info=$(curl -sf -H "Authorization: token ${FORGEJO_TOKENS[$host]}" "https://$host/api/v1/version" || echo '{"version": "unknown"}')
+  version_info=$(curl -sf -H "Authorization: token $token" "$base_url/api/v1/version" || echo '{"version": "unknown"}')
   echo "  Forgejo Version: $(echo "$version_info" | jq -r '.version // "unknown"')"
 
   # Verify token and identity
