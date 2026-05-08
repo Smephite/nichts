@@ -44,34 +44,65 @@ in {
       default = 2048;
       description = "Minimum RSA key size allowed";
     };
+    database = {
+      type = mkOption {
+        type = types.enum ["sqlite3" "mysql" "postgres"];
+        default = "sqlite3";
+        description = "Database engine to use.";
+      };
+      createDatabase = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to create a local database automatically.";
+      };
+    };
+    lfs = {
+      enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Git LFS support.";
+      };
+    };
+    settings = mkOption {
+      type = (pkgs.formats.ini {}).type;
+      default = {};
+      description = "Extra settings for Forgejo (app.ini)";
+    };
   };
 
   config = mkIf cfg.enable {
     services.forgejo = {
       enable = true;
-      settings = {
-        server = {
-          HTTP_PORT = cfg.port;
-          DOMAIN = config.networking.hostName;
-          ROOT_URL =
-            if cfg.rootUrl != null
-            then cfg.rootUrl
-            else "http://${config.networking.hostName}:${toString cfg.port}/";
-        };
-        service = {
-          DISABLE_REGISTRATION = !cfg.allowSignups;
-          REQUIRE_SIGNIN_VIEW = cfg.requireSignin;
-        };
-        repository = {
-          DEFAULT_PRIVATE =
-            if cfg.defaultPrivate
-            then "private"
-            else "public";
-        };
-        "ssh.minimum_key_sizes" = {
-          RSA = cfg.minRsaSize;
-        };
-      };
+
+      database.type = cfg.database.type;
+      database.createDatabase = cfg.database.createDatabase;
+      lfs.enable = cfg.lfs.enable;
+
+      settings =
+        recursiveUpdate {
+          server = {
+            HTTP_PORT = cfg.port;
+            DOMAIN = config.networking.hostName;
+            ROOT_URL =
+              if cfg.rootUrl != null
+              then cfg.rootUrl
+              else "http://${config.networking.hostName}:${toString cfg.port}/";
+          };
+          service = {
+            DISABLE_REGISTRATION = !cfg.allowSignups;
+            REQUIRE_SIGNIN_VIEW = cfg.requireSignin;
+          };
+          repository = {
+            DEFAULT_PRIVATE =
+              if cfg.defaultPrivate
+              then "private"
+              else "public";
+          };
+          "ssh.minimum_key_sizes" = {
+            RSA = cfg.minRsaSize;
+          };
+        }
+        cfg.settings;
     };
 
     networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [cfg.port];

@@ -99,6 +99,10 @@ in
       publicKeys = masterKeys;
       armor = false;
     };
+    "c3-forgejo-runner-token.age" = {
+      publicKeys = [keys.host-c3] ++ masterKeys;
+      armor = false;
+    };
 
     "attic.c3.age" = {
       publicKeys = [keys.host-c3] ++ masterKeys;

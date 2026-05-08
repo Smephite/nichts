@@ -27,6 +27,28 @@
     mode = "0400";
   };
 
+  age.secrets.forgejo-runner-token = {
+    file = self + "/secrets/c3-forgejo-runner-token.age";
+  };
+
+  virtualisation.docker.enable = true;
+
+  services.gitea-actions-runner = {
+    package = pkgs.forgejo-runner;
+    instances.c3 = {
+      enable = true;
+      name = "c3.wol.int.kai.run";
+      url = "http://c3.wol.int.kai.run:31415/";
+      tokenFile = config.age.secrets.forgejo-runner-token.path;
+      labels = [
+        "native:host"
+        "debian-latest:docker://node:20-bookworm"
+        "ubuntu-latest:docker://node:20-bookworm"
+        "nixos-latest:docker://nixos/nix"
+      ];
+    };
+  };
+
   systemd.services.atticd.serviceConfig = {
     DynamicUser = lib.mkForce false;
     User = "atticd";
@@ -73,6 +95,7 @@
       requireSignin = true;
       defaultPrivate = true;
       minRsaSize = 2047;
+      lfs.enable = true;
     };
     other.home-manager.enable = true;
     system.network.nylon-wg = {
