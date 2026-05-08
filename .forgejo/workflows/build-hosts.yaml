@@ -25,7 +25,7 @@ jobs:
           echo "Token length: ${#GIT_TOKEN}"
           code=$(curl -s -o /dev/null -w "%{http_code}" \
             -u "oauth2:$GIT_TOKEN" \
-            "http://c3.wol.int.kai.run:31415/smephite/nichts-unfree/info/refs?service=git-upload-pack")
+            "http://c3.wol.int.kai.run:31415/Smephite/nichts-unfree/info/refs?service=git-upload-pack")
           echo "git-HTTP status: $code"
           [ "$code" = "200" ]
 
@@ -34,7 +34,7 @@ jobs:
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
         run: |
           nix build --print-build-logs --no-link --print-out-paths \
-            --override-input nichts-unfree "git+http://oauth2:$GIT_TOKEN@c3.wol.int.kai.run:31415/smephite/nichts-unfree" \
+            --override-input nichts-unfree "git+http://oauth2:$GIT_TOKEN@c3.wol.int.kai.run:31415/Smephite/nichts-unfree" \
             ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel" \
             > out-paths.txt
           cat out-paths.txt
