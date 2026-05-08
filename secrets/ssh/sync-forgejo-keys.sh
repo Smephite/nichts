@@ -110,11 +110,6 @@ fj_post() {
   http_code=$(echo "$response" | tail -1)
   response=$(echo "$response" | sed '$d')
 
-  # Debug: log creation response
-  if [[ "$endpoint" == "/user/keys" ]]; then
-    echo "  DEBUG (creation response): $response" >&2
-  fi
-
   if [[ "$http_code" -ge 200 && "$http_code" -lt 300 ]]; then
     echo "$response"
   else
@@ -191,22 +186,15 @@ for host in "${!FORGEJO_TOKENS[@]}"; do
 
   # Verify token and identity
   user_info=$(fj_get "$host" "/user")
-  if [[ -z "$user_info" ]]; then
-    echo "  Error: Could not verify identity on $host. Check your token."
+  if [[ -z "$user_info" || "$user_info" == "[]" ]]; then
+    echo "  Error: Could not verify identity on $host. Check your token and ensure the protocol (http/https) is correct."
     continue
   fi
-  username=$(echo "$user_info" | jq -r '.[0].login // .login')
+  username=$(echo "$user_info" | jq -r 'if type == "array" then .[0].login else .login end')
   echo "  Authenticated as: $username"
 
   # Fetch existing SSH keys
   remote_keys=$(fj_get "$host" "/user/keys")
-
-  # Debug: Check GPG keys for structure comparison
-  gpg_keys=$(fj_get "$host" "/user/gpg_keys")
-  echo "  DEBUG (GPG keys list): $(echo "$gpg_keys" | jq -c '.[0] // empty')"
-  if [[ -n "$gpg_keys" && "$gpg_keys" != "[]" ]]; then
-    echo "  DEBUG (GPG key fields): $(echo "$gpg_keys" | jq -r '.[0] | keys | join(", ")')"
-  fi
 
   # Build maps of ALL remote keys and managed keys
   declare -A all_remote_titles=()
@@ -254,21 +242,17 @@ for host in "${!FORGEJO_TOKENS[@]}"; do
       token="${remote_tokens["$km"]}"
 
       # If list view didn't provide token/verified status, fetch detail
-      detail=$(fj_get "$host" "/user/keys/$current_id")
+      if [[ "$is_verified" != "true" ]]; then
+         detail=$(fj_get "$host" "/user/keys/$current_id")
+         is_verified=$(echo "$detail" | jq -r '.verified | tostring')
+         token=$(echo "$detail" | jq -r '.verify_token | tostring')
 
-      # Targeted debug for the key you manually verified
-      if [[ "$title" == "managed-heartofgold" ]]; then
-        echo "  DEBUG (managed-heartofgold raw): $detail" >&2
-        echo "  DEBUG (managed-heartofgold keys): $(echo "$detail" | jq -r 'keys | join(", ")')" >&2
+         if [[ "$is_verified" == "null" || "$is_verified" == "" ]]; then is_verified="false"; fi
       fi
-
-      is_verified=$(echo "$detail" | jq -r '.verified | tostring')
-      token=$(echo "$detail" | jq -r '.verify_token | tostring')
-
-      if [[ "$is_verified" == "null" || "$is_verified" == "" ]]; then is_verified="false"; fi
 
       echo "Unchanged key: $title (Verified: $is_verified)"
     elif [[ -n "${all_remote_titles["$km"]+x}" ]]; then
+
       old_title="${all_remote_titles["$km"]}"
       old_id="${all_remote_ids["$km"]}"
       echo "Renaming key: '$old_title' -> '$title' (delete+re-add)"

@@ -39,6 +39,11 @@ in {
       default = false;
       description = "Whether to make new repositories private by default";
     };
+    minRsaSize = mkOption {
+      type = types.int;
+      default = 2048;
+      description = "Minimum RSA key size allowed";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -62,6 +67,9 @@ in {
             if cfg.defaultPrivate
             then "private"
             else "public";
+        };
+        "ssh.minimum_key_size_check" = {
+          RSA = cfg.minRsaSize;
         };
       };
     };
