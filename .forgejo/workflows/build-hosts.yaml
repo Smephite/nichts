@@ -12,8 +12,6 @@ jobs:
       fail-fast: false
       matrix:
         host: [c3, heartofgold, silverwind, starhaven]
-    env:
-      PATH: /run/current-system/sw/bin:/run/wrappers/bin:/usr/bin:/bin
     steps:
       - uses: actions/checkout@v4
 

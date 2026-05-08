@@ -49,6 +49,18 @@ in {
       instances.${cfg.name} = {
         enable = true;
         inherit (cfg) name url tokenFile labels;
+        hostPackages = with pkgs; [
+          bash
+          coreutils
+          curl
+          gawk
+          gitMinimal
+          gnused
+          nodejs
+          wget
+          nix
+          attic-client
+        ];
       };
     };
   };
