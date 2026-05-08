@@ -95,6 +95,10 @@ in
       publicKeys = masterKeys;
       armor = false;
     };
+    "forgejo-ssh.age" = {
+      publicKeys = masterKeys;
+      armor = false;
+    };
 
     "attic.c3.age" = {
       publicKeys = [keys.host-c3] ++ masterKeys;

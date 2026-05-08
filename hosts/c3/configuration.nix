@@ -66,6 +66,11 @@
 
   modules = {
     services.caddy.enable = true;
+    services.forgejo = {
+      enable = true;
+      rootUrl = "http://c3.wol.int.kai.run:31415/";
+      openFirewall = true;
+    };
     other.home-manager.enable = true;
     system.network.nylon-wg = {
       enable = true;
