@@ -15,6 +15,11 @@ with lib; let
     text = ''
       #!/bin/bash
 
+      # Skip notifications for forgejo's git-over-ssh sessions.
+      if [ "$PAM_USER" = "forgejo" ]; then
+        exit 0
+      fi
+
       LOGGED_USER=$PAM_USER
       LOGGED_HOST="$(hostname -f)"
       HOST_IP=$(hostname -I | awk '{print $1}')
