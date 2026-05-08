@@ -1,0 +1,32 @@
+name: Build hosts and push to cache.kai.run
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: native
+    strategy:
+      fail-fast: false
+      matrix:
+        host: [c3, heartofgold, silverwind, starhaven]
+    env:
+      PATH: /run/current-system/sw/bin:/run/wrappers/bin:/usr/bin:/bin
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build ${{ matrix.host }}
+        run: |
+          nix build --print-build-logs --no-link --print-out-paths \
+            ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel" \
+            > out-paths.txt
+          cat out-paths.txt
+
+      - name: Push to cache.kai.run
+        env:
+          ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}
+        run: |
+          attic login c3 https://cache.kai.run "$ATTIC_TOKEN"
+          xargs -r attic push c3:nixos < out-paths.txt
