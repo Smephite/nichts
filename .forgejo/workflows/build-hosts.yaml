@@ -15,6 +15,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Sanity-check token
+        env:
+          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+        run: |
+          if [ -z "$GIT_TOKEN" ]; then
+            echo "GIT_TOKEN is empty — secret not wired up"; exit 1
+          fi
+          echo "Token length: ${#GIT_TOKEN}"
+          code=$(curl -s -o /dev/null -w "%{http_code}" \
+            -u "oauth2:$GIT_TOKEN" \
+            "http://c3.wol.int.kai.run:31415/smephite/nichts-unfree/info/refs?service=git-upload-pack")
+          echo "git-HTTP status: $code"
+          [ "$code" = "200" ]
+
       - name: Build ${{ matrix.host }}
         env:
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
