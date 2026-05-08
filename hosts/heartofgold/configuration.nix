@@ -28,47 +28,47 @@
         windowManager = "cosmic";
         monitors = [
           {
-            name = "Gigabyte";
-            device = "DP-1";
-            resolution = {
-              x = 3440;
-              y = 1440;
-            };
-            scale = 1.3;
-            refresh_rate = 144.0;
-            position = {
-              x = 0;
-              y = 0;
-            };
-          }
-          {
-            name = "BenQ";
-            device = "DP-2";
-            resolution = {
-              x = 1920;
-              y = 1080;
-            };
-            scale = 1.0;
-            refresh_rate = 60.0;
-            position = {
-              x = 3440;
-              y = 0;
-            };
-            transform = 3;
-          }
-          {
             name = "Dell";
-            device = "DP-3";
+            model = "DELL P2416D";
             resolution = {
               x = 2560;
               y = 1440;
             };
-            scale = 1.0;
+            scale = 1.2356;
+            refresh_rate = 59.951;
+            position = {
+              x = 0;
+              y = 365;
+            };
+          }
+          {
+            name = "Gigabyte";
+            model = "M34WQ";
+            resolution = {
+              x = 3440;
+              y = 1440;
+            };
+            scale = 1.1;
+            refresh_rate = 59.973;
+            position = {
+              x = 2072;
+              y = 293;
+            };
+          }
+          {
+            name = "BenQ";
+            model = "BenQ GL2450";
+            resolution = {
+              x = 1920;
+              y = 1080;
+            };
+            scale = 0.9267;
             refresh_rate = 60.0;
             position = {
-              x = -2560;
+              x = 5199;
               y = 0;
             };
+            transform = 1;
           }
         ];
       };

@@ -5,7 +5,40 @@
   ...
 }: let
   monitors = config.modules.system.desktop.monitors;
+  resolveOutput = config.modules.system.desktop._resolveOutput;
   gnomeCfg = config.modules.system.desktop.wm.gnome;
+
+  xrandrTransform = t:
+    if t == 1
+    then "left"
+    else if t == 2
+    then "inverted"
+    else if t == 3
+    then "right"
+    else "normal";
+
+  mkXrandrMonitor = m: ''
+    output=""
+    ${
+      if m.device != null
+      then ''output=${lib.escapeShellArg m.device}''
+      else ''
+        output=$(${resolveOutput}/bin/monitor-resolve-output ${lib.escapeShellArg m.model} ${
+          lib.optionalString (m.serial != null) (lib.escapeShellArg m.serial)
+        } 2>/dev/null) || output=""
+      ''
+    }
+    if [ -n "$output" ]; then
+      ${pkgs.xorg.xrandr}/bin/xrandr --output "$output" \
+        --mode "${builtins.toString m.resolution.x}x${builtins.toString m.resolution.y}" \
+        --rate "${builtins.toString m.refresh_rate}" \
+        --pos "${builtins.toString m.position.x}x${builtins.toString m.position.y}" \
+        --rotate ${xrandrTransform m.transform} \
+        || echo "monitor ${m.name}: xrandr failed" >&2
+    else
+      echo "monitor ${m.name}: no connector matched, skipping" >&2
+    fi
+  '';
 in {
   options.modules.system.desktop.wm.gnome = {
     enable = lib.mkEnableOption "use gnome + gdm";
@@ -92,27 +125,7 @@ in {
     programs.ssh.startAgent = lib.mkForce false;
 
     services.xserver.displayManager = lib.mkIf (!gnomeCfg.wayland && gnomeCfg.configureMonitors) {
-      setupCommands =
-        lib.strings.concatMapStrings (
-          m: ''            xrandr --output "${m.device}" \
-                                --mode "${builtins.toString m.resolution.x}x${builtins.toString m.resolution.x}" \
-                                --rate "${builtins.toString m.refresh_rate}" \
-                                --pos  "${builtins.toString m.position.x}x${builtins.toString m.position.x}" \
-                                --pos  "${builtins.toString m.position.x}x${builtins.toString m.position.x}" \
-                                --rotate "${
-              if m.transform == 0
-              then "normal"
-              else if m.transform == 1
-              then "left"
-              else if m.transform == 2
-              then "inverted"
-              else if m.transform == 3
-              then "right"
-              else "normal"
-            }\n"
-          ''
-        )
-        monitors;
+      setupCommands = lib.concatMapStrings (m: "( ${mkXrandrMonitor m} ) || true\n") monitors;
     };
   };
 }

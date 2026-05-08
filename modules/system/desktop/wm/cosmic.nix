@@ -5,8 +5,43 @@
   ...
 }: let
   monitors = config.modules.system.desktop.monitors;
+  resolveOutput = config.modules.system.desktop._resolveOutput;
   cosmicCfg = config.modules.system.desktop.wm.cosmic;
   username = config.modules.system.username;
+
+  cosmicTransform = t:
+    if t == 1
+    then "rotate90"
+    else if t == 2
+    then "rotate180"
+    else if t == 3
+    then "rotate270"
+    else "normal";
+
+  mkCosmicMonitor = m: ''
+    output=""
+    ${
+      if m.device != null
+      then ''output=${lib.escapeShellArg m.device}''
+      else ''
+        output=$(${resolveOutput}/bin/monitor-resolve-output ${lib.escapeShellArg m.model} ${
+          lib.optionalString (m.serial != null) (lib.escapeShellArg m.serial)
+        }) || true
+      ''
+    }
+    if [[ -z "$output" ]]; then
+      echo "monitor ${m.name}: no connector matched, skipping" >&2
+    else
+      ${pkgs.cosmic-randr}/bin/cosmic-randr mode \
+        --refresh ${builtins.toString m.refresh_rate} \
+        --pos-x ${builtins.toString m.position.x} \
+        --pos-y ${builtins.toString m.position.y} \
+        --scale ${builtins.toString m.scale} \
+        --transform ${cosmicTransform m.transform} \
+        "$output" ${builtins.toString m.resolution.x} ${builtins.toString m.resolution.y} \
+        || echo "monitor ${m.name}: cosmic-randr failed" >&2
+    fi
+  '';
 in {
   options.modules.system.desktop.wm.cosmic = {
     enable = lib.mkEnableOption "use cosmic + cosmic greeter";
@@ -75,28 +110,18 @@ in {
     };
     #    boot.blacklistedKernelModules = [ "simpledrm" ];
 
-    #    services.xserver.displayManager = lib.mkIf (!gnomeCfg.wayland && gnomeCfg.configureMonitors) {
-    #      setupCommands =
-    #        lib.strings.concatMapStrings (
-    #          m: ''            xrandr --output "${m.device}" \
-    #                                --mode "${builtins.toString m.resolution.x}x${builtins.toString m.resolution.x}" \
-    #                                --rate "${builtins.toString m.refresh_rate}" \
-    #                                --pos  "${builtins.toString m.position.x}x${builtins.toString m.position.x}" \
-    #                                --pos  "${builtins.toString m.position.x}x${builtins.toString m.position.x}" \
-    #                                --rotate "${
-    #              if m.transform == 0
-    #              then "normal"
-    #              else if m.transform == 1
-    #              then "left"
-    #              else if m.transform == 2
-    #              then "inverted"
-    #              else if m.transform == 3
-    #              then "right"
-    #              else "normal"
-    #            }\n"
-    #          ''
-    #        )
-    #        monitors;
-    #    };
+    systemd.user.services.cosmic-randr-setup = lib.mkIf cosmicCfg.configureMonitors {
+      description = "Configure monitors via cosmic-randr";
+      wantedBy = ["graphical-session.target"];
+      partOf = ["graphical-session.target"];
+      after = ["graphical-session.target"];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = pkgs.writeShellScript "cosmic-randr-setup" ''
+          set -u
+          ${lib.concatMapStrings (m: "( ${mkCosmicMonitor m} ) || true\n") monitors}
+        '';
+      };
+    };
   };
 }
