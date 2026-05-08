@@ -24,6 +24,21 @@ in {
       default = false;
       description = "Whether to open the firewall for the Forgejo port";
     };
+    allowSignups = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether to allow user registration";
+    };
+    requireSignin = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether to require users to be signed in to view any pages";
+    };
+    defaultPrivate = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether to make new repositories private by default";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -37,6 +52,16 @@ in {
             if cfg.rootUrl != null
             then cfg.rootUrl
             else "http://${config.networking.hostName}:${toString cfg.port}/";
+        };
+        service = {
+          DISABLE_REGISTRATION = !cfg.allowSignups;
+          REQUIRE_SIGNIN_VIEW = cfg.requireSignin;
+        };
+        repository = {
+          DEFAULT_PRIVATE =
+            if cfg.defaultPrivate
+            then "private"
+            else "public";
         };
       };
     };

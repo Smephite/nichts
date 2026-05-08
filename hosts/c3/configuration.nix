@@ -70,6 +70,8 @@
       enable = true;
       rootUrl = "http://c3.wol.int.kai.run:31415/";
       openFirewall = true;
+      requireSignin = true;
+      defaultPrivate = true;
     };
     other.home-manager.enable = true;
     system.network.nylon-wg = {
