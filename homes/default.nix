@@ -28,4 +28,14 @@ in {
         ./ethz
       ];
   };
+
+  base = home-manager.lib.homeManagerConfiguration {
+    inherit pkgs;
+    extraSpecialArgs = specialArgs;
+    modules =
+      baseModules
+      ++ [
+        ./base
+      ];
+  };
 }
