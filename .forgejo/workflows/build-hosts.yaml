@@ -16,8 +16,11 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build ${{ matrix.host }}
+        env:
+          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
         run: |
           nix build --print-build-logs --no-link --print-out-paths \
+            --override-input nichts-unfree "git+http://oauth2:$GIT_TOKEN@c3.wol.int.kai.run:31415/smephite/nichts-unfree" \
             ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel" \
             > out-paths.txt
           cat out-paths.txt

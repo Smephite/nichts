@@ -57,6 +57,7 @@ in {
           gitMinimal
           gnused
           nodejs
+          openssh
           wget
           nix
           attic-client
