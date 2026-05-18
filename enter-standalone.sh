@@ -2,8 +2,8 @@
 set -euo pipefail
 
 FLAKE="$(cd "$(dirname "$0")" && pwd)"
-NP_LOCATION="${NP_LOCATION:-/usr/scratch2/pisoc3/msc25h18/nix}"
-NP_BIN="${NP_BIN:-/usr/scratch2/pisoc3/msc25h18/tools/install/bin/nix-portable}"
+NP_LOCATION="${NP_LOCATION:-/usr/scratch/larain12/kberszin/nix}"
+NP_BIN="${NP_BIN:-~/.local/bin/nix-portable}"
 NIX_HOME="${HOME}/nix-home"
 
 export NP_LOCATION NP_RUNTIME=proot PROOT_LUSER_ID=0

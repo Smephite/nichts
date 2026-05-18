@@ -4,7 +4,7 @@
   config,
   ...
 }: let
-  user = "msc25h18";
+  user = "kberszin";
   realHome = "/home/${user}";
 in {
   imports = [
