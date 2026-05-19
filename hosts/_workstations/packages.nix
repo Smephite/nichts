@@ -2,9 +2,10 @@
   pkgs,
   pkgs-unstable,
   ...
-}: let
-  python-packages = ps:
-    with ps; [
+}:
+let
+  python-packages =
+    ps: with ps; [
       pandas
       numpy
       opencv4
@@ -12,13 +13,15 @@
       uv
       pyserial
     ];
-in {
+in
+{
   environment.systemPackages = with pkgs; [
     # communication
     pkgs-unstable.signal-desktop
     wasistlos # whatsapp
     slack
     mattermost-desktop
+    element-desktop
     discord
     zoom-us
     #teams-for-linux
