@@ -8,14 +8,22 @@
 with lib; let
   cfg = config.modules.programs.nh;
   gitPath = config.modules.system.gitPath;
-  flakePath = if cfg.flakePath != "" then cfg.flakePath else gitPath;
+  flakePath =
+    if cfg.flakePath != ""
+    then cfg.flakePath
+    else gitPath;
 
   allowedSignersFile = optionalString (cfg.trustedSigningKeys != []) (toString (
     pkgs.writeText "nh-allowed-signers"
-      (concatMapStrings (key:
-        let content = if builtins.isPath key then builtins.readFile key else key;
+    (concatMapStrings (
+        key: let
+          content =
+            if builtins.isPath key
+            then builtins.readFile key
+            else key;
         in "* ${lib.removeSuffix "\n" content}\n"
-      ) cfg.trustedSigningKeys)
+      )
+      cfg.trustedSigningKeys)
   ));
   signersOpt = optionalString (allowedSignersFile != "") "-c gpg.ssh.allowedSignersFile=${allowedSignersFile}";
 

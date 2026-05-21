@@ -53,11 +53,31 @@ in {
           };
           containersForce = true;
           containers = {
-            nix = {color = "blue"; icon = "circle"; id = 0;};
-            dangerous = {color = "red"; icon = "fruit"; id = 1;};
-            shopping = {color = "yellow"; icon = "cart"; id = 2;};
-            video = {color = "pink"; icon = "vacation"; id = 3;};
-            studying = {color = "green"; icon = "fence"; id = 4;};
+            nix = {
+              color = "blue";
+              icon = "circle";
+              id = 0;
+            };
+            dangerous = {
+              color = "red";
+              icon = "fruit";
+              id = 1;
+            };
+            shopping = {
+              color = "yellow";
+              icon = "cart";
+              id = 2;
+            };
+            video = {
+              color = "pink";
+              icon = "vacation";
+              id = 3;
+            };
+            studying = {
+              color = "green";
+              icon = "fence";
+              id = 4;
+            };
           };
         };
       };

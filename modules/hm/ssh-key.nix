@@ -22,8 +22,6 @@ with lib; let
   certKeyFile = self + "/secrets/ssh/user/${hostname}.cert";
   pubKeyFileExists = builtins.pathExists pubKeyFile;
   certKeyFileExists = builtins.pathExists certKeyFile;
-
-
 in {
   options.modules.system.sshKey = {
     enable = mkEnableOption "agenix-managed SSH identity key (${userKeyPath})";
