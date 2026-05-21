@@ -2,10 +2,13 @@
   lib,
   pkgs,
   config,
+  self,
   ...
 }: let
   username = config.modules.system.username;
 in {
+  age.secrets.uni-vpn.file = self + "/secrets/uni.vpn.age";
+
   boot.loader.systemd-boot.configurationLimit = 20;
 
   security.sudo = {
@@ -87,7 +90,10 @@ in {
       fonts.enable = lib.mkDefault true;
       network = {
         enable = lib.mkDefault true;
-        openconnect.enable = lib.mkDefault true;
+        openconnect = {
+          enable = lib.mkDefault true;
+          scripts.profiles.ethz.file = config.age.secrets.uni-vpn.path;
+        };
       };
 
       gitPath = lib.mkDefault "/home/${config.modules.system.username}/repos/nichts";

@@ -76,7 +76,7 @@ in
       publicKeys =
         [
           keys.host-heartofgold
-          #      keys.host-silverwind
+          keys.host-silverwind
         ]
         ++ masterKeys;
       armor = false;
