@@ -17,7 +17,7 @@ in {
     git = {
       enable = lib.mkDefault true;
       userName = lib.mkDefault "Kai Berszin";
-      userEmail = lib.mkDefault "kberszin@ethz.ch";
+      userEmail = lib.mkDefault "kberszin@iis.ee.ethz.ch";
       defaultBranch = lib.mkDefault "main";
       pullRebase = lib.mkDefault true;
     };
