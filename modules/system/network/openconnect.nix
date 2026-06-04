@@ -3,10 +3,10 @@
   lib,
   pkgs,
   ...
-}:
-let
+}: let
   cfg = config.modules.system.network.openconnect;
-  inherit (lib)
+  inherit
+    (lib)
     mkIf
     mkEnableOption
     mkOption
@@ -102,9 +102,9 @@ let
     };
   };
 
-  makeScript =
-    name: profile:
-    if profile.file != null then
+  makeScript = name: profile:
+    if profile.file != null
+    then
       # Runtime-parsed script: reads connection details from the structured file
       pkgs.writeShellScriptBin "vpn-${name}" ''
         set -euo pipefail
@@ -121,12 +121,12 @@ let
         if [[ "$TOTP" == "yubikey" ]]; then
           YUBIKEY_ACCOUNT=$(vpn yubikey_account)
           ${lib.optionalString (profile.oath.yubikey.passwordFile != null) ''
-            OATH_PASSWORD=$(cat ${lib.escapeShellArg profile.oath.yubikey.passwordFile})
-          ''}
+          OATH_PASSWORD=$(cat ${lib.escapeShellArg profile.oath.yubikey.passwordFile})
+        ''}
           OTP=$(${ykman} oath accounts code \
             ${
-              lib.optionalString (profile.oath.yubikey.passwordFile != null) ''--password "$OATH_PASSWORD"''
-            } \
+          lib.optionalString (profile.oath.yubikey.passwordFile != null) ''--password "$OATH_PASSWORD"''
+        } \
             "$YUBIKEY_ACCOUNT" | awk '{print $NF}')
         elif [[ -n "$TOTP" ]]; then
           OTP=$(${oathtool} --totp --base32 "$TOTP")
@@ -147,48 +147,46 @@ let
       let
         oath = profile.oath;
         otpFragment =
-          if !oath.enable then
-            ""
-          else if oath.method == "yubikey" then
-            ''
-              ${lib.optionalString (oath.yubikey.passwordFile != null) ''
-                OATH_PASSWORD=$(cat ${lib.escapeShellArg oath.yubikey.passwordFile})
-              ''}
-              OTP=$(${ykman} oath accounts code \
-                ${lib.optionalString (oath.yubikey.passwordFile != null) ''--password "$OATH_PASSWORD"''} \
-                ${lib.escapeShellArg oath.yubikey.account} | awk '{print $NF}')
-            ''
-          else
-            ''
-              TOTP_SECRET=$(cat ${lib.escapeShellArg oath.totp.secretFile})
-              OTP=$(${oathtool} --totp --base32 "$TOTP_SECRET")
-            '';
+          if !oath.enable
+          then ""
+          else if oath.method == "yubikey"
+          then ''
+            ${lib.optionalString (oath.yubikey.passwordFile != null) ''
+              OATH_PASSWORD=$(cat ${lib.escapeShellArg oath.yubikey.passwordFile})
+            ''}
+            OTP=$(${ykman} oath accounts code \
+              ${lib.optionalString (oath.yubikey.passwordFile != null) ''--password "$OATH_PASSWORD"''} \
+              ${lib.escapeShellArg oath.yubikey.account} | awk '{print $NF}')
+          ''
+          else ''
+            TOTP_SECRET=$(cat ${lib.escapeShellArg oath.totp.secretFile})
+            OTP=$(${oathtool} --totp --base32 "$TOTP_SECRET")
+          '';
       in
-      pkgs.writeShellScriptBin "vpn-${name}" ''
-        set -euo pipefail
+        pkgs.writeShellScriptBin "vpn-${name}" ''
+          set -euo pipefail
 
-        VPN_PASSWORD=$(cat ${lib.escapeShellArg profile.passwordFile})
+          VPN_PASSWORD=$(cat ${lib.escapeShellArg profile.passwordFile})
 
-        ${otpFragment}
+          ${otpFragment}
 
-        {
-          echo "$VPN_PASSWORD"
-          ${lib.optionalString oath.enable ''echo "$OTP"''}
-        } | ${openconnect} \
-          -u ${lib.escapeShellArg profile.user} \
-          --server ${lib.escapeShellArg profile.server} \
-          ${lib.optionalString (profile.group != "") "-g ${lib.escapeShellArg profile.group}"} \
-          --useragent=${lib.escapeShellArg profile.userAgent} \
-          --passwd-on-stdin
-      '';
-in
-{
+          {
+            echo "$VPN_PASSWORD"
+            ${lib.optionalString oath.enable ''echo "$OTP"''}
+          } | ${openconnect} \
+            -u ${lib.escapeShellArg profile.user} \
+            --server ${lib.escapeShellArg profile.server} \
+            ${lib.optionalString (profile.group != "") "-g ${lib.escapeShellArg profile.group}"} \
+            --useragent=${lib.escapeShellArg profile.userAgent} \
+            --passwd-on-stdin
+        '';
+in {
   options.modules.system.network.openconnect = {
     enable = mkEnableOption "openconnect";
 
     scripts.profiles = mkOption {
       type = types.attrsOf profileModule;
-      default = { };
+      default = {};
       description = "Named VPN profiles. Set file to load from a structured file at runtime, or declare all values explicitly in Nix.";
     };
   };
@@ -201,7 +199,7 @@ in
       }
     ];
 
-    networking.networkmanager.plugins = [ pkgs.networkmanager-openconnect ];
+    networking.networkmanager.plugins = [pkgs.networkmanager-openconnect];
 
     security.wrappers.openconnect = {
       source = "${pkgs.openconnect}/bin/openconnect";

@@ -43,6 +43,9 @@
         microchip.enable = true;
       };
       desktop = {
+        apps = {
+          gnome-calendar.enable = true;
+        };
         windowManager = "cosmic";
         monitors = [];
       };

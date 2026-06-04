@@ -26,6 +26,7 @@ in {
   imports =
     [
       ./monitors.nix
+      ./apps
     ]
     ++ (map (name: wmDir + "/${name}") nixFiles)
     #    ++ (map (name: dmDir + "/${name}" ) nixDmFiles)
