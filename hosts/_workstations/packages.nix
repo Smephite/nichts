@@ -18,7 +18,7 @@ in
   environment.systemPackages = with pkgs; [
     # communication
     pkgs-unstable.signal-desktop
-    wasistlos # whatsapp
+    karere # whatsapp
     slack
     mattermost-desktop
     element-desktop
