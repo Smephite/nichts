@@ -2,9 +2,10 @@
   pkgs,
   pkgs-unstable,
   ...
-}: let
-  python-packages = ps:
-    with ps; [
+}:
+let
+  python-packages =
+    ps: with ps; [
       pandas
       numpy
       opencv4
@@ -12,7 +13,8 @@
       uv
       pyserial
     ];
-in {
+in
+{
   environment.systemPackages = with pkgs; [
     # communication
     pkgs-unstable.signal-desktop
@@ -35,6 +37,8 @@ in {
     typst
     evince # GNOME's document viewer
     firefox
+
+    planify
 
     # Security
     pkgs-unstable.yubioath-flutter

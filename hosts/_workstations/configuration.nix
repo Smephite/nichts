@@ -7,7 +7,10 @@
 }: let
   username = config.modules.system.username;
 in {
-  age.secrets.uni-vpn.file = self + "/secrets/uni.vpn.age";
+  age.secrets.uni-vpn = {
+    file = self + "/secrets/uni.vpn.age";
+    owner = config.modules.system.username;
+  };
 
   boot.loader.systemd-boot.configurationLimit = 20;
 

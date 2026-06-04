@@ -15,7 +15,7 @@ let
 
   ykman = "${pkgs.yubikey-manager}/bin/ykman";
   oathtool = "${pkgs.oath-toolkit}/bin/oathtool";
-  openconnect = "${pkgs.openconnect}/bin/openconnect";
+  openconnect = "/run/wrappers/bin/openconnect";
   yq = "${pkgs.yq-go}/bin/yq";
 
   # ---------------------------------------------------------------------------
@@ -72,7 +72,10 @@ let
       oath = {
         enable = mkEnableOption "OTP as second factor";
         method = mkOption {
-          type = types.enum [ "yubikey" "totp" ];
+          type = types.enum [
+            "yubikey"
+            "totp"
+          ];
           default = "yubikey";
           description = "OTP method: yubikey uses ykman OATH; totp uses oathtool with a stored secret. Used when file is null.";
         };
@@ -121,7 +124,9 @@ let
             OATH_PASSWORD=$(cat ${lib.escapeShellArg profile.oath.yubikey.passwordFile})
           ''}
           OTP=$(${ykman} oath accounts code \
-            ${lib.optionalString (profile.oath.yubikey.passwordFile != null) ''--password "$OATH_PASSWORD"''} \
+            ${
+              lib.optionalString (profile.oath.yubikey.passwordFile != null) ''--password "$OATH_PASSWORD"''
+            } \
             "$YUBIKEY_ACCOUNT" | awk '{print $NF}')
         elif [[ -n "$TOTP" ]]; then
           OTP=$(${oathtool} --totp --base32 "$TOTP")
@@ -130,7 +135,7 @@ let
         {
           echo "$PASSWORD"
           [[ -n "$OTP" ]] && echo "$OTP" || true
-        } | sudo ${openconnect} \
+        } | ${openconnect} \
           -u "$USERNAME" \
           --server "$URL" \
           ''${GROUP:+-g "$GROUP"} \
@@ -169,7 +174,7 @@ let
         {
           echo "$VPN_PASSWORD"
           ${lib.optionalString oath.enable ''echo "$OTP"''}
-        } | sudo ${openconnect} \
+        } | ${openconnect} \
           -u ${lib.escapeShellArg profile.user} \
           --server ${lib.escapeShellArg profile.server} \
           ${lib.optionalString (profile.group != "") "-g ${lib.escapeShellArg profile.group}"} \
@@ -197,6 +202,13 @@ in
     ];
 
     networking.networkmanager.plugins = [ pkgs.networkmanager-openconnect ];
+
+    security.wrappers.openconnect = {
+      source = "${pkgs.openconnect}/bin/openconnect";
+      capabilities = "cap_net_admin+ep";
+      owner = "root";
+      group = "root";
+    };
 
     environment.systemPackages = lib.mapAttrsToList makeScript cfg.scripts.profiles;
   };
