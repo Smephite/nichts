@@ -63,6 +63,14 @@
     localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
   };
 
+  # MT7922 WiFi fixes: ASPM causes chip unresponsiveness; iwd handles roaming better
+  boot.extraModprobeConfig = "options mt7921e disable_aspm=1";
+  networking.wireless.iwd = {
+    enable = true;
+    settings.General.EnableNetworkConfiguration = false; # NM handles IP config
+  };
+  networking.networkmanager.wifi.backend = "iwd";
+
   hardware = {
     graphics = {
       enable = true;
