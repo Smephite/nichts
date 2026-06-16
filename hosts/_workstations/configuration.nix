@@ -68,6 +68,7 @@ in {
       starship.enable = lib.mkDefault true;
       atuin.enable = lib.mkDefault true;
 
+      ausweisapp.enable = lib.mkDefault true;
       #zed.enable = lib.mkDefault true;
 
       git.signing.signByDefault = lib.mkOverride 900 true;
