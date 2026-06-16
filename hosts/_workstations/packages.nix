@@ -88,5 +88,6 @@ in {
     gnome-calculator
     drawio
     gparted
+    wofi-emoji
   ];
 }
