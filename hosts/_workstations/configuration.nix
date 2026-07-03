@@ -67,6 +67,7 @@ in {
       fish.enable = lib.mkDefault true;
       starship.enable = lib.mkDefault true;
       atuin.enable = lib.mkDefault true;
+      tmux.enable = lib.mkDefault true;
 
       ausweisapp.enable = lib.mkDefault true;
       #zed.enable = lib.mkDefault true;

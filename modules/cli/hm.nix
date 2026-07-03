@@ -5,5 +5,6 @@
     ./git/hm.nix
     ./nh/hm.nix
     ./starship/hm.nix
+    ./tmux/hm.nix
   ];
 }
