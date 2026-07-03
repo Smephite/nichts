@@ -26,6 +26,7 @@ in {
   imports =
     [
       ./monitors.nix
+      ./kanshi.nix
       ./apps
     ]
     ++ (map (name: wmDir + "/${name}") nixFiles)

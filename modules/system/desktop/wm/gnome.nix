@@ -4,9 +4,18 @@
   pkgs,
   ...
 }: let
-  monitors = config.modules.system.desktop.monitors;
-  resolveOutput = config.modules.system.desktop._resolveOutput;
+  resolved = config.modules.system.desktop._resolvedMonitors;
   gnomeCfg = config.modules.system.desktop.wm.gnome;
+
+  # For GNOME's X11 xrandr path, pick the "default" profile or first alphabetically
+  defaultProfileName =
+    if resolved ? default
+    then "default"
+    else lib.head (lib.sort lib.lessThan (lib.attrNames resolved));
+  defaultMonitors =
+    if resolved != {}
+    then resolved.${defaultProfileName}
+    else [];
 
   xrandrTransform = t:
     if t == 1
@@ -17,28 +26,15 @@
     then "right"
     else "normal";
 
-  mkXrandrMonitor = m: ''
-    output=""
-    ${
-      if m.device != null
-      then ''output=${lib.escapeShellArg m.device}''
-      else ''
-        output=$(${resolveOutput}/bin/monitor-resolve-output ${lib.escapeShellArg m.model} ${
-          lib.optionalString (m.serial != null) (lib.escapeShellArg m.serial)
-        } 2>/dev/null) || output=""
-      ''
-    }
-    if [ -n "$output" ]; then
-      ${pkgs.xorg.xrandr}/bin/xrandr --output "$output" \
+  mkXrandrMonitor = m:
+    assert m.device != null || throw "GNOME X11 monitor '${m.name}' requires 'device' to be set (xrandr needs connector names)"; ''
+      ${pkgs.xorg.xrandr}/bin/xrandr --output ${lib.escapeShellArg m.device} \
         --mode "${builtins.toString m.resolution.x}x${builtins.toString m.resolution.y}" \
         --rate "${builtins.toString m.refresh_rate}" \
         --pos "${builtins.toString m.position.x}x${builtins.toString m.position.y}" \
         --rotate ${xrandrTransform m.transform} \
         || echo "monitor ${m.name}: xrandr failed" >&2
-    else
-      echo "monitor ${m.name}: no connector matched, skipping" >&2
-    fi
-  '';
+    '';
 in {
   options.modules.system.desktop.wm.gnome = {
     enable = lib.mkEnableOption "use gnome + gdm";
@@ -124,8 +120,8 @@ in {
 
     programs.ssh.startAgent = lib.mkForce false;
 
-    services.xserver.displayManager = lib.mkIf (!gnomeCfg.wayland && gnomeCfg.configureMonitors) {
-      setupCommands = lib.concatMapStrings (m: "( ${mkXrandrMonitor m} ) || true\n") monitors;
+    services.xserver.displayManager = lib.mkIf (!gnomeCfg.wayland && gnomeCfg.configureMonitors && defaultMonitors != []) {
+      setupCommands = lib.concatMapStrings (m: "( ${mkXrandrMonitor m} ) || true\n") defaultMonitors;
     };
   };
 }

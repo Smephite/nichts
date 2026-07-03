@@ -1,10 +1,10 @@
 {
   lib,
   config,
-  pkgs,
   ...
 }: let
   inherit (lib) mkOption types;
+
   monitor_t = with types;
     submodule {
       options = {
@@ -18,8 +18,7 @@
           default = null;
           description = ''
             Connector name override (e.g. "DP-1"). When null (the default), the
-            connector is resolved at runtime from the monitor's EDID via
-            {option}`model` and optional {option}`serial`.
+            monitor is matched by its EDID description via {option}`model`.
           '';
         };
         model = mkOption {
@@ -27,8 +26,7 @@
           default = null;
           description = ''
             EDID "Display Product Name" of the monitor (e.g. "DELL P2416D"),
-            used to look up the live DRM connector when {option}`device` is
-            not set.
+            used by kanshi to match outputs.
           '';
         };
         serial = mkOption {
@@ -93,63 +91,76 @@
       };
     };
 
-  resolveOutput = pkgs.writeShellApplication {
-    name = "monitor-resolve-output";
-    runtimeInputs = with pkgs; [edid-decode coreutils gnused];
-    text = ''
-      # usage: monitor-resolve-output <model> [serial]
-      # prints the DRM connector name (e.g. DP-1) on stdout, or exits non-zero.
-      model="''${1:-}"
-      serial="''${2:-}"
-      if [[ -z "$model" ]]; then
-        echo "monitor-resolve-output: model is required" >&2
-        exit 2
-      fi
-      shopt -s nullglob
-      for edid in /sys/class/drm/card*-*/edid; do
-        # /sys files report stat size 0; check actual byte count
-        bytes=$(wc -c < "$edid")
-        [[ "$bytes" -gt 0 ]] || continue
-        info=$(edid-decode "$edid" 2>/dev/null) || continue
-        edid_model=$(printf '%s\n' "$info" | sed -nE "s/^[[:space:]]*Display Product Name: '(.*)'[[:space:]]*$/\1/p" | head -1)
-        [[ "$edid_model" == "$model" ]] || continue
-        if [[ -n "$serial" ]]; then
-          edid_serial=$(printf '%s\n' "$info" | sed -nE "s/^[[:space:]]*Display Product Serial Number: '(.*)'[[:space:]]*$/\1/p" | head -1)
-          [[ "$edid_serial" == "$serial" ]] || continue
-        fi
-        # /sys/class/drm/cardN-DP-1/edid -> DP-1
-        path=''${edid%/edid}
-        base=''${path##*/}
-        connector=''${base#*-}
-        printf '%s\n' "$connector"
-        exit 0
-      done
-      echo "monitor-resolve-output: no connector matched model='$model' serial='$serial'" >&2
-      exit 1
-    '';
-  };
+  profile_t = with types;
+    submodule {
+      options = {
+        groups = mkOption {
+          type = listOf str;
+          default = [];
+          description = "Names of monitor groups to include in this profile.";
+        };
+        extra = mkOption {
+          type = listOf monitor_t;
+          default = [];
+          description = "Additional monitors specific to this profile.";
+        };
+      };
+    };
+
+  cfg = config.modules.system.desktop;
+
+  resolveProfile = profile:
+    (lib.concatMap (g: cfg.monitorGroups.${g}) profile.groups) ++ profile.extra;
 in {
   options.modules.system.desktop = {
-    monitors = lib.mkOption {
-      description = "List of monitors to use";
-      default = [];
-      type = with lib.types; listOf monitor_t;
+    monitorGroups = mkOption {
+      type = with types; attrsOf (listOf monitor_t);
+      default = {};
+      description = "Named reusable sets of monitors that can be composed into profiles.";
     };
-    _resolveOutput = lib.mkOption {
-      type = lib.types.package;
+
+    monitors = mkOption {
+      type = with types; attrsOf profile_t;
+      default = {};
+      description = ''
+        Named monitor profiles. Each profile references monitor groups and/or
+        defines extra monitors. Kanshi selects the matching profile at runtime.
+      '';
+    };
+
+    _resolvedMonitors = mkOption {
+      type = with types; attrsOf (listOf monitor_t);
       internal = true;
       readOnly = true;
-      description = "Helper script that resolves a monitor's EDID model/serial to the live DRM connector name.";
+      description = "Flattened monitor lists per profile, resolved from groups + extra.";
     };
   };
 
   config = {
-    modules.system.desktop._resolveOutput = resolveOutput;
+    modules.system.desktop._resolvedMonitors =
+      lib.mapAttrs (_name: resolveProfile) cfg.monitors;
+
     assertions =
-      lib.imap0 (i: m: {
-        assertion = m.device != null || m.model != null;
-        message = "modules.system.desktop.monitors[${toString i}] (${m.name}): either `device` or `model` must be set";
-      })
-      config.modules.system.desktop.monitors;
+      # Every group referenced in a profile must exist
+      lib.concatLists (lib.mapAttrsToList (
+          profileName: profile:
+            map (g: {
+              assertion = cfg.monitorGroups ? ${g};
+              message = "Monitor profile '${profileName}' references unknown group '${g}'";
+            })
+            profile.groups
+        )
+        cfg.monitors)
+      ++
+      # Every resolved monitor must have device or model
+      lib.concatLists (lib.mapAttrsToList (
+          profileName: monitors:
+            lib.imap0 (i: m: {
+              assertion = m.device != null || m.model != null;
+              message = "Monitor profile '${profileName}' entry ${toString i} (${m.name}): either `device` or `model` must be set";
+            })
+            monitors
+        )
+        cfg._resolvedMonitors);
   };
 }

@@ -7,7 +7,6 @@
 }: let
   inherit (inputs) plasma-manager;
 
-  monitors = config.modules.system.desktop.monitors;
   kdeCfg = config.modules.system.desktop.wm.kde;
 
   HMcfg = config.modules.other.home-manager;

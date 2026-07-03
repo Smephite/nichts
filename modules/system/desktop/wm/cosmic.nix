@@ -2,56 +2,15 @@
   lib,
   config,
   pkgs,
+  inputs,
   ...
 }: let
-  monitors = config.modules.system.desktop.monitors;
-  resolveOutput = config.modules.system.desktop._resolveOutput;
+  inherit (inputs) cosmic-manager;
   cosmicCfg = config.modules.system.desktop.wm.cosmic;
   username = config.modules.system.username;
-
-  cosmicTransform = t:
-    if t == 1
-    then "rotate90"
-    else if t == 2
-    then "rotate180"
-    else if t == 3
-    then "rotate270"
-    else "normal";
-
-  mkCosmicMonitor = m: ''
-    output=""
-    ${
-      if m.device != null
-      then ''output=${lib.escapeShellArg m.device}''
-      else ''
-        output=$(${resolveOutput}/bin/monitor-resolve-output ${lib.escapeShellArg m.model} ${
-          lib.optionalString (m.serial != null) (lib.escapeShellArg m.serial)
-        }) || true
-      ''
-    }
-    if [[ -z "$output" ]]; then
-      echo "monitor ${m.name}: no connector matched, skipping" >&2
-    else
-      ${pkgs.cosmic-randr}/bin/cosmic-randr mode \
-        --refresh ${builtins.toString m.refresh_rate} \
-        --pos-x ${builtins.toString m.position.x} \
-        --pos-y ${builtins.toString m.position.y} \
-        --scale ${builtins.toString m.scale} \
-        --transform ${cosmicTransform m.transform} \
-        "$output" ${builtins.toString m.resolution.x} ${builtins.toString m.resolution.y} \
-        || echo "monitor ${m.name}: cosmic-randr failed" >&2
-    fi
-  '';
 in {
   options.modules.system.desktop.wm.cosmic = {
     enable = lib.mkEnableOption "use cosmic + cosmic greeter";
-    configureMonitors = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = ''
-        Automatically configure monitors.
-      '';
-    };
     xWayland = lib.mkOption {
       type = lib.types.bool;
       default = true;
@@ -110,17 +69,28 @@ in {
     };
     #    boot.blacklistedKernelModules = [ "simpledrm" ];
 
-    systemd.user.services.cosmic-randr-setup = lib.mkIf cosmicCfg.configureMonitors {
-      description = "Configure monitors via cosmic-randr";
-      wantedBy = ["graphical-session.target"];
-      partOf = ["graphical-session.target"];
-      after = ["graphical-session.target"];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = pkgs.writeShellScript "cosmic-randr-setup" ''
-          set -u
-          ${lib.concatMapStrings (m: "( ${mkCosmicMonitor m} ) || true\n") monitors}
-        '';
+    home-manager = {
+      sharedModules = [cosmic-manager.homeManagerModules.cosmic-manager];
+      users.${username} = {
+        wayland.desktopManager.cosmic.enable = true;
+        programs.cosmic-term = {
+          enable = true;
+          settings = {
+            font_name = "JetBrainsMonoNL Nerd Font Mono";
+            font_size = 14;
+            use_bright_bold = false;
+          };
+          profiles = [
+            {
+              name = "Default";
+              command = "fish";
+              hold = false;
+              is_default = true;
+              syntax_theme_dark = "COSMIC Dark";
+              syntax_theme_light = "COSMIC Light";
+            }
+          ];
+        };
       };
     };
   };

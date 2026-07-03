@@ -4,19 +4,11 @@
   pkgs,
   ...
 }: let
-  monitors = config.modules.system.desktop.monitors;
   username = config.modules.system.username;
   niriCfg = config.modules.system.desktop.wm.niri;
 in {
   options.modules.system.desktop.wm.niri = {
     enable = lib.mkEnableOption "use niri";
-    configureMonitors = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = ''
-        Automatically configure monitors.
-      '';
-    };
     xWayland = lib.mkOption {
       type = lib.types.bool;
       default = true;
