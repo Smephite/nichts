@@ -27,7 +27,9 @@
     criteria =
       if m.device != null
       then m.device
-      else m.model;
+      else if m.serial != null
+      then "* ${m.model} ${m.serial}"
+      else "* ${m.model} *";
     mode = "${toString m.resolution.x}x${toString m.resolution.y}@${toString m.refresh_rate}Hz";
     position = "${toString m.position.x},${toString m.position.y}";
     scale = m.scale;

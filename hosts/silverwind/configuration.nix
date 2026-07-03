@@ -75,9 +75,27 @@
             };
           }
         ];
-        monitors.work = {
-          groups = ["work-externals"];
-          extra = [
+        monitors = {
+          work = {
+            groups = ["work-externals"];
+            extra = [
+              {
+                name = "laptop";
+                device = "eDP-1";
+                resolution = {
+                  x = 2880;
+                  y = 1920;
+                };
+                refresh_rate = 120.0;
+                scale = 2.0;
+                position = {
+                  x = 0;
+                  y = 0;
+                };
+              }
+            ];
+          };
+          undocked.extra = [
             {
               name = "laptop";
               device = "eDP-1";
@@ -87,10 +105,6 @@
               };
               refresh_rate = 120.0;
               scale = 2.0;
-              position = {
-                x = 0;
-                y = 0;
-              };
             }
           ];
         };
