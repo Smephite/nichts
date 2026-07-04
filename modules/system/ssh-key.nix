@@ -49,6 +49,19 @@ in {
         # Placement and conflict detection are handled by the activation script below.
       };
 
+      # Stage pub/cert under /etc so the $HOME symlink hops through a
+      # location whose store target is refreshed atomically on every
+      # switch-to-configuration. Symlinking $HOME straight at ${self}/...
+      # dangles once that particular flake-source store path is GC'd.
+      environment.etc = mkMerge [
+        (mkIf pubKeyFileExists {
+          "ssh/user/${hostname}.pub".source = pubKeyFile;
+        })
+        (mkIf certKeyFileExists {
+          "ssh/user/${hostname}-cert.pub".source = certKeyFile;
+        })
+      ];
+
       system.activationScripts.sshKeyFromSecret = {
         deps = [
           "agenix"
@@ -75,11 +88,11 @@ in {
           ln -sf "$DECRYPTED" "$USER_KEY"
 
           ${optionalString pubKeyFileExists ''
-            ln -sf "${pubKeyFile}" "${userPubKeyPath}"
+            ln -sf "/etc/ssh/user/${hostname}.pub" "${userPubKeyPath}"
           ''}
 
           ${optionalString certKeyFileExists ''
-            ln -sf "${certKeyFile}" "${userCertKeyPath}"
+            ln -sf "/etc/ssh/user/${hostname}-cert.pub" "${userCertKeyPath}"
           ''}
         '';
       };
