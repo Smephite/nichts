@@ -23,13 +23,26 @@
     then "270"
     else "normal";
 
+  mkKanshiCriteria = m:
+    if m.device != null
+    then m.device
+    else let
+      mfr =
+        if m.manufacturer != null
+        then m.manufacturer
+        else "*";
+      model =
+        if m.model != null
+        then m.model
+        else "*";
+      serial =
+        if m.serial != null
+        then m.serial
+        else "*";
+    in "${mfr} ${model} ${serial}";
+
   mkKanshiOutput = m: {
-    criteria =
-      if m.device != null
-      then m.device
-      else if m.serial != null
-      then "* ${m.model} ${m.serial}"
-      else "* ${m.model} *";
+    criteria = mkKanshiCriteria m;
     mode = "${toString m.resolution.x}x${toString m.resolution.y}@${toString m.refresh_rate}Hz";
     position = "${toString m.position.x},${toString m.position.y}";
     scale = m.scale;

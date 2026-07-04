@@ -47,66 +47,10 @@
           gnome-calendar.enable = true;
         };
         windowManager = "cosmic";
-        monitorGroups.work-externals = [
-          {
-            name = "HP";
-            model = "HP E27u G4";
-            resolution = {
-              x = 2560;
-              y = 1440;
-            };
-            refresh_rate = 59.951;
-            position = {
-              x = 1440;
-              y = 0;
-            };
-          }
-          {
-            name = "ASUS";
-            model = "BE27A";
-            resolution = {
-              x = 2560;
-              y = 1440;
-            };
-            refresh_rate = 59.951;
-            position = {
-              x = 4000;
-              y = 0;
-            };
-          }
-        ];
+        internalMonitor = "framework-panel";
         monitors = {
-          work = {
-            groups = ["work-externals"];
-            extra = [
-              {
-                name = "laptop";
-                device = "eDP-1";
-                resolution = {
-                  x = 2880;
-                  y = 1920;
-                };
-                refresh_rate = 120.0;
-                scale = 2.0;
-                position = {
-                  x = 0;
-                  y = 0;
-                };
-              }
-            ];
-          };
-          undocked.extra = [
-            {
-              name = "laptop";
-              device = "eDP-1";
-              resolution = {
-                x = 2880;
-                y = 1920;
-              };
-              refresh_rate = 120.0;
-              scale = 2.0;
-            }
-          ];
+          home.groups = ["desk-main"];
+          work.groups = ["work-externals"];
         };
       };
     };

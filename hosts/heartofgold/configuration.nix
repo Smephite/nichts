@@ -26,7 +26,7 @@
 
       desktop = {
         windowManager = "cosmic";
-        monitors.docked.groups = ["desk-externals"];
+        monitors.home.groups = ["desk-main" "desk-benq"];
       };
     };
     programs = {
