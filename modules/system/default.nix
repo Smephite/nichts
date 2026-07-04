@@ -11,6 +11,7 @@
     ./ssh-ca.nix
     ./ssh-key.nix
     ./system.nix
+    ./tpm-identity.nix
     ./tty.nix
   ];
 }
