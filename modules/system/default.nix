@@ -4,6 +4,7 @@
     ./desktop
     ./gpu
     ./authorized_keys.nix
+    ./fingerprint.nix
     ./fonts.nix
     ./network
     ./nix.nix

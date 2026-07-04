@@ -21,13 +21,11 @@
       allowedTCPPorts = [51820];
     };
   };
-  # Fingerprint
   services = {
     tailscale = {
       enable = true;
       openFirewall = true;
     };
-    fprintd.enable = true;
   };
 
   # See ../../modules
@@ -38,6 +36,10 @@
         hostname = "silverwind";
       };
 
+      fingerprint = {
+        enable = true;
+        disableOnLidClose = true;
+      };
       tty.enable = true;
       udev = {
         microchip.enable = true;
