@@ -10,7 +10,7 @@ in {
   options.modules.services.docker = {
     enable = mkEnableOption "docker";
 
-    package = mkPackageOption pkgs "docker_28" {};
+    package = mkPackageOption pkgs "docker_29" {};
 
     dataRoot = mkOption {
       type = types.str;
