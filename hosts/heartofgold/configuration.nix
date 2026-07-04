@@ -28,6 +28,8 @@
         windowManager = "cosmic";
         monitors.home.groups = ["desk-main" "desk-benq"];
       };
+
+      tpmIdentity.enable = true;
     };
     programs = {
       #firefox.enable = true;
