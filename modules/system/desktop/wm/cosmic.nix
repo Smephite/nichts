@@ -20,6 +20,10 @@ in {
     };
   };
   config = lib.mkIf cosmicCfg.enable {
+    # Workaround for display artifacts with AMD iGPU + external monitors
+    # https://github.com/pop-os/cosmic-comp/issues/2336
+    environment.variables.COSMIC_DISABLE_DIRECT_SCANOUT = "y";
+
     # Enable the COSMIC login + desktop env
     services.desktopManager.cosmic.enable = true;
     #    services.displayManager.cosmic-greeter.enable = true;
