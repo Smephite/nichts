@@ -51,7 +51,13 @@
         windowManager = "cosmic";
         internalMonitor = "framework-panel";
         monitors = {
-          home.groups = ["desk-main"];
+          home = {
+            groups = ["desk-main"];
+            internalMonitorOverrides.position = {
+              x = 0;
+              y = 1530;
+            };
+          };
           work.groups = ["work-externals"];
         };
       };
