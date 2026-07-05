@@ -208,6 +208,19 @@ in {
       group = "root";
     };
 
+    systemd.tmpfiles.rules = [
+      "d /var/run/vpnc 0777 root root -"
+    ];
+
+    security.polkit.extraConfig = ''
+      polkit.addRule(function(action, subject) {
+        if (action.id.indexOf("org.freedesktop.resolve1.") === 0 &&
+            subject.user === "${config.modules.system.username}") {
+          return polkit.Result.YES;
+        }
+      });
+    '';
+
     environment.systemPackages = lib.mapAttrsToList makeScript cfg.scripts.profiles;
   };
 }
