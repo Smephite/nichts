@@ -64,6 +64,9 @@ in {
 
   # ../../modules
   modules = {
+    sshfs-mounts = {
+      tongariro.enable = true;
+    };
     programs = {
       fish.enable = lib.mkDefault true;
       starship.enable = lib.mkDefault true;

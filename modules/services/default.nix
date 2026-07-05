@@ -8,5 +8,6 @@
     ./forgejo-runner.nix
     ./pipewire.nix
     ./ssh-notify.nix
+    ./sshfs-mount.nix
   ];
 }
