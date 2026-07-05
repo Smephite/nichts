@@ -65,7 +65,7 @@ in {
             ];
             ExecStart = let
               jumpFlag = lib.optionalString (mount.jumpHost != null) "-o ProxyJump=${mount.jumpHost} ";
-            in "${pkgs.sshfs}/bin/sshfs -f -o reconnect,delay_connect=10,ServerAliveInterval=15,ServerAliveCountMax=3 ${jumpFlag}${mount.uri}:${mount.remotePath} ${mPath}";
+            in "${pkgs.sshfs}/bin/sshfs -f -o reconnect,ServerAliveInterval=15,ServerAliveCountMax=3 ${jumpFlag}${mount.uri}:${mount.remotePath} ${mPath}";
             ExecStop = "${pkgs.fuse3}/bin/fusermount3 -u ${mPath}";
             Restart = "on-failure";
             RestartSec = "60";
