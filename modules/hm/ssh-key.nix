@@ -60,18 +60,6 @@ in {
         # Placement is handled by the activation script below.
       };
 
-      # Pub/cert are managed by home.file so home-manager owns the symlinks
-      # into its own gc-rooted generation profile. A raw symlink from $HOME
-      # into ${self}/... dangles when the source store path is collected.
-      home.file = mkMerge [
-        (mkIf pubKeyFileExists {
-          ".ssh/${userKeyName}.pub".source = pubKeyFile;
-        })
-        (mkIf certKeyFileExists {
-          ".ssh/${userKeyName}-cert.pub".source = certKeyFile;
-        })
-      ];
-
       home.activation.sshKeyFromSecret = lib.hm.dag.entryAfter ["writeBoundary"] ''
         DECRYPTED="${config.age.secrets.${secretName}.path}"
         USER_KEY="${userKeyPath}"
@@ -90,6 +78,18 @@ in {
 
         $DRY_RUN_CMD mkdir -p "$(dirname "$USER_KEY")"
         $DRY_RUN_CMD ln -sf "$DECRYPTED" "$USER_KEY"
+
+        # Copy (not symlink) pub/cert: store paths are invalid outside the
+        # sandbox and vanish if the machine-local store is wiped.
+        ${optionalString pubKeyFileExists ''
+          $DRY_RUN_CMD rm -f "${userPubKeyPath}"
+          $DRY_RUN_CMD install -m 0644 "${pubKeyFile}" "${userPubKeyPath}"
+        ''}
+
+        ${optionalString certKeyFileExists ''
+          $DRY_RUN_CMD rm -f "${userCertKeyPath}"
+          $DRY_RUN_CMD install -m 0644 "${certKeyFile}" "${userCertKeyPath}"
+        ''}
       '';
     })
   ]);
