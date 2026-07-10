@@ -39,8 +39,25 @@ NP_BIN="${NP_BIN:-$HOME/.local/bin/nix-portable}"
 NIX_HOME="${HOME}/nix-home"
 NP_DIR="${NP_LOCATION}/.nix-portable"
 
-# Runtime: bwrap when unprivileged user namespaces work (near-native speed,
-# real mount namespace so autofs/SEPP work), proot as ptrace-based fallback.
+# Session runtime, in order of preference:
+#   singularity — setuid, real mount ns with identity uid mapping: root-owned
+#                 files keep their owner, so tools that check ownership
+#                 (ssh Include, license daemons, ...) work unmodified
+#   bwrap       — unprivileged userns: fast, but root-owned files appear as
+#                 nobody inside
+#   proot       — ptrace fallback, slow but needs nothing from the kernel
+if [[ -z "${SANDBOX_RUNTIME:-}" ]]; then
+  if [[ -u /usr/libexec/singularity/bin/starter-suid ]] && command -v singularity >/dev/null; then
+    SANDBOX_RUNTIME=singularity
+  elif unshare -U -r true 2>/dev/null; then
+    SANDBOX_RUNTIME=bwrap
+  else
+    SANDBOX_RUNTIME=proot
+  fi
+fi
+
+# nix-portable (used to bootstrap the store and build activations) only knows
+# bwrap/proot — keep its runtime choice independent of the session runtime.
 if [[ -z "${NP_RUNTIME:-}" ]]; then
   if unshare -U -r true 2>/dev/null; then
     NP_RUNTIME=bwrap
@@ -48,7 +65,7 @@ if [[ -z "${NP_RUNTIME:-}" ]]; then
     NP_RUNTIME=proot
   fi
 fi
-export NP_LOCATION NP_RUNTIME
+export NP_LOCATION NP_RUNTIME SANDBOX_RUNTIME
 
 export NIX_CONFIG="use-sqlite-wal = false
 fsync-metadata = false
@@ -107,7 +124,37 @@ _top_level_dirs() {
   find / -mindepth 1 -maxdepth 1 -not -name nix -not -name dev -not -name proc 2>/dev/null
 }
 
-if [[ "$NP_RUNTIME" == "bwrap" ]]; then
+if [[ "$SANDBOX_RUNTIME" == "singularity" ]]; then
+  # Container root: empty dir with mount points for every host top-level dir.
+  # Built at call time so it adapts to the current machine and bootstrapping.
+  _sandbox_args() {
+    local root="$NP_DIR/singularity-root" p
+    SANDBOX_ROOT="$root"
+    SANDBOX_ARGS=(--no-home -B "$NP_DIR/nix:/nix")
+    mkdir -p "$root/nix"
+    for p in /*; do
+      case "$p" in /nix|/dev|/proc|/sys) continue ;; esac
+      if [[ -L "$p" ]]; then
+        ln -sfn "$(readlink "$p")" "$root$p"
+      elif [[ -d "$p" ]]; then
+        mkdir -p "$root$p"
+        SANDBOX_ARGS+=(-B "$p")
+      fi
+    done
+  }
+
+  sandbox_run() {
+    local SANDBOX_ARGS SANDBOX_ROOT
+    _sandbox_args
+    singularity --silent exec "${SANDBOX_ARGS[@]}" "$SANDBOX_ROOT" "$@"
+  }
+
+  sandbox_exec() {
+    local SANDBOX_ARGS SANDBOX_ROOT
+    _sandbox_args
+    exec singularity --silent exec "${SANDBOX_ARGS[@]}" "$SANDBOX_ROOT" "${NIX_ENV_ARGS[@]}" "$@"
+  }
+elif [[ "$SANDBOX_RUNTIME" == "bwrap" ]]; then
   BWRAP="${BWRAP:-$(command -v bwrap 2>/dev/null || echo "$NP_DIR/bin/bwrap")}"
 
   # Args are built at call time: on a fresh machine $NP_DIR only exists after
@@ -118,6 +165,15 @@ if [[ "$NP_RUNTIME" == "bwrap" ]]; then
     for p in $(_top_level_dirs); do
       SANDBOX_ARGS+=(--bind "$p" "$p")
     done
+    # Root-owned files appear as nobody inside the user namespace, and ssh
+    # rejects Include'd config it can't attribute to root or the user — bind
+    # user-owned copies of /etc/ssh/ssh_config.d over the originals.
+    if [[ -d /etc/ssh/ssh_config.d ]]; then
+      local ssh_conf_copy="$NP_DIR/etc-ssh-config.d"
+      mkdir -p "$ssh_conf_copy"
+      cp -f /etc/ssh/ssh_config.d/*.conf "$ssh_conf_copy/" 2>/dev/null || true
+      SANDBOX_ARGS+=(--ro-bind "$ssh_conf_copy" /etc/ssh/ssh_config.d)
+    fi
   }
 
   # Run a command inside the sandbox, returning when done
