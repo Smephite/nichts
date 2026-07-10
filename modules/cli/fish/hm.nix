@@ -31,6 +31,10 @@ in {
           name = "puffer";
           inherit (pkgs.fishPlugins.puffer) src;
         }
+        {
+         name = "bass";
+         inherit (pkgs.fishPlugins.bass) src;
+        }
       ];
       shellAbbrs = mkMerge [
         {

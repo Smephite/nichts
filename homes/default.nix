@@ -18,7 +18,7 @@
     ../modules/hm.nix
   ];
 in {
-  ethz = home-manager.lib.homeManagerConfiguration {
+  kberszin = home-manager.lib.homeManagerConfiguration {
     inherit pkgs;
     extraSpecialArgs = specialArgs;
     modules =

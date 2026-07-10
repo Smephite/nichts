@@ -30,5 +30,9 @@ in {
     rust-analyzer
     clippy
     nil
+
+    # gui
+    zotero
+    zed-editor
   ];
 }
