@@ -143,10 +143,12 @@ if [[ "$SANDBOX_RUNTIME" == "singularity" ]]; then
     done
   }
 
+  # singularity resets HOME to the passwd entry — re-set the caller's value
+  # inside (sandbox_exec needs no equivalent: env -i sets HOME explicitly)
   sandbox_run() {
     local SANDBOX_ARGS SANDBOX_ROOT
     _sandbox_args
-    singularity --silent exec "${SANDBOX_ARGS[@]}" "$SANDBOX_ROOT" "$@"
+    singularity --silent exec "${SANDBOX_ARGS[@]}" "$SANDBOX_ROOT" env "HOME=$HOME" "$@"
   }
 
   sandbox_exec() {
