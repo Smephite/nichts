@@ -52,7 +52,7 @@
         internalMonitor = "framework-panel";
         monitors = {
           home = {
-            groups = ["desk-main"];
+            groups = ["desk-main" "desk-benq"];
             internalMonitorOverrides.position = {
               x = 0;
               y = 1530;
