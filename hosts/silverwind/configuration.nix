@@ -66,6 +66,9 @@
       librepods.enable = true;
       #firefox.enable = true;
     };
+    services = {
+      tv7.enable = true;
+    };
   };
 
   programs.steam = {

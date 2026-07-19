@@ -9,5 +9,6 @@
     ./pipewire.nix
     ./ssh-notify.nix
     ./sshfs-mount.nix
+    ./tv7.nix
   ];
 }

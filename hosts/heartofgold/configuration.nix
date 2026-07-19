@@ -34,6 +34,9 @@
     programs = {
       #firefox.enable = true;
     };
+    services = {
+      tv7.enable = true;
+    };
   };
 
   # This value determines the NixOS release from which the default
