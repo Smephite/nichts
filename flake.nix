@@ -57,17 +57,12 @@
 
     zed.url = "github:zed-industries/zed";
 
-    claude-desktop = {
-      url = "github:Reginleif88/claude-cowork-nix";
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nichts-unfree = {
       url = "git+ssh://git@github.com/Smephite/nichts-unfree";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    claude-code = {
-      url = "github:sadjow/claude-code-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

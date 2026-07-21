@@ -10,7 +10,6 @@
     texlab
     zathura
 
-    claude-code
     zotero-mcp
     optolith
     thedarkaid

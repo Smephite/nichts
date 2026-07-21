@@ -15,7 +15,6 @@
     inputs.agenix.homeManagerModules.default
     ../overlay.nix
     inputs.nix-index-database.homeModules.default
-    inputs.claude-desktop.homeManagerModules.default
     ../modules/hm.nix
   ];
 in {

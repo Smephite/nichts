@@ -55,11 +55,6 @@ in {
     gnupg.agent = {
       enable = true;
     };
-    claude-desktop = {
-      enable = true;
-      fhs = true;
-      claudeCodePackage = pkgs.claude-code;
-    };
   };
 
   # ../../modules

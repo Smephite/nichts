@@ -2,10 +2,9 @@
   pkgs,
   pkgs-unstable,
   ...
-}:
-let
-  python-packages =
-    ps: with ps; [
+}: let
+  python-packages = ps:
+    with ps; [
       pandas
       numpy
       opencv4
@@ -13,8 +12,7 @@ let
       uv
       pyserial
     ];
-in
-{
+in {
   environment.systemPackages = with pkgs; [
     # communication
     pkgs-unstable.signal-desktop
@@ -72,6 +70,10 @@ in
     radicle-tui
     nil
     zed-editor
+
+    claude-code
+    claude-desktop
+    herdr
 
     gh
     glab

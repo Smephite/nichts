@@ -13,7 +13,6 @@
     tesseract
     poppler-utils
 
-    claude-code
     zotero-mcp
   ];
 }
