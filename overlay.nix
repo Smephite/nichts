@@ -8,8 +8,11 @@
   add_zed = final: prev: {
     zed-editor = inputs.zed.packages.${prev.stdenv.hostPlatform.system}.default;
   };
-  add_llm_agents = final: prev:
-    (inputs.llm-agents.overlays.shared-nixpkgs final prev).llm-agents;
+  add_llm_agents = final: prev: let
+    agents = (inputs.llm-agents.overlays.shared-nixpkgs final prev).llm-agents;
+  in {
+    inherit (agents) claude-code claude-desktop herdr;
+  };
   add_local_pkgs = final: prev:
     import ./pkgs {
       pkgs = final;
