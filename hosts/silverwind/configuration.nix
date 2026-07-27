@@ -43,6 +43,7 @@
       tty.enable = true;
       udev = {
         microchip.enable = true;
+        stm.enable = true;
       };
       desktop = {
         apps = {
