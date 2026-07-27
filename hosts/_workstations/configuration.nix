@@ -61,6 +61,11 @@ in {
   modules = {
     sshfs-mounts = {
       tongariro.enable = true;
+      gf12 = {
+        enable = true;
+        remotePath = "/usr/pack/gf-12-kgf";
+        uri = "tongariro";
+      };
     };
     programs = {
       fish.enable = lib.mkDefault true;
