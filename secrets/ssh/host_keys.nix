@@ -1,7 +1,8 @@
 let
   keys = import ./public_keys.nix;
   hasPrefix = pre: str:
-    builtins.stringLength str >= builtins.stringLength pre
+    builtins.stringLength str
+    >= builtins.stringLength pre
     && builtins.substring 0 (builtins.stringLength pre) str == pre;
   # Match `host-<name>` (the primary recipient — TPM or SSH pubkey) but not
   # `host-ssh-<name>` (the raw-SSH rollback belt / CA input).

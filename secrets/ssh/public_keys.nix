@@ -5,15 +5,16 @@ let
 
   readTrim = path: builtins.replaceStrings ["\n"] [""] (builtins.readFile path);
   hasPrefix = pre: str:
-    builtins.stringLength str >= builtins.stringLength pre
+    builtins.stringLength str
+    >= builtins.stringLength pre
     && builtins.substring 0 (builtins.stringLength pre) str == pre;
   concatMap = f: list: builtins.concatLists (map f list);
   unique = list:
     builtins.attrNames (builtins.listToAttrs (map (n: {
-      name = n;
-      value = null;
-    })
-    list));
+        name = n;
+        value = null;
+      })
+      list));
 
   # Extract the base name of a `<base>.pub` or `<base>.age` filename, or null.
   extractBase = name: let
