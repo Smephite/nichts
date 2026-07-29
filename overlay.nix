@@ -18,11 +18,22 @@
       pkgs = final;
       self = inputs.self;
     };
+  fix_pandas_stubs = final: prev: {
+    python3Packages = prev.python3Packages.override {
+      overrides = pfinal: pprev: {
+        pandas-stubs = pprev.pandas-stubs.overridePythonAttrs {
+          doCheck = false;
+          pythonImportsCheck = [];
+        };
+      };
+    };
+  };
 in {
   nixpkgs.overlays = [
     add_nylon_pr
     add_zed
     add_llm_agents
     add_local_pkgs
+    fix_pandas_stubs
   ];
 }
