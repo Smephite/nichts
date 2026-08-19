@@ -14,8 +14,8 @@ pkgs.writeShellApplication {
     fsync-metadata = false
     filter-syscalls = false
     sandbox = false
-    extra-substituters = https://cache.kai.run/nixos https://zed.cachix.org
-    extra-trusted-public-keys = nixos:m1C4Znb4JdZre2SJyregJz/kDU3ELalD8qEJc/dP0KE= zed.cachix.org-1:/pHQ6dpMsAZk2DiP4WCL0p9YDNKWj2Q5FL20bNmw1cU="
+    extra-substituters = https://cache.kai.run/nixos https://zed.cachix.org https://cache.numtide.com
+    extra-trusted-public-keys = nixos:m1C4Znb4JdZre2SJyregJz/kDU3ELalD8qEJc/dP0KE= zed.cachix.org-1:/pHQ6dpMsAZk2DiP4WCL0p9YDNKWj2Q5FL20bNmw1cU= niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
 
         mkdir -p "$NIX_HOME"
 
