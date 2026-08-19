@@ -22,7 +22,7 @@ in {
     element-desktop
     discord
     zoom-us
-    #teams-for-linux
+    teams-for-linux
 
     # storage
     nextcloud-client
@@ -42,6 +42,7 @@ in {
     yubioath-flutter
     yubikey-manager
     age-plugin-yubikey
+    bitwarden-desktop
 
     # media
     spotify
