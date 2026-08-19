@@ -41,6 +41,27 @@
     exit $rc
   '';
 
+  # Run a command inside the sandbox with all nix paths dropped from PATH,
+  # so spawned children (sh, make, ...) resolve to host binaries. Needed for
+  # SEPP wrappers that LD_PRELOAD host libs (e.g. fs_compiler on rhel8):
+  # the nix loader can't resolve their deps and dies on libz.so.1.
+  no-nix = pkgs.writeShellScriptBin "no-nix" ''
+    if [ $# -eq 0 ]; then
+      echo "usage: no-nix <command> [args...]" >&2
+      exit 2
+    fi
+    path=""
+    IFS=:
+    for p in $PATH; do
+      case "$p" in
+        /nix/* | */.nix-profile/*) ;;
+        *) path="''${path:+$path:}$p" ;;
+      esac
+    done
+    unset IFS
+    PATH="$path" exec "$@"
+  '';
+
   # SEPP tools that need setuid helpers on the host (e.g. nested singularity)
   # and therefore cannot run inside the sandbox — shimmed to run via on-host.
   hostRunTools = ["oseda"];
@@ -52,7 +73,7 @@
     hostRunTools;
 in {
   home.packages = with pkgs;
-    [on-host]
+    [on-host no-nix]
     ++ hostRunShims
     ++ [
     inputs.agenix.packages.${stdenv.hostPlatform.system}.default
@@ -71,6 +92,8 @@ in {
     rust-analyzer
     clippy
     nil
+    gitlab-ci-local
+    glab
 
     # gui
     zotero
