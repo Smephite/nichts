@@ -40,12 +40,10 @@ in {
       netrc-file = config.age.secrets.attic-pull-token.path;
       extra-substituters = [
         "https://zed.cachix.org"
-        "https://cache.garnix.io"
         "https://cache.kai.run/nixos"
       ];
       extra-trusted-public-keys = [
         "zed.cachix.org-1:/pHQ6dpMsAZk2DiP4WCL0p9YDNKWj2Q5FL20bNmw1cU="
-        "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
         "nixos:m1C4Znb4JdZre2SJyregJz/kDU3ELalD8qEJc/dP0KE="
       ];
       extra-experimental-features = [

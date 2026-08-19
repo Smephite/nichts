@@ -15,7 +15,7 @@
 in {
   environment.systemPackages = with pkgs; [
     # communication
-    pkgs-unstable.signal-desktop
+    pkgs.signal-desktop
     zapzap # whatsapp
     slack
     mattermost-desktop
@@ -39,7 +39,7 @@ in {
     planify
 
     # Security
-    pkgs-unstable.yubioath-flutter
+    yubioath-flutter
     yubikey-manager
     age-plugin-yubikey
 
