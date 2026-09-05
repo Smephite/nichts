@@ -43,6 +43,7 @@ in {
     yubikey-manager
     age-plugin-yubikey
     bitwarden-desktop
+    rbw
 
     # media
     spotify

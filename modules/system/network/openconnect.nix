@@ -15,6 +15,7 @@
 
   ykman = "${pkgs.yubikey-manager}/bin/ykman";
   oathtool = "${pkgs.oath-toolkit}/bin/oathtool";
+  rbw = "${pkgs.rbw}/bin/rbw";
   openconnect = "/run/wrappers/bin/openconnect";
   yq = "${pkgs.yq-go}/bin/yq";
 
@@ -30,6 +31,7 @@
   #     group:           <tunnel group>   (optional)
   #     totp:            yubikey          (or a base32 TOTP secret, or omitted)
   #     yubikey_account: <account>        (required when totp: yubikey)
+  #     rbw_entry:       <name>           (optional — Bitwarden fallback for TOTP)
   # ---------------------------------------------------------------------------
 
   profileModule = types.submodule {
@@ -98,6 +100,13 @@
             description = "Path to a file containing the base32 TOTP secret. Used when file is null and method = totp.";
           };
         };
+        rbw = {
+          entry = mkOption {
+            type = types.str;
+            default = "";
+            description = "Bitwarden entry name for rbw TOTP fallback when YubiKey is unavailable.";
+          };
+        };
       };
     };
   };
@@ -120,14 +129,23 @@
 
         if [[ "$TOTP" == "yubikey" ]]; then
           YUBIKEY_ACCOUNT=$(vpn yubikey_account)
+          RBW_ENTRY=$(vpn rbw_entry | grep -v '^null$' || true)
           ${lib.optionalString (profile.oath.yubikey.passwordFile != null) ''
           OATH_PASSWORD=$(cat ${lib.escapeShellArg profile.oath.yubikey.passwordFile})
         ''}
-          OTP=$(${ykman} oath accounts code \
+          if OTP=$(${ykman} oath accounts code \
             ${
           lib.optionalString (profile.oath.yubikey.passwordFile != null) ''--password "$OATH_PASSWORD"''
         } \
-            "$YUBIKEY_ACCOUNT" | awk '{print $NF}')
+            "$YUBIKEY_ACCOUNT" 2>/dev/null | awk '{print $NF}'); then
+            :
+          elif [[ -n "$RBW_ENTRY" ]]; then
+            echo "YubiKey not available, falling back to Bitwarden" >&2
+            OTP=$(${rbw} get --totp "$RBW_ENTRY")
+          else
+            echo "YubiKey not available and no rbw_entry configured" >&2
+            exit 1
+          fi
         elif [[ -n "$TOTP" ]]; then
           OTP=$(${oathtool} --totp --base32 "$TOTP")
         fi
@@ -154,9 +172,19 @@
             ${lib.optionalString (oath.yubikey.passwordFile != null) ''
               OATH_PASSWORD=$(cat ${lib.escapeShellArg oath.yubikey.passwordFile})
             ''}
-            OTP=$(${ykman} oath accounts code \
+            if OTP=$(${ykman} oath accounts code \
               ${lib.optionalString (oath.yubikey.passwordFile != null) ''--password "$OATH_PASSWORD"''} \
-              ${lib.escapeShellArg oath.yubikey.account} | awk '{print $NF}')
+              ${lib.escapeShellArg oath.yubikey.account} 2>/dev/null | awk '{print $NF}'); then
+              :
+            ${lib.optionalString (oath.rbw.entry != "") ''
+              elif true; then
+                echo "YubiKey not available, falling back to Bitwarden" >&2
+                OTP=$(${rbw} get --totp ${lib.escapeShellArg oath.rbw.entry})
+            ''}
+            else
+              echo "YubiKey not available${lib.optionalString (oath.rbw.entry == "") " and no rbw entry configured"}" >&2
+              exit 1
+            fi
           ''
           else ''
             TOTP_SECRET=$(cat ${lib.escapeShellArg oath.totp.secretFile})
