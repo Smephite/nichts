@@ -52,19 +52,31 @@
   mkKanshiProfile = _name: monitors: {
     outputs = map mkKanshiOutput monitors;
   };
+
+  # Catch-all fallback profiles using wildcard outputs.
+  # Kanshi uses first-match, so these must come after specific profiles.
+  fallbackProfiles = [
+    {
+      profile = {
+        name = "fallback";
+        outputs = [{criteria = "*";}];
+      };
+    }
+  ];
 in {
   config = lib.mkIf (wlrWmActive && hasProfiles) {
     home-manager.users.${username} = {
       services.kanshi = {
         enable = true;
         settings =
-          lib.mapAttrsToList (name: monitors: {
-            profile = {
-              name = name;
-              outputs = (mkKanshiProfile name monitors).outputs;
-            };
-          })
-          resolved;
+          (lib.mapAttrsToList (name: monitors: {
+              profile = {
+                name = name;
+                outputs = (mkKanshiProfile name monitors).outputs;
+              };
+            })
+            resolved)
+          ++ fallbackProfiles;
       };
     };
   };
