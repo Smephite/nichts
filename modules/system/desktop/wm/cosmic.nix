@@ -43,6 +43,18 @@ in {
 
     services.system76-scheduler.enable = true;
 
+    # Re-enable connected-but-disabled outputs after resume.
+    # COSMIC sometimes fails to re-enable MST outputs after suspend.
+    systemd.services."cosmic-randr-resume" = {
+      description = "Trigger cosmic-randr output re-enable after resume";
+      after = ["systemd-suspend.service" "systemd-hibernate.service"];
+      wantedBy = ["systemd-suspend.service" "systemd-hibernate.service"];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.systemd}/bin/systemctl --user --machine=${username}@ start cosmic-randr-reenable.service";
+      };
+    };
+
     # Xserver support
     programs.xwayland.enable = lib.mkDefault cosmicCfg.xWayland;
     services.xserver = {
@@ -77,6 +89,25 @@ in {
       sharedModules = [cosmic-manager.homeManagerModules.cosmic-manager];
       users.${username} = {
         wayland.desktopManager.cosmic.enable = true;
+        systemd.user.services."cosmic-randr-reenable" = {
+          Unit.Description = "Re-enable disabled COSMIC outputs";
+          Service = {
+            Type = "oneshot";
+            ExecStart = let
+              script = pkgs.writeShellScript "cosmic-randr-reenable" ''
+                sleep 2
+                ${pkgs.cosmic-randr}/bin/cosmic-randr list 2>/dev/null \
+                  | ${pkgs.gnugrep}/bin/grep -oP '^\S+(?=\s+\(disabled\))' \
+                  | while read -r output; do
+                      echo "Re-enabling $output"
+                      ${pkgs.cosmic-randr}/bin/cosmic-randr enable "$output"
+                    done
+                # Restart kanshi so it re-evaluates profiles with the newly enabled outputs
+                /run/current-system/sw/bin/systemctl --user restart kanshi.service 2>/dev/null || true
+              '';
+            in "${script}";
+          };
+        };
         programs.cosmic-term = {
           enable = true;
           settings = {
