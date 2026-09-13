@@ -69,11 +69,15 @@
   };
 
   modules = {
-    services.caddy = {
-      enable = true;
-      httpPort = 81;
-      httpsPort = 444;
-    };
+    # Disabled: caddy.withPlugins pins a vendor hash that no longer matches
+    # after the nixpkgs 26.05 -> 26.11 bump, and caddy isn't needed here right
+    # now. Re-enable by uncommenting and refreshing the hash in
+    # modules/services/caddy.nix.
+    # services.caddy = {
+    #   enable = true;
+    #   httpPort = 81;
+    #   httpsPort = 444;
+    # };
     services.docker.enable = true;
     system.network.enable = lib.mkForce false;
     system.network.nylon-wg = {
