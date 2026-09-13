@@ -54,6 +54,18 @@ in
       armor = false;
     };
 
+    # kanidm server TLS for the loopback hop. Self-signed and long-lived; the
+    # public certificate is Caddy's. Kept here so the pair is reproducible
+    # rather than hand-placed on the host.
+    "kanidm/starhaven-tls-chain.age" = {
+      publicKeys = [keys.host-starhaven] ++ masterKeys;
+      armor = false;
+    };
+    "kanidm/starhaven-tls-key.age" = {
+      publicKeys = [keys.host-starhaven] ++ masterKeys;
+      armor = false;
+    };
+
     "telegram.age" = {
       publicKeys =
         [

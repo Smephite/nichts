@@ -4,6 +4,7 @@
     ./auto-update.nix
     ./caddy.nix
     ./sso.nix
+    ./kanidm.nix
     ./kanidm-mail-sender.nix
     ./docker.nix
     ./forgejo.nix

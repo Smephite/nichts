@@ -88,6 +88,19 @@
       whitelistDomains = [".kai.run"];
     };
 
+    # kanidm itself. Native rather than Docker: everything else on this host
+    # already is, and Docker 29 took the ingress down once.
+    #
+    # TLS here is only the Caddy -> kanidm hop on loopback. kanidm refuses to
+    # start without a certificate, so it gets a long-lived self-signed one from
+    # agenix; the public certificate is Caddy's wildcard.
+    services.kanidm = {
+      enable = true;
+      domain = "idm.kai.run";
+      origin = "https://idm.kai.run";
+      bindAddress = "127.0.0.1:8443";
+    };
+
     # Drains kanidm's message queue so credential-reset links arrive by email.
     services.kanidmMailSender = {
       enable = true;
