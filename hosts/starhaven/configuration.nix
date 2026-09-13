@@ -74,8 +74,8 @@
     # touching production routing. Moves to 80/443 in phase 4.
     services.caddy = {
       enable = true;
-      httpPort = 9080;
-      httpsPort = 9443;
+      httpPort = 80;
+      httpsPort = 443;
     };
 
     # Forward auth for Caddy: oauth2-proxy against kanidm, plus the redis
