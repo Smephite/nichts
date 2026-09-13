@@ -59,6 +59,20 @@
               y = 1530;
             };
           };
+          home-no-dell = {
+            groups = ["desk-gigabyte" "desk-benq"];
+            internalMonitorOverrides.position = {
+              x = 0;
+              y = 1530;
+            };
+          };
+          home-gigabyte-only = {
+            groups = ["desk-gigabyte"];
+            internalMonitorOverrides.position = {
+              x = 0;
+              y = 1530;
+            };
+          };
           work.groups = ["work-externals"];
         };
       };

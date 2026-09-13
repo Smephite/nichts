@@ -23,8 +23,10 @@
         refresh_rate = 59.973;
       };
       benq-gl2450 = {
+        # EDID is mangled by VGA-to-DisplayPort adapter (Realtek chip)
         name = "BenQ";
-        model = "BenQ GL2450";
+        manufacturer = "Invalid Vendor Codename - RTK";
+        model = "0x1D1A";
         resolution = {
           x = 1920;
           y = 1080;
@@ -91,6 +93,15 @@
           };
           scale = 0.9267;
           transform = 1;
+        };
+      };
+      desk-gigabyte = {
+        gigabyte-m34wq = {
+          position = {
+            x = 2072;
+            y = 293;
+          };
+          scale = 1.1;
         };
       };
       work-externals = {
