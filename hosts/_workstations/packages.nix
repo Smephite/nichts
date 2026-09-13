@@ -44,6 +44,7 @@ in {
     age-plugin-yubikey
     bitwarden-desktop
     rbw
+    pinentry-gnome3
 
     # media
     spotify

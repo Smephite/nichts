@@ -47,6 +47,10 @@ in
       publicKeys = [keys.host-starhaven] ++ masterKeys;
       armor = false;
     };
+    "wg.unifi.age" = {
+      publicKeys = [keys.host-starhaven] ++ masterKeys;
+      armor = false;
+    };
 
     "nylon.central.age" = {
       publicKeys = [keys.host-starhaven keys.host-c3] ++ masterKeys;
@@ -69,6 +73,16 @@ in
 
     "radicle.starhaven.age" = {
       publicKeys = [keys.host-starhaven] ++ masterKeys;
+      armor = false;
+    };
+
+    "rbw.age" = {
+      publicKeys =
+        [
+          keys.host-heartofgold
+          keys.host-silverwind
+        ]
+        ++ masterKeys;
       armor = false;
     };
 
