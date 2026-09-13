@@ -69,15 +69,26 @@
   };
 
   modules = {
-    # Disabled: caddy.withPlugins pins a vendor hash that no longer matches
-    # after the nixpkgs 26.05 -> 26.11 bump, and caddy isn't needed here right
-    # now. Re-enable by uncommenting and refreshing the hash in
-    # modules/services/caddy.nix.
-    # services.caddy = {
-    #   enable = true;
-    #   httpPort = 81;
-    #   httpsPort = 444;
-    # };
+    # Phase 2 of the kanidm SSO migration. Traefik keeps 80/443; Caddy runs
+    # alongside it on 9080/9443 so it can be exercised end to end without
+    # touching production routing. Moves to 80/443 in phase 4.
+    services.caddy = {
+      enable = true;
+      httpPort = 9080;
+      httpsPort = 9443;
+    };
+
+    # Forward auth for Caddy: oauth2-proxy against kanidm, plus the redis
+    # session store it needs. Both bind loopback only.
+    services.sso = {
+      enable = true;
+      issuerUrl = "https://idm.kai.run/oauth2/openid/proxy";
+      redirectURL = "https://sso.kai.run:9443/oauth2/callback";
+      cookieDomain = ".kai.run";
+      # Include the port until Caddy moves to 443, or post-login redirects
+      # are refused.
+      whitelistDomains = [".kai.run:9443"];
+    };
     services.docker.enable = true;
     system.network.enable = lib.mkForce false;
     system.network.nylon-wg = {

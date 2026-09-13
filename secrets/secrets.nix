@@ -30,6 +30,24 @@ in
       armor = false;
     };
 
+    # oauth2-proxy (forward auth against kanidm)
+    "sso/starhaven-client-secret.age" = {
+      publicKeys = [keys.host-starhaven] ++ masterKeys;
+      armor = false;
+    };
+    "sso/starhaven-cookie-secret.age" = {
+      publicKeys = [keys.host-starhaven] ++ masterKeys;
+      armor = false;
+    };
+    "sso/c3-client-secret.age" = {
+      publicKeys = [keys.host-c3] ++ masterKeys;
+      armor = false;
+    };
+    "sso/c3-cookie-secret.age" = {
+      publicKeys = [keys.host-c3] ++ masterKeys;
+      armor = false;
+    };
+
     "telegram.age" = {
       publicKeys =
         [

@@ -3,6 +3,7 @@
     ./attic-push.nix
     ./auto-update.nix
     ./caddy.nix
+    ./sso.nix
     ./docker.nix
     ./forgejo.nix
     ./forgejo-runner.nix
