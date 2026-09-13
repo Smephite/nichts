@@ -7,6 +7,13 @@
 }:
 with lib; let
   cfg = config.modules.services.caddy;
+  # A secret that has not been created yet must not make the whole config
+  # unbuildable, so fall back to a constant. hashFile throws on a missing file.
+  hashIfExists = f:
+    if builtins.pathExists f
+    then builtins.hashFile "sha256" f
+    else "absent";
+
   hostname = config.networking.hostName;
   caddyPkg = pkgs.caddy.withPlugins {
     plugins = ["github.com/caddy-dns/cloudflare@v0.2.4"];
@@ -86,9 +93,9 @@ in {
       # Hash the ENCRYPTED source, not the decrypted path: the decrypted path
       # is a constant string and would never trigger anything.
       restartTriggers = [
-        (builtins.hashFile "sha256" config.age.secrets.caddyfile.file)
-        (builtins.hashFile "sha256" config.age.secrets.caddy-host-services.file)
-        (builtins.hashFile "sha256" config.age.secrets.caddy-env.file)
+        (hashIfExists config.age.secrets.caddyfile.file)
+        (hashIfExists config.age.secrets.caddy-host-services.file)
+        (hashIfExists config.age.secrets.caddy-env.file)
       ];
       serviceConfig = {
         EnvironmentFile = config.age.secrets.caddy-env.path;

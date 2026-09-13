@@ -6,6 +6,12 @@
 }:
 with lib; let
   cfg = config.modules.services.sso;
+  # A secret that has not been created yet must not make the whole config
+  # unbuildable, so fall back to a constant. hashFile throws on a missing file.
+  hashIfExists = f:
+    if builtins.pathExists f
+    then builtins.hashFile "sha256" f
+    else "absent";
 in {
   # oauth2-proxy + redis, the forward-auth layer Caddy calls.
   #
@@ -115,8 +121,8 @@ in {
     # Same reasoning as caddy.nix: oauth2-proxy reads its secrets once at
     # startup, so a changed secret needs an explicit restart.
     systemd.services.oauth2-proxy.restartTriggers = [
-      (builtins.hashFile "sha256" config.age.secrets.oauth2-proxy-client-secret.file)
-      (builtins.hashFile "sha256" config.age.secrets.oauth2-proxy-cookie-secret.file)
+      (hashIfExists config.age.secrets.oauth2-proxy-client-secret.file)
+      (hashIfExists config.age.secrets.oauth2-proxy-cookie-secret.file)
     ];
 
     services.oauth2-proxy = {
@@ -129,6 +135,10 @@ in {
       httpAddress = "http://${cfg.listenAddress}";
       reverseProxy = true;
       email.domains = ["*"];
+      # Dedicated option rather than extraConfig: the module warns loudly if
+      # this is unset, because an unset value trusts every source IP to send
+      # X-Forwarded-* headers.
+      trustedProxyIP = cfg.trustedProxyIPs;
 
       cookie = {
         secretFile = config.age.secrets.oauth2-proxy-cookie-secret.path;
@@ -154,10 +164,11 @@ in {
         # header family.
         set-xauthrequest = true;
 
-        # Uses the real email claim. Every person account therefore needs a
-        # mail attribute, or login fails - which is the point: it makes mail
-        # mandatory rather than optional.
-        #   kanidm person update <name> --mail <addr>
+        # Identify users by preferred_username, not email. oauth2-proxy
+        # requires *some* email-ish claim to build a session, and using the
+        # username means an account without a mail attribute can still log in.
+        # Mail is still used for credential-reset messages via the mail sender.
+        oidc-email-claim = "preferred_username";
 
         session-store-type = "redis";
         redis-connection-url = "redis://127.0.0.1:${toString cfg.redisPort}";
@@ -165,7 +176,6 @@ in {
         skip-provider-button = true;
         upstream = "static://202";
         whitelist-domain = cfg.whitelistDomains;
-        trusted-proxy-ip = cfg.trustedProxyIPs;
       };
     };
   };

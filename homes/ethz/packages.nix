@@ -76,27 +76,27 @@ in {
     [on-host no-nix]
     ++ hostRunShims
     ++ [
-    inputs.agenix.packages.${stdenv.hostPlatform.system}.default
-    attic-client
+      inputs.agenix.packages.${stdenv.hostPlatform.system}.default
+      attic-client
 
-    # dev
-    nixd
-    alejandra
-    gnumake
-    (python3.withPackages python-packages)
-    nodejs
-    gcc
-    gdb
-    cargo
-    rustc
-    rust-analyzer
-    clippy
-    nil
-    gitlab-ci-local
-    glab
+      # dev
+      nixd
+      alejandra
+      gnumake
+      (python3.withPackages python-packages)
+      nodejs
+      gcc
+      gdb
+      cargo
+      rustc
+      rust-analyzer
+      clippy
+      nil
+      gitlab-ci-local
+      glab
 
-    # gui
-    zotero
-    zed-editor
-  ];
+      # gui
+      zotero
+      zed-editor
+    ];
 }

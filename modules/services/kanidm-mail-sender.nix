@@ -7,6 +7,13 @@
 }:
 with lib; let
   cfg = config.modules.services.kanidmMailSender;
+  # A secret that has not been created yet must not make the whole config
+  # unbuildable, so fall back to a constant. hashFile throws on a missing file.
+  hashIfExists = f:
+    if builtins.pathExists f
+    then builtins.hashFile "sha256" f
+    else "absent";
+
   clientConfig = pkgs.writeText "kanidm-mail-sender-client.toml" ''
     uri = "${cfg.clientUri}"
   '';
@@ -59,7 +66,7 @@ in {
       # The config is a runtime secret, so its content changing alters no store
       # path. Without this, a rebuild would leave the old config running.
       restartTriggers = [
-        (builtins.hashFile "sha256" config.age.secrets.kanidm-mail-sender.file)
+        (hashIfExists config.age.secrets.kanidm-mail-sender.file)
       ];
 
       serviceConfig = {
