@@ -64,7 +64,12 @@ in {
       gf12 = {
         enable = true;
         remotePath = "/usr/pack/gf-12-kgf";
-        uri = "tongariro";
+        uri = "larain";
+      };
+      kberszin = {
+        enable = true;
+        remotePath = "/home/kberszin";
+        uri = "larain";
       };
     };
     programs = {
