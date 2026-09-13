@@ -112,6 +112,13 @@ in {
       appendOnly = false;
     };
 
+    # Same reasoning as caddy.nix: oauth2-proxy reads its secrets once at
+    # startup, so a changed secret needs an explicit restart.
+    systemd.services.oauth2-proxy.restartTriggers = [
+      (builtins.hashFile "sha256" config.age.secrets.oauth2-proxy-client-secret.file)
+      (builtins.hashFile "sha256" config.age.secrets.oauth2-proxy-cookie-secret.file)
+    ];
+
     services.oauth2-proxy = {
       enable = true;
       provider = "oidc";
@@ -147,9 +154,10 @@ in {
         # header family.
         set-xauthrequest = true;
 
-        # Accounts without a mail attribute emit no email claim, and
-        # oauth2-proxy refuses to build a session without one.
-        oidc-email-claim = "preferred_username";
+        # Uses the real email claim. Every person account therefore needs a
+        # mail attribute, or login fails - which is the point: it makes mail
+        # mandatory rather than optional.
+        #   kanidm person update <name> --mail <addr>
 
         session-store-type = "redis";
         redis-connection-url = "redis://127.0.0.1:${toString cfg.redisPort}";

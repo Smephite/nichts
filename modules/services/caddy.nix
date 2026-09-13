@@ -80,6 +80,16 @@ in {
     systemd.services.caddy = {
       after = ["agenix.service"];
       wants = ["agenix.service"];
+      # The Caddyfile lives in runtime secrets, so its content changing alters
+      # no store path: nixos-rebuild would report success and leave the old
+      # config running. Restart on the decrypted paths instead.
+      # Hash the ENCRYPTED source, not the decrypted path: the decrypted path
+      # is a constant string and would never trigger anything.
+      restartTriggers = [
+        (builtins.hashFile "sha256" config.age.secrets.caddyfile.file)
+        (builtins.hashFile "sha256" config.age.secrets.caddy-host-services.file)
+        (builtins.hashFile "sha256" config.age.secrets.caddy-env.file)
+      ];
       serviceConfig = {
         EnvironmentFile = config.age.secrets.caddy-env.path;
         ExecStart = mkForce ["" "${caddyPkg}/bin/caddy run --config ${wrapperConfig} --adapter caddyfile"];

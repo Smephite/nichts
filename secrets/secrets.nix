@@ -48,6 +48,12 @@ in
       armor = false;
     };
 
+    # kanidm mail sender (API token + SMTP password)
+    "kanidm/starhaven-mail-sender.age" = {
+      publicKeys = [keys.host-starhaven] ++ masterKeys;
+      armor = false;
+    };
+
     "telegram.age" = {
       publicKeys =
         [

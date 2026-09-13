@@ -89,6 +89,12 @@
       # are refused.
       whitelistDomains = [".kai.run:9443"];
     };
+
+    # Drains kanidm's message queue so credential-reset links arrive by email.
+    services.kanidmMailSender = {
+      enable = true;
+      clientUri = "https://idm.kai.run";
+    };
     services.docker.enable = true;
     system.network.enable = lib.mkForce false;
     system.network.nylon-wg = {
