@@ -16,7 +16,8 @@
   ykman = "${pkgs.yubikey-manager}/bin/ykman";
   oathtool = "${pkgs.oath-toolkit}/bin/oathtool";
   rbw = "${pkgs.rbw}/bin/rbw";
-  openconnect = "/run/wrappers/bin/openconnect";
+  openconnect = "${pkgs.openconnect}/bin/openconnect";
+  nmcli = "${pkgs.networkmanager}/bin/nmcli";
   yq = "${pkgs.yq-go}/bin/yq";
 
   # ---------------------------------------------------------------------------
@@ -141,7 +142,7 @@
             :
           elif [[ -n "$RBW_ENTRY" ]]; then
             echo "YubiKey not available, falling back to Bitwarden" >&2
-            OTP=$(${rbw} get --totp "$RBW_ENTRY")
+            OTP=$(${rbw} code "$RBW_ENTRY")
           else
             echo "YubiKey not available and no rbw_entry configured" >&2
             exit 1
@@ -150,15 +151,37 @@
           OTP=$(${oathtool} --totp --base32 "$TOTP")
         fi
 
-        {
+        # Authenticate and get session cookie
+        AUTH_OUTPUT=$({
           echo "$PASSWORD"
           [[ -n "$OTP" ]] && echo "$OTP" || true
-        } | ${openconnect} \
+        } | ${openconnect} --authenticate \
           -u "$USERNAME" \
           --server "$URL" \
           ''${GROUP:+-g "$GROUP"} \
           --useragent=AnyConnect \
-          --passwd-on-stdin
+          --passwd-on-stdin 2>&1)
+
+        eval "$(echo "$AUTH_OUTPUT" | grep -E '^(COOKIE|HOST|FINGERPRINT)=')"
+
+        if [[ -z "''${COOKIE:-}" ]]; then
+          echo "Authentication failed:" >&2
+          echo "$AUTH_OUTPUT" >&2
+          exit 1
+        fi
+
+        # Ensure NM connection profile exists
+        CON_NAME="vpn-${name}"
+        ${nmcli} connection show "$CON_NAME" &>/dev/null || \
+          ${nmcli} connection add type vpn con-name "$CON_NAME" \
+            vpn-type openconnect \
+            vpn.data "gateway = $URL, protocol = anyconnect, useragent = AnyConnect"
+
+        # Inject secrets in-memory and activate
+        ${nmcli} connection modify --temporary "$CON_NAME" \
+          vpn.secrets "cookie = $COOKIE, gateway = $HOST, gwcert = $FINGERPRINT"
+        ${nmcli} connection up "$CON_NAME"
+        echo "VPN connected via NetworkManager. Disconnect from network panel or: nmcli connection down $CON_NAME" >&2
       ''
     else
       # Static script: all values baked in at build time
@@ -179,7 +202,7 @@
             ${lib.optionalString (oath.rbw.entry != "") ''
               elif true; then
                 echo "YubiKey not available, falling back to Bitwarden" >&2
-                OTP=$(${rbw} get --totp ${lib.escapeShellArg oath.rbw.entry})
+                OTP=$(${rbw} code ${lib.escapeShellArg oath.rbw.entry})
             ''}
             else
               echo "YubiKey not available${lib.optionalString (oath.rbw.entry == "") " and no rbw entry configured"}" >&2
