@@ -83,11 +83,9 @@
     services.sso = {
       enable = true;
       issuerUrl = "https://idm.kai.run/oauth2/openid/proxy";
-      redirectURL = "https://sso.kai.run:9443/oauth2/callback";
+      redirectURL = "https://sso.kai.run/oauth2/callback";
       cookieDomain = ".kai.run";
-      # Include the port until Caddy moves to 443, or post-login redirects
-      # are refused.
-      whitelistDomains = [".kai.run:9443"];
+      whitelistDomains = [".kai.run"];
     };
 
     # Drains kanidm's message queue so credential-reset links arrive by email.
