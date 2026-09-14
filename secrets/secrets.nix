@@ -137,6 +137,14 @@ in
       armor = false;
     };
 
+    # Read-only deploy key for the private nichts-unfree flake input.
+    # c3 rebuilds itself from git (modules/services/auto-update.nix), and that
+    # eval runs as root, so root needs its own key to fetch the input.
+    "github-unfree-deploy.age" = {
+      publicKeys = [keys.host-c3] ++ masterKeys;
+      armor = false;
+    };
+
     "github-ssh.age" = {
       publicKeys = masterKeys;
       armor = false;

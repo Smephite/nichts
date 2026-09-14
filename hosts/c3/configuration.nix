@@ -89,6 +89,10 @@
       tokenFile = config.age.secrets.forgejo-runner-token.path;
     };
     other.home-manager.enable = true;
+    system.nichtsUnfree = {
+      enable = true;
+      deployKey = true;
+    };
     system.network.nylon-wg = {
       enable = true;
       node.key = config.age.secrets.nylon_key.path;

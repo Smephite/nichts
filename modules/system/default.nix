@@ -7,6 +7,7 @@
     ./fingerprint.nix
     ./fonts.nix
     ./network
+    ./nichts-unfree.nix
     ./nix.nix
     ./ssh-ca.nix
     ./ssh-key.nix

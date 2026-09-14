@@ -1,9 +1,5 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: let
-  site = inputs.nichts-unfree.packages.${pkgs.stdenv.hostPlatform.system}.dsa-lexicon-site;
+{pkgs, ...}: let
+  site = pkgs.dsa-lexicon-site;
 
   dataDir = "/var/lib/dsa-lexicon/pdfs";
 
