@@ -347,11 +347,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1776950688,
-        "narHash": "sha256-loE/Tf+o+QJVfnhJm8WF/2aHCTsO6/C4F9IctNo5kg4=",
+        "lastModified": 1789346921,
+        "narHash": "sha256-Qn7CJUPLZdI0vYKvfkvTN/IZwFV1grhMvR5JCGyBR58=",
         "ref": "refs/heads/main",
-        "rev": "9f29a58f6a95df71b7ede3f5bf1c979087bea532",
-        "revCount": 1,
+        "rev": "9e2559f71359b164d1d86ebf52438c104417d892",
+        "revCount": 2,
         "type": "git",
         "url": "ssh://git@github.com/Smephite/nichts-unfree"
       },

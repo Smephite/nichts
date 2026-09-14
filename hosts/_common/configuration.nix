@@ -18,6 +18,18 @@
     ];
   };
 
+  # kanidm client on every host: installs the `kanidm` CLI and writes
+  # /etc/kanidm/config, so commands work without -H or KANIDM_URL.
+  #
+  # The package must track the server's minor version. mkDefault so starhaven,
+  # which also runs the server, can override it with the
+  # secret-provisioning build.
+  services.kanidm = {
+    package = lib.mkDefault pkgs.kanidm_1_11;
+    client.enable = true;
+    client.settings.uri = "https://idm.kai.run";
+  };
+
   time.timeZone = lib.mkDefault "Europe/Zurich";
   i18n.defaultLocale = lib.mkDefault "en_GB.UTF-8";
 
