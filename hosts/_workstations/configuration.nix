@@ -50,6 +50,21 @@ in {
   # be nice to your ssds
   services.fstrim.enable = true;
 
+  # Let systemd-oomd cull a runaway app before the machine thrashes itself to a
+  # halt. Scoped to the user manager's app.slice on purpose: every desktop app
+  # gets its own scope in there, while the compositor lives in the logind
+  # session scope outside it, so the desktop itself can never be the victim.
+  # The limit is PSI memory pressure (share of time stalled on reclaim), not
+  # memory usage — an idle-but-full system sits near 0%.
+  systemd.user.units."app.slice" = {
+    overrideStrategy = "asDropin";
+    text = ''
+      [Slice]
+      ManagedOOMMemoryPressure=kill
+      ManagedOOMMemoryPressureLimit=50%
+    '';
+  };
+
   # Programs
   programs = {
     gnupg.agent = {
