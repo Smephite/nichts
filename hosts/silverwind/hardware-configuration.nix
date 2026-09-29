@@ -93,6 +93,54 @@
     writebackDevice = "/dev/nvme0n1p5";
   };
 
+  # zram is RAM, not a disk: swapping to it is cheap and reading back needs no
+  # readahead. The stock values (60/3) assume a rotating disk and make the
+  # machine thrash long before it runs out of memory.
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 180;
+    "vm.page-cluster" = 0;
+  };
+
+  # `zramSwap.writebackDevice` only points zram at the partition — the kernel
+  # never migrates anything on its own, so without this the backing device sits
+  # unused. Each run writes back the pages that stayed idle since the previous
+  # run, then re-arms the idle flag; reading or writing a page clears it, so the
+  # timer interval is effectively the "how long must a page be cold" threshold.
+  # (The kernel is built without CONFIG_ZRAM_TRACK_ENTRY_ACTIME, so the more
+  # direct `echo <seconds> > idle` is not available.)
+  systemd.services.zram-writeback = {
+    description = "Write idle zram pages back to the backing device";
+    serviceConfig.Type = "oneshot";
+    script = ''
+      zram=/sys/block/zram0
+      [ -w "$zram/writeback" ] || exit 0
+      [ -s "$zram/backing_dev" ] || exit 0
+
+      # Compressed bytes currently held in zram (field 2 of mm_stat). Below this
+      # there is nothing worth spending SSD writes on.
+      read -r _ compressed _ < "$zram/mm_stat"
+      [ "$compressed" -ge $((512 * 1024 * 1024)) ] || exit 0
+
+      # Bound the writes per run to 1 GiB, counted in 4 KiB pages.
+      echo 1 > "$zram/writeback_limit_enable"
+      echo $((1024 * 1024 * 1024 / 4096)) > "$zram/writeback_limit"
+
+      # Fails with ENOSPC once the backing device is full, which is not an error
+      # worth failing the unit over.
+      echo idle > "$zram/writeback" || true
+      echo all > "$zram/idle"
+    '';
+  };
+
+  systemd.timers.zram-writeback = {
+    description = "Periodically write idle zram pages back to the backing device";
+    wantedBy = ["timers.target"];
+    timerConfig = {
+      OnBootSec = "15min";
+      OnUnitActiveSec = "1h";
+    };
+  };
+
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
