@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   config,
   ...
 }: let
@@ -53,16 +54,22 @@
     outputs = map mkKanshiOutput monitors;
   };
 
-  # Catch-all fallback profiles using wildcard outputs.
-  # Kanshi uses first-match, so these must come after specific profiles.
-  fallbackProfiles = [
-    {
-      profile = {
-        name = "fallback";
-        outputs = [{criteria = "*";}];
-      };
+  # Catch-all so an unknown monitor still lights up instead of leaving kanshi
+  # with nothing to apply. Per kanshi(5) a plain `output "*"` matches exactly
+  # one output, so a wildcard profile can never match a multi-monitor setup;
+  # `...output` is the directive that takes any number of them. home-manager's
+  # module only emits `output "<criteria>"` and its `extraConfig` escape hatch
+  # is mutually exclusive with `settings`, so the fallback is written by hand
+  # and pulled in with an include. Kanshi is first-match: this must come last.
+  #
+  # The fallback only enables outputs — it cannot position them, since the
+  # directives after `...output` apply to every matched output alike. Add a
+  # real profile to get a layout.
+  fallbackConfig = pkgs.writeText "kanshi-fallback.conf" ''
+    profile fallback {
+    	...output "*" enable
     }
-  ];
+  '';
 in {
   config = lib.mkIf (wlrWmActive && hasProfiles) {
     home-manager.users.${username} = {
@@ -76,7 +83,7 @@ in {
               };
             })
             resolved)
-          ++ fallbackProfiles;
+          ++ [{include = "${fallbackConfig}";}];
       };
     };
   };
