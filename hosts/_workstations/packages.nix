@@ -13,6 +13,9 @@
       pyserial
     ];
 in {
+  # Zotero bundles Firefox ESR 140 (EOL 2026-10-13); drop once Zotero moves to ESR 153
+  nixpkgs.config.permittedInsecurePackages = ["firefox-esr-140-bin-unwrapped-140.17.0esr"];
+
   environment.systemPackages = with pkgs; [
     # communication
     pkgs.signal-desktop
