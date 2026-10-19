@@ -53,17 +53,10 @@
         internalMonitor = "framework-panel";
         monitors = {
           home = {
-            groups = ["desk-main" "desk-benq"];
+            groups = ["desk-main"];
             internalMonitorOverrides.position = {
-              x = 0;
-              y = 1530;
-            };
-          };
-          home-no-dell = {
-            groups = ["desk-gigabyte" "desk-benq"];
-            internalMonitorOverrides.position = {
-              x = 0;
-              y = 1530;
+              x = 4710;
+              y = 839;
             };
           };
           home-gigabyte-only = {

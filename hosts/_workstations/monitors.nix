@@ -22,17 +22,6 @@
         };
         refresh_rate = 59.973;
       };
-      benq-gl2450 = {
-        # EDID is mangled by VGA-to-DisplayPort adapter (Realtek chip)
-        name = "BenQ";
-        manufacturer = "Invalid Vendor Codename - RTK";
-        model = "0x1D1A";
-        resolution = {
-          x = 1920;
-          y = 1080;
-        };
-        refresh_rate = 60.0;
-      };
       hp-e27u-g4 = {
         name = "HP";
         manufacturer = "HP Inc.";
@@ -73,26 +62,16 @@
         dell-p2416d = {
           position = {
             x = 0;
-            y = 365;
+            y = 0;
           };
-          scale = 1.2356;
+          scale = 1.1333;
+          transform = 3;
         };
         gigabyte-m34wq = {
           position = {
-            x = 2072;
-            y = 293;
+            x = 1270;
+            y = 359;
           };
-          scale = 1.1;
-        };
-      };
-      desk-benq = {
-        benq-gl2450 = {
-          position = {
-            x = 5199;
-            y = 0;
-          };
-          scale = 0.9267;
-          transform = 1;
         };
       };
       desk-gigabyte = {

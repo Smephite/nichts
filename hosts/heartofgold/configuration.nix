@@ -26,7 +26,7 @@
 
       desktop = {
         windowManager = "cosmic";
-        monitors.home.groups = ["desk-main" "desk-benq"];
+        monitors.home.groups = ["desk-main"];
       };
 
       tpmIdentity.enable = true;
