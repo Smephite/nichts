@@ -94,6 +94,17 @@ in {
         lapi.credentialsFile = "${stateDir}/local_api_credentials.yaml";
         # Registered on first start; enables the community blocklist.
         capi.credentialsFile = "${stateDir}/online_api_credentials.yaml";
+
+        # app.crowdsec.net. Enrol once by hand: `sudo cscli console enroll <key>`.
+        # Not via console.tokenFile: the module only enrols when that file is
+        # MISSING (and then cats it), so it never works.
+        console.configuration = {
+          console_management = true; # add/remove bans from the web UI
+          share_manual_decisions = true;
+          share_custom = false;
+          share_tainted = false;
+          share_context = false; # keep log lines on the box
+        };
       };
     };
 
