@@ -17,10 +17,10 @@ with lib; let
   hostname = config.networking.hostName;
   caddyPkg = pkgs.caddy.withPlugins {
     plugins = ["github.com/caddy-dns/cloudflare@v0.2.4"];
-    # Vendor hash for caddy 2.11.4 + cloudflare@v0.2.4 on nixpkgs 0ae2bc1.
+    # Vendor hash for caddy 2.11.7 + cloudflare@v0.2.4.
     # Regenerate after a caddy or plugin bump: set this to a wrong value,
     # build, and copy the "got:" hash from the mismatch error.
-    hash = "sha256-7GoH8YLCoPmPExQxoga2FHB58zQDoZVf1BBwkVi0SsQ=";
+    hash = "sha256-xRJ5evsAJ2akg47j3Bt6YDXJOgX88B/rKNP50KSVyNY=";
   };
   wrapperConfig = pkgs.writeText "caddy-wrapper.conf" ''
     {
