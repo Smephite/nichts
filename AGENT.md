@@ -38,6 +38,8 @@ Reusable NixOS/home-manager modules, imported by all hosts via `hosts/default.ni
 
 Agenix-encrypted secrets (`.age` files). `secrets.nix` defines which keys can decrypt which secrets; `public_keys.nix` holds the public keys.
 
+To edit secrets as plain files, `secrets/plain.sh decrypt` writes them to the gitignored `secrets/plain/` (mirroring the `.age` paths), and `secrets/plain.sh encrypt` re-encrypts the edited ones to their `secrets.nix` recipients. Both default to `caddy/*.age`; pass `.age` paths to act on others.
+
 ## `wg/`
 
 WireGuard public keys.
