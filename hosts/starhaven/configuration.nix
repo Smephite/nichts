@@ -52,6 +52,12 @@
     #    };
   };
 
+  # Public-facing: keys and SSH-CA certificates only.
+  services.openssh.settings = {
+    PasswordAuthentication = false;
+    KbdInteractiveAuthentication = false;
+  };
+
   networking = {
     firewall = {
       allowedTCPPorts = [
@@ -105,6 +111,12 @@
     services.kanidmMailSender = {
       enable = true;
       clientUri = "https://idm.kai.run";
+    };
+    # Bans from the sshd journal and Caddy's access log, dropped in INPUT
+    # before they reach either.
+    services.crowdsec = {
+      enable = true;
+      whitelist = ["2a02:169:ca::/48"]; # home
     };
     services.docker.enable = true;
     system.network.enable = lib.mkForce false;
