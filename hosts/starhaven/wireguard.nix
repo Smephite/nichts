@@ -47,6 +47,19 @@
     autostart = true;
   };
 
+  # The wg-quick module copies configFile to /tmp/wg0.conf (PrivateTmp) so the
+  # interface gets its name, and runs `wg-quick down` against that copy on
+  # stop. systemd's tmp cleaner ages the copy out after 10 days - the private
+  # dir is excluded from cleaning, its contents are not - so the first restart
+  # after that (any nixos-rebuild) fails: down finds no file and leaves wg0
+  # up, up then refuses because wg0 exists, and the LAN routes are gone.
+  # Bit starhaven on 2026-09-30. Re-copy before down, and clear a leftover
+  # interface before up.
+  systemd.services.wg-quick-wg0 = {
+    preStop = lib.mkBefore "cp ${config.age.secrets.wg-unifi.path} /tmp/wg0.conf";
+    preStart = lib.mkAfter "${pkgs.iproute2}/bin/ip link del wg0 2>/dev/null || true";
+  };
+
   # No NAT on purpose: this is a routed tunnel and both ends know each other's
   # addresses. (The previous config masqueraded everything leaving eth0, which
   # belonged to a different, internet-gateway setup.)
