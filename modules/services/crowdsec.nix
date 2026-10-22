@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 with lib; let
@@ -128,6 +129,12 @@ in {
     systemd.tmpfiles.rules = [
       "f ${config.services.crowdsec.settings.capi.credentialsFile} 0600 crowdsec crowdsec -"
     ];
+    #
+    # The bouncer-register script calls cscli without -c, so cscli falls back
+    # to /etc/crowdsec/config.yaml, which the module never writes. Same content
+    # as the config the module passes everywhere else.
+    environment.etc."crowdsec/config.yaml".source =
+      (pkgs.formats.yaml {}).generate "crowdsec.yaml" config.services.crowdsec.settings.general;
 
     services.crowdsec-firewall-bouncer.enable = true;
   };
