@@ -8,8 +8,9 @@
   imports = [(modulesPath + "/profiles/qemu-guest.nix")];
 
   boot.loader.grub.device = "/dev/sda";
-  # Not much space on /boot
-  boot.loader.grub.configurationLimit = 3;
+  # /boot is 105 MB and a kernel + initrd is ~44 MB: two generations with
+  # different kernels fit, three do not (a kernel bump then fails mid-switch).
+  boot.loader.grub.configurationLimit = 2;
 
   boot.initrd.availableKernelModules = [
     "ata_piix"
