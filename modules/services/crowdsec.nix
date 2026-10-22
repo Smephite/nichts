@@ -112,6 +112,23 @@ in {
     # Caddy services secret).
     users.users.crowdsec.extraGroups = optional caddy.enable "caddy";
 
+    # Two nixpkgs module bugs (crowdsec 1.8.1), both hit on first start:
+    #
+    # The bouncer-register unit has StateDirectory=crowdsec with DynamicUser,
+    # so systemd moves /var/lib/crowdsec to /var/lib/private and hands it to a
+    # transient UID; crowdsec itself then cannot write its state. The static
+    # crowdsec user exists anyway, so run every unit as that user.
+    #
+    # The setup script runs `cscli machines add` before `capi register`, and
+    # the former already fails if the CAPI credentials file is missing.
+    # An empty file is enough; register fills it in.
+    systemd.services = genAttrs ["crowdsec" "crowdsec-update-hub" "crowdsec-firewall-bouncer-register"] (_: {
+      serviceConfig.DynamicUser = mkForce false;
+    });
+    systemd.tmpfiles.rules = [
+      "f ${config.services.crowdsec.settings.capi.credentialsFile} 0600 crowdsec crowdsec -"
+    ];
+
     services.crowdsec-firewall-bouncer.enable = true;
   };
 }
